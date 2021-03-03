@@ -70,6 +70,8 @@ Riya:
 ##### Challenges and Questions with the project:
 We need access to data/algorithms that IT dept used to create the concentration declaration thing in ASK - otherwise it would be very hard to manually enter the concentration reqs for all concentrations (including pre-reqs)
 
+**HTA Approval (dpark20):** Idea approved BUT do not have an AI/ML component as your algorithm. This is not an ML class, so we hope your algorithm has more depth in areas outside of ML.
+
 ### Idea 2
 
 #### Intern/Job Application Helper
@@ -101,6 +103,9 @@ We need access to data/algorithms that IT dept used to create the concentration 
 - How do we make a plug-in that could work on all browsers?
 - What if a form tag is similar but not as expected? How can we deal with this issue? 
 
+**HTA Approval (dpark20):** Approved. Make sure there is good depth to the algorithms! Be sure to make your project different from what has already been done.
+
+Good ideas! Looking forward to seeing what you make.
 
 ### Idea 3
 We think our idea 2 can be split off into two ideas, depending since it may be difficult to take on the entire project with the two major components. 
