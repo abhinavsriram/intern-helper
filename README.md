@@ -54,7 +54,8 @@
 ## Project Idea:
 
 #### Intern/Job Application Helper
-##### Short Description: A web app that auto-fills all common application questions for internships/jobs and provides data on chances for getting an internship/job.
+##### Short Description:
+A web app that auto-fills all common application questions for internships/jobs and provides data on chances for getting an internship/job.
 ##### Problem:
 - It is tedious to submit applications for internships and jobs, especially ones that require submitting the same answers to the same questions each time. This includes personal information about education to demographic information. This can discourage students from applying to opportunities that are available.
 - Students also never know what their odds are of getting an internship or job. Many times, students apply for thousands but only hear back from a few dozen. If they knew where their application stands among other applicants who were successful, they would know how to improve their application and chances of receiving an interview and getting the offer.
@@ -82,9 +83,7 @@
 - How do we make a plug-in that could work on all browsers?
 - What if a form tag is similar but not as expected? How can we deal with this issue?
 
-**HTA Approval (dpark20):** Approved. Make sure there is good depth to the algorithms! Be sure to make your project different from what has already been done.
-
-Good ideas! Looking forward to seeing what you make.
+**HTA Approval (dpark20):** Approved. Make sure there is good depth to the algorithms! Be sure to make your project different from what has already been done. Good ideas! Looking forward to seeing what you make.
 
 **Mentor TA: Kanza Azhar**
 
