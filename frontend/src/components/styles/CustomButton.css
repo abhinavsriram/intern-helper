@@ -1,0 +1,20 @@
+.custom-button {
+    height: 60px;
+    width: 220px;
+    font-family: Montserrat, sans-serif;
+    background-color: #CCEDFF;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+}
+
+.custom-button:hover {
+    cursor: pointer;
+    border: 2px #9cdcff solid;
+}
+
+.custom-link {
+    text-decoration: none;
+    color: black;
+}

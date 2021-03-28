@@ -35,9 +35,7 @@ class LoadingScreen extends Component {
 
     render() {
         return (
-            this.state.redirect
-                ? <Redirect to="/landing"/>
-                : <WaveLoading/>
+            this.state.redirect ? <Redirect to="/landing"/> : <WaveLoading/>
         );
     }
 }

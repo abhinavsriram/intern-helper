@@ -12,3 +12,8 @@
     margin-bottom: 50px;
     font-family: Montserrat, sans-serif;
 }
+
+.error-messages {
+    font-size: 20px;
+    font-family: Montserrat, sans-serif;
+}

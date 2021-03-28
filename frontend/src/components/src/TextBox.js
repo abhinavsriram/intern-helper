@@ -5,8 +5,11 @@ function TextBox(props) {
     return (
         <div>
             <label>
-                {props.label}
-                <input className="input"/>
+                <div className="custom-label">
+                    {props.label}
+                </div>
+                <input className="input" type={props.type} value={props.value}
+                       onChange={(e) => props.change(e.target.value)}/>
             </label>
         </div>
     );
