@@ -1,0 +1,12 @@
+.input {
+    min-height: 19px;
+    max-height: 40px;
+    min-width: 220px;
+    resize: none;
+    margin: 4px;
+    border-radius: 5px;
+    border: white;
+    padding: 4px;
+    font-family: Oswald, sans-serif;
+    font-size: 14px;
+}
