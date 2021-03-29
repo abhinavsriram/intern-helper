@@ -18,11 +18,10 @@ class LoadingScreen extends Component {
             if (authFlag) {
                 authFlag = false;
                 if (user) {
-                    console.log("user logged in");
-                    // should send them to home screen
-                    this.id = setTimeout(() => this.setState({redirect: false}), 3000);
+                    // window.location.href = "/home";
+                    // set redirect to false
+                    this.id = setTimeout(() => this.setState({redirect: true}), 3000);
                 } else {
-                    console.log("user not logged in");
                     this.id = setTimeout(() => this.setState({redirect: true}), 3000);
                 }
             }
@@ -38,6 +37,7 @@ class LoadingScreen extends Component {
             this.state.redirect ? <Redirect to="/landing"/> : <WaveLoading/>
         );
     }
+
 }
 
 export default LoadingScreen;

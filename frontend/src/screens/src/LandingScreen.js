@@ -1,39 +1,68 @@
 import React, {Component} from 'react';
-import '../styles/LandingScreen.css'
+import '../styles/LandingScreen.css';
+import firebase from '../../firebase.js';
 
 import TextBox from "../../components/src/TextBox";
-import CustomButton from "../../components/src/CustomButton"
+import CustomButton from "../../components/src/CustomButton";
 
 class LandingScreen extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            username: "",
-            password: ""
+            email: "",
+            password: "",
+            errorMessage: "",
         }
     }
 
-    changeUsername = (newUsername) => {
-        this.setState({ username : newUsername})
+    changeEmail = (newEmail) => {
+        this.setState({email: newEmail})
     }
 
     changePassword = (newPassword) => {
-        this.setState({ password : newPassword})
+        this.setState({password: newPassword})
+    }
+
+    handleLogin = () => {
+        const email = this.state.email;
+        const password = this.state.password;
+        if (email !== "" && password !== "") {
+            firebase.auth().signInWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    window.location.href = "/home";
+                    const user = userCredential.user;
+                })
+                .catch((error) => {
+                    this.setState({errorMessage: error.message});
+                });
+        } else {
+            this.setState({errorMessage: "Oops! Please enter a valid username/password."});
+        }
+    };
+
+    handleSignUp = () => {
+        window.location.href = "/signup";
     }
 
     render() {
         return (
             <div className="main-div">
+                <div className="header">
+                    INTERN HELPER
+                </div>
                 <div className="message">
                     Please Log In or Sign Up Below
                 </div>
-                <TextBox label={"Username"} type={"text"} value={this.state.username} change={this.changeUsername}/>
+                <TextBox label={"Email"} type={"text"} value={this.state.email} change={this.changeEmail}/>
                 <TextBox label={"Password"} type={"password"} value={this.state.password} change={this.changePassword}/>
-                <br /> <br />
-                <CustomButton value={"Log In"} click={"/login"}/>
-                <br /> <br />
-                <CustomButton value={"Sign Up"} click={"signup"}/>
+                <div style={{color: "red"}} className="error-messages">
+                    {this.state.errorMessage}
+                </div>
+                <br/>
+                <CustomButton value={"Log In"} onClick={this.handleLogin}/>
+                <br/> <br/>
+                <CustomButton value={"Sign Up"} onClick={this.handleSignUp}/>
             </div>
         );
     }

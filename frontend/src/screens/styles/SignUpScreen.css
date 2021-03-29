@@ -17,3 +17,9 @@
     font-size: 20px;
     font-family: Montserrat, sans-serif;
 }
+
+.back-button {
+    position: absolute;
+    top: 5%;
+    left: 5%;
+}

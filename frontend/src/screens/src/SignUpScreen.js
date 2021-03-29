@@ -1,8 +1,10 @@
 import React, {Component} from 'react';
-import '../styles/SignUpScreen.css'
+import '../styles/SignUpScreen.css';
+
+import firebase from "../../firebase";
 
 import TextBox from "../../components/src/TextBox";
-import CustomButton from "../../components/src/CustomButton"
+import CustomButton from "../../components/src/CustomButton";
 
 class SignUpScreen extends Component {
 
@@ -10,17 +12,16 @@ class SignUpScreen extends Component {
         super(props);
         this.state = {
             email: "",
-            username: "",
             passwordOne: "",
             passwordTwo: "",
             emailValidityMessage: "",
             emailValidityBoolean: true,
-            usernameValidityMessage: "",
-            usernameValidityBoolean: true,
             passwordValidityMessage: "",
             passwordValidityBoolean: true,
             passwordMatchMessage: "",
-            passwordMatchBoolean: true
+            passwordMatchBoolean: true,
+            errorMessage: "",
+            errorMessageBoolean: false
         }
     }
 
@@ -30,18 +31,18 @@ class SignUpScreen extends Component {
             '(?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|' +
             '[1-9]?[0-9]))\\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b' +
             '\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\\])')) {
-            this.setState({emailValidityMessage : "Your Email Looks Valid!"});
-            this.setState({emailValidityBoolean : true});
+            this.setState({emailValidityMessage: "Your email looks valid!"});
+            this.setState({emailValidityBoolean: true});
             this.setState({passwordMatchMessage: ""});
             this.setState({passwordValidityMessage: ""});
-            this.setState({usernameValidityMessage: ""});
+            this.setState({errorMessage: ""});
             return true;
         } else {
-            this.setState({emailValidityMessage : "Oops! Your Email Looks Invalid!"});
-            this.setState({emailValidityBoolean : false});
+            this.setState({emailValidityMessage: "Oops! Your email looks like it is invalid!"});
+            this.setState({emailValidityBoolean: false});
             this.setState({passwordMatchMessage: ""});
             this.setState({passwordValidityMessage: ""});
-            this.setState({usernameValidityMessage: ""});
+            this.setState({errorMessage: ""});
             return false;
         }
     }
@@ -51,109 +52,158 @@ class SignUpScreen extends Component {
         this.setState({email: newEmail})
     }
 
-    checkUsernameValidity = () => {
-        if (this.state.username.length > 8) {
-            this.setState({usernameValidityMessage: "Your Username Is Valid!"});
-            this.setState({usernameValidityBoolean: true});
-            this.setState({passwordMatchMessage: ""});
-            this.setState({passwordValidityMessage: ""});
-            this.setState({emailValidityMessage: ""});
-            return true;
-        } else {
-            this.setState({usernameValidityMessage: "Your Username Must Have At Least 8 Characters!"});
-            this.setState({usernameValidityBoolean: false});
-            this.setState({passwordMatchMessage: ""});
-            this.setState({passwordValidityMessage: ""});
-            this.setState({emailValidityMessage: ""});
-            return false;
-        }
-    }
-
-    changeUsername = (newUsername) => {
-        this.checkUsernameValidity();
-        this.setState({username: newUsername})
-    }
-
     checkPasswordValidity = () => {
         if (!!this.state.passwordOne.match(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%* #+=\(\)\^?&])[A-Za-z\d$@$!%* #+=\(\)\^?&]{3,}$/)) {
             this.setState({passwordValidityBoolean: true});
-            this.setState({passwordValidityMessage: "Your Password Looks Secure!"});
+            this.setState({passwordValidityMessage: "Your password looks secure!"});
             this.setState({passwordMatchMessage: ""});
-            this.setState({usernameValidityMessage: ""});
             this.setState({emailValidityMessage: ""});
+            this.setState({errorMessage: ""});
             return true;
         } else {
             this.setState({passwordValidityBoolean: false});
-            this.setState({passwordValidityMessage: "Oops! Password Must Contain At Least One Uppercase, One Lowercase, One Special Character & One Number!"});
+            this.setState({passwordValidityMessage: "Oops! Password must contain at least one uppercase, one lowercase, one special character & one number!"});
             this.setState({passwordMatchMessage: ""});
-            this.setState({usernameValidityMessage: ""});
             this.setState({emailValidityMessage: ""});
+            this.setState({errorMessage: ""});
             return false;
         }
     }
 
     changePasswordOne = (newPassword) => {
         this.checkPasswordValidity()
-        this.setState({passwordOne: newPassword}, () => {this.checkPasswordValidity()});
+        this.setState({passwordOne: newPassword}, () => {
+            this.checkPasswordValidity()
+        });
     }
 
     checkPasswordMatch = () => {
         if (this.state.passwordOne === this.state.passwordTwo) {
             if (this.checkPasswordValidity()) {
                 this.setState({passwordMatchBoolean: true});
-                this.setState({passwordMatchMessage: "Passwords Match!"});
+                this.setState({passwordMatchMessage: "Passwords match!"});
                 this.setState({passwordValidityMessage: ""});
-                this.setState({usernameValidityMessage: ""});
                 this.setState({emailValidityMessage: ""});
+                this.setState({errorMessage: ""});
                 return true;
             } else {
                 this.setState({passwordValidityBoolean: false});
-                this.setState({passwordValidityMessage: "Oops! Password Must Contain At Least One Uppercase, One Lowercase, One Special Character & One Number!"});
+                this.setState({passwordValidityMessage: "Oops! Password must contain at least one uppercase, one lowercase, one special character & one number!"});
                 this.setState({passwordMatchMessage: ""});
-                this.setState({usernameValidityMessage: ""});
                 this.setState({emailValidityMessage: ""});
+                this.setState({errorMessage: ""});
                 return false;
             }
         } else {
             this.setState({passwordMatchBoolean: false});
-            this.setState({passwordMatchMessage: "Oops! Passwords Don't Match!"});
+            this.setState({passwordMatchMessage: "Oops! Passwords don't match!"});
             this.setState({passwordValidityMessage: ""});
-            this.setState({usernameValidityMessage: ""});
             this.setState({emailValidityMessage: ""});
+            this.setState({errorMessage: ""});
             return false;
         }
     }
 
     changePasswordTwo = (newPassword) => {
         this.checkPasswordMatch();
-        this.setState({passwordTwo: newPassword},() => {this.checkPasswordMatch()});
+        this.setState({passwordTwo: newPassword}, () => {
+            this.checkPasswordMatch()
+        });
+    }
+
+    writeToDatabase = () => {
+        firebase
+            .firestore()
+            .collection("existing-users")
+            .doc(this.state.email)
+            .set({
+                email: this.state.email,
+                created_at: Date.now(),
+            })
+            .then(() => {
+            })
+            .catch((error) => {
+                this.setState({errorMessage: "Oops! It looks like something went wrong. Please try again."});
+            });
+    }
+
+    createUser = () => {
+        const email = this.state.email;
+        const password = this.state.passwordTwo;
+        firebase
+            .auth()
+            .createUserWithEmailAndPassword(email, password)
+            .then((userCredential) => {
+                const user = userCredential.user;
+            })
+            .catch((error) => {
+                this.setState({errorMessage: "Oops! It looks like something went wrong. Please try again."});
+            });
+    }
+
+    checkUserExists = () => {
+        firebase
+            .firestore()
+            .collection("existing-users")
+            .doc(this.state.email)
+            .get()
+            .then((doc) => {
+                if (doc.exists) {
+                    this.setState({passwordMatchMessage: ""});
+                    this.setState({passwordValidityMessage: ""});
+                    this.setState({emailValidityMessage: ""});
+                    this.setState({errorMessage: "Oops! It looks like this email address is already in use."});
+                    this.setState({errorMessageBoolean: true});
+                } else {
+                    this.writeToDatabase();
+                    this.createUser();
+                    window.location.href = "/profile1";
+                }
+            })
+            .catch((error) => {
+                this.setState({errorMessage: "Oops! It looks like something went wrong. Please try again."});
+            })
     }
 
     signUpClick = () => {
-        if (this.checkEmailValidity() && this.checkUsernameValidity() && this.checkPasswordValidity() && this.checkPasswordMatch()) {
-            return "signup";
+        if (this.state.email === "" || this.state.passwordOne === "" || this.state.passwordTwo === "") {
+            this.setState({errorMessageBoolean: true});
+            this.setState({passwordMatchMessage: ""});
+            this.setState({passwordValidityMessage: ""});
+            this.setState({emailValidityMessage: ""});
+            this.setState({errorMessage: "Oops! Please make sure all fields are filled."});
+        } else if (this.checkEmailValidity() && this.checkPasswordValidity() && this.checkPasswordMatch()) {
+            this.checkUserExists();
+        } else {
+            this.setState({errorMessageBoolean: true});
+            this.setState({passwordMatchMessage: ""});
+            this.setState({passwordValidityMessage: ""});
+            this.setState({emailValidityMessage: ""});
+            this.setState({errorMessage: "Oops! Please make sure all fields are filled in correctly."});
         }
+    }
+
+    goBack = () => {
+        window.location.href = "/landing";
     }
 
     render() {
         return (
             <div className="main-div">
+                <div className="back-button">
+                    <CustomButton value={"Go Back"} onClick={this.goBack}/>
+                </div>
                 <div className="message">
                     Sign Up Below
                 </div>
                 <TextBox label={"Email"} type={"text"} value={this.state.email} change={this.changeEmail}/>
-                <TextBox label={"Username"} type={"text"} value={this.state.username} change={this.changeUsername}/>
-                <TextBox label={"Password"} type={"text"} value={this.state.password}
+                <TextBox label={"Password"} type={"password"} value={this.state.password}
                          change={this.changePasswordOne}/>
-                <TextBox label={"Confirm Password"} type={"text"} value={this.state.password}
+                <TextBox label={"Confirm Password"} type={"password"} value={this.state.password}
                          change={this.changePasswordTwo}/>
                 <div style={this.state.emailValidityBoolean ? {color: "green"} : {color: "red"}}
                      className="error-messages">
                     {this.state.emailValidityMessage}
-                </div>
-                <div style={this.state.usernameValidityBoolean ? {color: "green"} : {color: "red"}}
-                     className="error-messages">
-                    {this.state.usernameValidityMessage}
                 </div>
                 <div style={this.state.passwordValidityBoolean ? {color: "green"} : {color: "red"}}
                      className="error-messages">
@@ -163,8 +213,12 @@ class SignUpScreen extends Component {
                      className="error-messages">
                     {this.state.passwordMatchMessage}
                 </div>
+                <div style={this.state.errorMessageBoolean ? {color: "red"} : {color: "green"}}
+                     className="error-messages">
+                    {this.state.errorMessage}
+                </div>
                 <br/>
-                <CustomButton value={"Sign Up"} click={"signup"}/>
+                <CustomButton value={"Sign Up"} onClick={this.signUpClick}/>
             </div>
         );
     }
