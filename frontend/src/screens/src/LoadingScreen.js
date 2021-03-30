@@ -8,7 +8,7 @@ class LoadingScreen extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            redirect: false
+            redirect: false,
         }
     }
 

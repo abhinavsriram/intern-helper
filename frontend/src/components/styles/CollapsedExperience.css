@@ -1,0 +1,26 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat");
+
+.exp-wrapper {
+    min-height: 300px;
+    width: 1500px;
+    background-color: #ccedff;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.title {
+    font-size: 34px;
+    font-family: Montserrat, sans-serif;
+    margin-bottom: 5px;
+}
+
+.dates {
+    font-size: 24px;
+    font-family: Montserrat, sans-serif;
+    margin-bottom: 5px;
+}
+
+.description {
+    font-size: 20px;
+    font-family: Montserrat, sans-serif;
+}

@@ -1,0 +1,23 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat");
+
+.inputBig {
+    min-height: 325px;
+    max-height: 325px;
+    min-width: 800px;
+    font-size: 20px;
+    resize: none;
+    margin-bottom: 20px;
+    border: white;
+    padding: 4px;
+    font-family: Montserrat, sans-serif;
+    background-color: #CCEDFF;
+}
+
+.custom-label {
+    margin-bottom: 10px;
+}
+
+label {
+    font-size: 24px;
+    font-family: Montserrat, sans-serif;
+}

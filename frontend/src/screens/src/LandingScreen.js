@@ -13,7 +13,9 @@ class LandingScreen extends Component {
             email: "",
             password: "",
             errorMessage: "",
+            uid: props.uid,
         }
+        this.setUID = props.setUID.bind(this);
     }
 
     changeEmail = (newEmail) => {
@@ -30,8 +32,11 @@ class LandingScreen extends Component {
         if (email !== "" && password !== "") {
             firebase.auth().signInWithEmailAndPassword(email, password)
                 .then((userCredential) => {
-                    window.location.href = "/home";
                     const user = userCredential.user;
+                    console.log("user id is: " + user.uid);
+                    console.log(this.setUID);
+                    this.setUID(user.uid, () => {window.location.href = "/home"});
+                    console.log("state var (from props) user id is: " + this.state.uid);
                 })
                 .catch((error) => {
                     this.setState({errorMessage: error.message});
