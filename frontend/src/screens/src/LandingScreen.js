@@ -29,8 +29,8 @@ class LandingScreen extends Component {
         const password = this.state.password;
         if (email !== "" && password !== "") {
             firebase.auth().signInWithEmailAndPassword(email, password)
-                .then((userCredential) => {
-                    // window.location.href = "/home";
+                .then((user) => {
+                    window.location.href = "/home";
                 })
                 .catch((error) => {
                     this.setState({errorMessage: error.message});

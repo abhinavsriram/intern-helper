@@ -1,0 +1,21 @@
+.big-custom-button {
+    height: 100px;
+    width: 300px;
+    font-family: Montserrat, sans-serif;
+    background-color: #ccedff;
+    border: 5px #ccedff solid;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+}
+
+.big-custom-button:hover {
+    cursor: pointer;
+    border: 5px #9cdcff solid;
+}
+
+.custom-link {
+    text-decoration: none;
+    color: black;
+}

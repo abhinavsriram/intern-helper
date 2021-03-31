@@ -21,7 +21,8 @@ class SignUpScreen extends Component {
             passwordMatchMessage: "",
             passwordMatchBoolean: true,
             errorMessage: "",
-            errorMessageBoolean: false
+            errorMessageBoolean: false,
+            uid: ""
         }
     }
 
@@ -117,10 +118,24 @@ class SignUpScreen extends Component {
             .collection("existing-users")
             .doc(this.state.email)
             .set({
-                email: this.state.email,
-                created_at: Date.now(),
+                created_at: Date.now()
             })
             .then(() => {
+                firebase
+                    .firestore()
+                    .collection("user-data")
+                    .doc(this.state.uid)
+                    .set({
+                        email: this.state.email
+                    })
+                    .then(() => {
+                        if (this.state.errorMessage === "") {
+                            window.location.href = "/profile1";
+                        }
+                    })
+                    .catch((error) => {
+                        this.setState({errorMessage: "Oops! It looks like something went wrong. Please try again."});
+                    });
             })
             .catch((error) => {
                 this.setState({errorMessage: "Oops! It looks like something went wrong. Please try again."});
@@ -135,6 +150,7 @@ class SignUpScreen extends Component {
             .createUserWithEmailAndPassword(email, password)
             .then((userCredential) => {
                 const user = userCredential.user;
+                this.setState({uid: user.uid}, () => {this.writeToDatabase()});
             })
             .catch((error) => {
                 this.setState({errorMessage: "Oops! It looks like something went wrong. Please try again."});
@@ -155,9 +171,7 @@ class SignUpScreen extends Component {
                     this.setState({errorMessage: "Oops! It looks like this email address is already in use."});
                     this.setState({errorMessageBoolean: true});
                 } else {
-                    this.writeToDatabase();
                     this.createUser();
-                    window.location.href = "/profile1";
                 }
             })
             .catch((error) => {

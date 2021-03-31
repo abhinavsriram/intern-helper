@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import '../styles/CreateProfileScreen1.css';
 import TextBox from "../../components/src/TextBox";
 import CustomButton from "../../components/src/CustomButton";
+import firebase from "../../firebase";
 
 class CreateProfileScreen1 extends Component {
 
@@ -13,8 +14,30 @@ class CreateProfileScreen1 extends Component {
             major: "",
             university: "",
             errorMessage: "",
-            errorMessageBoolean: false
+            errorMessageBoolean: false,
+            uid: ""
         }
+    }
+
+    getUserID = () => {
+        let authFlag = true;
+        firebase
+            .auth()
+            .onAuthStateChanged((user) => {
+                if (authFlag) {
+                    authFlag = false;
+                    if (user) {
+                        this.setState({uid: user.uid})
+                    } else {
+                        // user not logged in
+                        // access denied
+                    }
+                }
+            });
+    }
+
+    componentDidMount() {
+        this.getUserID();
     }
 
     changeFirstName = (newName) => {
@@ -33,11 +56,32 @@ class CreateProfileScreen1 extends Component {
         this.setState({university: newUniversity});
     }
 
+    writeToDatabase = () => {
+        firebase
+            .firestore()
+            .collection("user-data")
+            .doc(this.state.uid)
+            .update({
+                first_name: this.state.firstName,
+                last_name: this.state.lastName,
+                major: this.state.major,
+                university: this.state.university
+            })
+            .then(() => {
+                if (this.state.errorMessage === "") {
+                    window.location.href = "/profile2";
+                }
+            })
+            .catch((error) => {
+                this.setState({errorMessage: "Oops! It looks like something went wrong. Please try again."});
+            });
+    }
+
     next = () => {
         if (this.state.firstName !== "" && this.state.lastName !== "" && this.state.major !== "" && this.state.university !== "") {
             this.setState({errorMessage: ""});
             this.setState({errorMessageBoolean: false});
-            window.location.href = "/profile2";
+            this.writeToDatabase();
         } else {
             this.setState({errorMessage: "Oops! Please make sure you fill in all fields."});
             this.setState({errorMessageBoolean: true});

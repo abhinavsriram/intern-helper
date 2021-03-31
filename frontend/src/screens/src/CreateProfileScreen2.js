@@ -4,6 +4,7 @@ import '../styles/CreateProfileScreen2.css';
 import CollapsedExperience from "../../components/src/CollapsedExperience";
 import CustomButton from "../../components/src/CustomButton";
 import AddExperience from "../../components/src/AddExperience";
+import firebase from "../../firebase";
 
 class CreateProfileScreen2 extends Component {
 
@@ -11,14 +12,38 @@ class CreateProfileScreen2 extends Component {
         super(props);
         this.state = {
             experiences: [],
+            experiencesList: [],
             modalVisible: false,
             title: "",
             company: "",
             startDate: "",
             endDate: "",
             description: "",
-            errorMessage: ""
+            errorMessage: "",
+            uid: ""
         }
+    }
+
+    getUserID = () => {
+        let authFlag = true;
+        firebase
+            .auth()
+            .onAuthStateChanged((user) => {
+                if (authFlag) {
+                    authFlag = false;
+                    if (user) {
+                        console.log("user id received")
+                        this.setState({uid: user.uid})
+                    } else {
+                        // user not logged in
+                        // access denied
+                    }
+                }
+            });
+    }
+
+    componentDidMount() {
+        this.getUserID();
     }
 
     changeTitle = (newTitle) => {
@@ -49,6 +74,34 @@ class CreateProfileScreen2 extends Component {
         this.setState({modalVisible: true});
     }
 
+    writeToDatabase = () => {
+        let docID = this.state.title + this.state.company + this.state.startDate + this.state.endDate;
+        docID = docID.replace(/\s/g, '');
+        firebase
+            .firestore()
+            .collection("user-data")
+            .doc(this.state.uid)
+            .collection("experiences")
+            .doc(docID)
+            .set({
+                title: this.state.title,
+                company: this.state.company,
+                start_date: this.state.startDate,
+                end_date: this.state.endDate,
+                description: this.state.description
+            })
+            .then(() => {
+                this.setState({company: ""});
+                this.setState({title: ""});
+                this.setState({startDate: ""});
+                this.setState({endDate: ""});
+                this.setState({description: ""});
+            })
+            .catch((error) => {
+                this.setState({errorMessage: "Oops! It looks like something went wrong. Please try again."});
+            });
+    }
+
     doneExperienceButton = () => {
         if (this.state.company !== "" && this.state.title !== "" &&
             this.state.startDate !== "" && this.state.endDate !== "" &&
@@ -58,18 +111,50 @@ class CreateProfileScreen2 extends Component {
                 experiences: [...prevState.experiences,
                     <CollapsedExperience company={this.state.company} title={this.state.title}
                                          dates={this.state.startDate + " - " + this.state.endDate}
-                                         description={this.state.description}/>]
+                                         description={this.state.description}
+                                         key={Math.random()}/>]
             }));
-            // store in database
-            // and write function to retrieve data from database upon initial render
-            this.setState({company: ""});
-            this.setState({title: ""});
-            this.setState({startDate: ""});
-            this.setState({endDate: ""});
-            this.setState({description: ""});
+            let docID = this.state.title + this.state.company + this.state.startDate + this.state.endDate;
+            docID = docID.replace(/\s/g, '');
+            this.setState(prevState => ({
+                experiencesList: [...prevState.experiencesList, docID]
+            }));
+            this.writeToDatabase();
         } else {
             this.setState({errorMessage: "Oops! Please make sure all fields are filled."})
         }
+    }
+
+    nextButton = () => {
+        firebase
+            .firestore()
+            .collection("user-data")
+            .doc(this.state.uid)
+            .update({
+                initial_profile_setup_complete: true
+            })
+            .then(() => {
+                firebase
+                    .firestore()
+                    .collection("user-data")
+                    .doc(this.state.uid)
+                    .collection("experiences")
+                    .doc("Experiences List")
+                    .set({
+                        experiencesList: this.state.experiencesList
+                    })
+                    .then(() => {
+                        if (this.state.errorMessage === "") {
+                            window.location.href = "/home";
+                        }
+                    })
+                    .catch((error) => {
+                        this.setState({errorMessage: "Oops! It looks like something went wrong. Please try again."});
+                    });
+            })
+            .catch((error) => {
+                this.setState({errorMessage: "Oops! It looks like something went wrong. Please try again."});
+            });
     }
 
     render() {
@@ -85,13 +170,16 @@ class CreateProfileScreen2 extends Component {
                          }
                      }}
                 >
-                    <div>
+                    <div className="collapsed-wrapper">
                         <div className="message">
                             Tell Us a Bit About What You've Done
                         </div>
                         {this.state.experiences}
-                        <div>
+                        <div className="button-wrapper">
                             <CustomButton value={"Add Experience"} onClick={this.addExperienceButton}/>
+                        </div>
+                        <div className="next-button-wrapper">
+                            <CustomButton value={"Next"} onClick={this.nextButton}/>
                         </div>
                     </div>
                 </div>

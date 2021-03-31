@@ -5,6 +5,23 @@
     min-width: 100vw;
 }
 
+.collapsed-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.button-wrapper {
+    margin: 15px;
+}
+
+.next-button-wrapper {
+    position: absolute;
+    bottom: 5%;
+    right: 5%
+}
+
 .message {
     margin-top: 50px;
     font-size: 34px;

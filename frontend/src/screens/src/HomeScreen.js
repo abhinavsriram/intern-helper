@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import '../styles/HomeScreen.css';
 import firebase from "../../firebase";
+import BigCustomButton from "../../components/src/BigCustomButton";
 
 class HomeScreen extends Component {
 
@@ -11,25 +12,36 @@ class HomeScreen extends Component {
         }
     }
 
-    componentDidMount() {
+    getUserID = () => {
         let authFlag = true;
-        firebase.auth().onAuthStateChanged((user) => {
+        firebase
+            .auth()
+            .onAuthStateChanged((user) => {
             if (authFlag) {
                 authFlag = false;
                 if (user) {
                     this.setState({uid: user.uid})
                 } else {
-                    //
+                    // user not logged in
+                    // access denied
                 }
             }
         });
     }
 
+    componentDidMount() {
+        this.getUserID();
+    }
+
     render() {
         return (
             <div className="main-div">
-                <h1>Home Screen</h1>
-                <h1>uid: {this.state.uid}</h1>
+                <div className="header">
+                    WELCOME
+                </div>
+                <BigCustomButton value={"View Your Profile"}/>
+                <br /> <br /> <br /> <br />
+                <BigCustomButton value={"Search For Internships"}/>
             </div>
         );
     }
