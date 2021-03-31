@@ -3,6 +3,7 @@ import '../styles/HomeScreen.css';
 import firebase from "../../firebase";
 import BigCustomButton from "../../components/src/BigCustomButton";
 import image from "../../media/accessdenied.jpeg"
+import CustomButton from "../../components/src/CustomButton";
 
 class HomeScreen extends Component {
 
@@ -35,6 +36,14 @@ class HomeScreen extends Component {
         this.getUserID();
     }
 
+    logOutUser = () => {
+        firebase.auth().signOut().then(() => {
+            window.location.href = "/landing"
+        }).catch((error) => {
+            // An error happened.
+        });
+    }
+
     render() {
         return (
             this.state.access
@@ -42,6 +51,9 @@ class HomeScreen extends Component {
                 <div className="main-div">
                     <div className="header">
                         WELCOME
+                    </div>
+                    <div className="log-out">
+                        <CustomButton value={"Log Out"} onClick={this.logOutUser}/>
                     </div>
                     <BigCustomButton value={"View Your Profile"}/>
                     <br/> <br/> <br/> <br/>
