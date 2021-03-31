@@ -5,6 +5,8 @@ import CollapsedExperience from "../../components/src/CollapsedExperience";
 import CustomButton from "../../components/src/CustomButton";
 import AddExperience from "../../components/src/AddExperience";
 import firebase from "../../firebase";
+import image from "../../media/accessdenied.jpeg";
+import BigCustomButton from "../../components/src/BigCustomButton";
 
 class CreateProfileScreen2 extends Component {
 
@@ -20,7 +22,8 @@ class CreateProfileScreen2 extends Component {
             endDate: "",
             description: "",
             errorMessage: "",
-            uid: ""
+            uid: "",
+            access: false
         }
     }
 
@@ -32,11 +35,26 @@ class CreateProfileScreen2 extends Component {
                 if (authFlag) {
                     authFlag = false;
                     if (user) {
-                        console.log("user id received")
-                        this.setState({uid: user.uid})
+                        this.setState({uid: user.uid});
+                        firebase
+                            .firestore()
+                            .collection("user-data")
+                            .doc(this.state.uid)
+                            .get()
+                            .then((doc) => {
+                                if (doc.exists) {
+                                    if (!doc.data().initial_profile_setup_complete) {
+                                        this.setState({access: true});
+                                    } else {
+                                        this.setState({access: false});
+                                    }
+                                }
+                            })
+                            .catch((error) => {
+                                console.log(error.message);
+                            });
                     } else {
-                        // user not logged in
-                        // access denied
+                        this.setState({access: false});
                     }
                 }
             });
@@ -159,40 +177,51 @@ class CreateProfileScreen2 extends Component {
 
     render() {
         return (
-            <div>
-                <div className="main-div"
-                     style={this.state.modalVisible
-                         ? {filter: "blur(3px)", backgroundColor: "#ebebeb"}
-                         : {backgroundColor: "white"}}
-                     onClick={() => {
-                         if (this.state.modalVisible) {
-                             this.setState({modalVisible: false})
-                         }
-                     }}
-                >
-                    <div className="collapsed-wrapper">
-                        <div className="message">
-                            Tell Us a Bit About What You've Done
-                        </div>
-                        {this.state.experiences}
-                        <div className="button-wrapper">
-                            <CustomButton value={"Add Experience"} onClick={this.addExperienceButton}/>
-                        </div>
-                        <div className="next-button-wrapper">
-                            <CustomButton value={"Next"} onClick={this.nextButton}/>
+            this.state.access
+                ?
+                <div>
+                    <div className="main-div"
+                         style={this.state.modalVisible
+                             ? {filter: "blur(3px)", backgroundColor: "#ebebeb"}
+                             : {backgroundColor: "white"}}
+                         onClick={() => {
+                             if (this.state.modalVisible) {
+                                 this.setState({modalVisible: false})
+                             }
+                         }}
+                    >
+                        <div className="collapsed-wrapper">
+                            <div className="message">
+                                Tell Us a Bit About What You've Done
+                            </div>
+                            {this.state.experiences}
+                            <div className="button-wrapper">
+                                <CustomButton value={"Add Experience"} onClick={this.addExperienceButton}/>
+                            </div>
+                            <div className="next-button-wrapper">
+                                <CustomButton value={"Next"} onClick={this.nextButton}/>
+                            </div>
                         </div>
                     </div>
+                    <div style={{position: "absolute", top: "5%", left: "30%", zIndex: "10"}}>
+                        <AddExperience hidden={this.state.modalVisible} done={this.doneExperienceButton}
+                                       title={this.state.title} changeTitle={this.changeTitle}
+                                       company={this.state.company} changeCompany={this.changeCompany}
+                                       startDate={this.state.startDate} changeStartDate={this.changeStartDate}
+                                       endDate={this.state.endDate} changeEndDate={this.changeEndDate}
+                                       description={this.state.description} changeDescription={this.changeDescription}
+                                       errorMessage={this.state.errorMessage}
+                                       changeErrorMessage={this.changeErrorMessage}/>
+                    </div>
                 </div>
-                <div style={{position: "absolute", top: "5%", left: "30%", zIndex: "10"}}>
-                    <AddExperience hidden={this.state.modalVisible} done={this.doneExperienceButton}
-                                   title={this.state.title} changeTitle={this.changeTitle}
-                                   company={this.state.company} changeCompany={this.changeCompany}
-                                   startDate={this.state.startDate} changeStartDate={this.changeStartDate}
-                                   endDate={this.state.endDate} changeEndDate={this.changeEndDate}
-                                   description={this.state.description} changeDescription={this.changeDescription}
-                                   errorMessage={this.state.errorMessage} changeErrorMessage={this.changeErrorMessage}/>
+                :
+                <div className={"denied-wrapper"}>
+                    <img src={image} alt={"access denied"} style={{height: "330px"}}/>
+                    <br/> <br/> <br/> <br/>
+                    <BigCustomButton value={"Click Here To Log In"} onClick={() => {
+                        window.location.href = "/landing"
+                    }}/>
                 </div>
-            </div>
         );
     }
 

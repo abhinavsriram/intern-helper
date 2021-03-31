@@ -126,7 +126,8 @@ class SignUpScreen extends Component {
                     .collection("user-data")
                     .doc(this.state.uid)
                     .set({
-                        email: this.state.email
+                        email: this.state.email,
+                        initial_profile_setup_complete: false,
                     })
                     .then(() => {
                         if (this.state.errorMessage === "") {

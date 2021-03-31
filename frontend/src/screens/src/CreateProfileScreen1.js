@@ -3,6 +3,8 @@ import '../styles/CreateProfileScreen1.css';
 import TextBox from "../../components/src/TextBox";
 import CustomButton from "../../components/src/CustomButton";
 import firebase from "../../firebase";
+import image from "../../media/accessdenied.jpeg";
+import BigCustomButton from "../../components/src/BigCustomButton";
 
 class CreateProfileScreen1 extends Component {
 
@@ -15,7 +17,8 @@ class CreateProfileScreen1 extends Component {
             university: "",
             errorMessage: "",
             errorMessageBoolean: false,
-            uid: ""
+            uid: "",
+            access: false
         }
     }
 
@@ -27,10 +30,26 @@ class CreateProfileScreen1 extends Component {
                 if (authFlag) {
                     authFlag = false;
                     if (user) {
-                        this.setState({uid: user.uid})
+                        this.setState({uid: user.uid});
+                        firebase
+                            .firestore()
+                            .collection("user-data")
+                            .doc(this.state.uid)
+                            .get()
+                            .then((doc) => {
+                                if (doc.exists) {
+                                    if (!doc.data().initial_profile_setup_complete) {
+                                        this.setState({access: true});
+                                    } else {
+                                        this.setState({access: false});
+                                    }
+                                }
+                            })
+                            .catch((error) => {
+                                console.log(error.message);
+                            });
                     } else {
-                        // user not logged in
-                        // access denied
+                        this.setState({access: false});
                     }
                 }
             });
@@ -65,7 +84,8 @@ class CreateProfileScreen1 extends Component {
                 first_name: this.state.firstName,
                 last_name: this.state.lastName,
                 major: this.state.major,
-                university: this.state.university
+                university: this.state.university,
+                initial_profile_setup_complete: false,
             })
             .then(() => {
                 if (this.state.errorMessage === "") {
@@ -90,24 +110,36 @@ class CreateProfileScreen1 extends Component {
 
     render() {
         return (
-            <div className="main-div">
-                <div className="message">
-                    Create Your Profile
+            this.state.access
+                ?
+                <div className="main-div">
+                    <div className="message">
+                        Create Your Profile
+                    </div>
+                    <TextBox label={"First Name"} type={"text"} value={this.state.firstName}
+                             change={this.changeFirstName}/>
+                    <TextBox label={"Last Name"} type={"text"} value={this.state.lastName}
+                             change={this.changeLastName}/>
+                    <TextBox label={"Major"} type={"text"} value={this.state.major} change={this.changeMajor}/>
+                    <TextBox label={"University"} type={"text"} value={this.state.university}
+                             change={this.changeUniversity}/>
+                    <div style={this.state.errorMessageBoolean ? {color: "red"} : {color: "green"}}
+                         className="error-messages">
+                        {this.state.errorMessage}
+                    </div>
+                    <br/>
+                    <div className="next-button">
+                        <CustomButton value={"Next"} onClick={this.next}/>
+                    </div>
                 </div>
-                <TextBox label={"First Name"} type={"text"} value={this.state.firstName} change={this.changeFirstName}/>
-                <TextBox label={"Last Name"} type={"text"} value={this.state.lastName} change={this.changeLastName}/>
-                <TextBox label={"Major"} type={"text"} value={this.state.major} change={this.changeMajor}/>
-                <TextBox label={"University"} type={"text"} value={this.state.university}
-                         change={this.changeUniversity}/>
-                <div style={this.state.errorMessageBoolean ? {color: "red"} : {color: "green"}}
-                     className="error-messages">
-                    {this.state.errorMessage}
+                :
+                <div className={"denied-wrapper"}>
+                    <img src={image} alt={"access denied"} style={{height: "330px"}}/>
+                    <br/> <br/> <br/> <br/>
+                    <BigCustomButton value={"Click Here To Log In"} onClick={() => {
+                        window.location.href = "/landing"
+                    }}/>
                 </div>
-                <br/>
-                <div className="next-button">
-                    <CustomButton value={"Next"} onClick={this.next}/>
-                </div>
-            </div>
         );
     }
 

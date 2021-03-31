@@ -20,9 +20,8 @@ class LoadingScreen extends Component {
                 if (authFlag) {
                     authFlag = false;
                     if (user) {
-                        // window.location.href = "/home";
-                        // set redirect to false
-                        this.id = setTimeout(() => this.setState({redirect: true}), 1000);
+                        window.location.href = "/home";
+                        this.id = setTimeout(() => this.setState({redirect: false}), 1000);
                     } else {
                         this.id = setTimeout(() => this.setState({redirect: true}), 1000);
                     }
