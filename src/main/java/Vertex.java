@@ -4,6 +4,8 @@ public interface Vertex<E extends Edge> {
 
   void addOutgoingEdge(E edge);
 
+
+
   void setOutgoingEdges(Set<E> edgeSet);
 
   Set<E> getOutgoingEdges();

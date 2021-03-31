@@ -6,7 +6,21 @@ public class GraphVertex implements Vertex<GraphEdge> {
   private Set<GraphEdge> outgoingEdges = new HashSet<>();
   private Set<GraphEdge> incomingEdges = new HashSet<>();
 
-  public GraphVertex() {}
+  private final String id;
+
+  public GraphVertex(String vertexID) {
+    this.id = vertexID;
+  }
+
+  public GraphVertex(String vertexID, Set<GraphEdge> outgoingEdges, Set<GraphEdge> incomingEdges) {
+    this.id = vertexID;
+    this.setOutgoingEdges(outgoingEdges);
+    this.setIncomingEdges(incomingEdges);
+  }
+
+  public String getID() {
+    return this.id;
+  }
 
   @Override
   public void addOutgoingEdge(GraphEdge edge) {

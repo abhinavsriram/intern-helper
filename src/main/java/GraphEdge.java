@@ -4,7 +4,25 @@ public class GraphEdge implements Edge<GraphVertex> {
   private GraphVertex end;
   private double weight;
 
-  public GraphEdge() {}
+  private final String id;
+
+  public GraphEdge(String edgeID) {
+    this.id = edgeID;
+    this.start = null;
+    this.end = null;
+    this.weight = 0.0;
+  }
+
+  public GraphEdge(String edgeID, GraphVertex startVertex, GraphVertex endVertex, double edgeWeight) {
+    this.id = edgeID;
+    this.start = startVertex;
+    this.end = endVertex;
+    this.weight = edgeWeight;
+  }
+
+  public String getID() {
+    return this.id;
+  }
 
   @Override
   public void setStartVertex(GraphVertex startVertex) {
