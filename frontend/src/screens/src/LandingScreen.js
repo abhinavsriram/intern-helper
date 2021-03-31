@@ -13,9 +13,7 @@ class LandingScreen extends Component {
             email: "",
             password: "",
             errorMessage: "",
-            uid: props.uid,
         }
-        this.setUID = props.setUID.bind(this);
     }
 
     changeEmail = (newEmail) => {
@@ -32,11 +30,7 @@ class LandingScreen extends Component {
         if (email !== "" && password !== "") {
             firebase.auth().signInWithEmailAndPassword(email, password)
                 .then((userCredential) => {
-                    const user = userCredential.user;
-                    console.log("user id is: " + user.uid);
-                    console.log(this.setUID);
-                    this.setUID(user.uid, () => {window.location.href = "/home"});
-                    console.log("state var (from props) user id is: " + this.state.uid);
+                    // window.location.href = "/home";
                 })
                 .catch((error) => {
                     this.setState({errorMessage: error.message});
@@ -60,7 +54,8 @@ class LandingScreen extends Component {
                     Please Log In or Sign Up Below
                 </div>
                 <TextBox label={"Email"} type={"text"} value={this.state.email} change={this.changeEmail}/>
-                <TextBox label={"Password"} type={"password"} value={this.state.password} change={this.changePassword}/>
+                <TextBox label={"Password"} type={"password"} value={this.state.password}
+                         change={this.changePassword}/>
                 <div style={{color: "red"}} className="error-messages">
                     {this.state.errorMessage}
                 </div>

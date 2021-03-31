@@ -53,7 +53,8 @@ class CreateProfileScreen1 extends Component {
                 <TextBox label={"First Name"} type={"text"} value={this.state.firstName} change={this.changeFirstName}/>
                 <TextBox label={"Last Name"} type={"text"} value={this.state.lastName} change={this.changeLastName}/>
                 <TextBox label={"Major"} type={"text"} value={this.state.major} change={this.changeMajor}/>
-                <TextBox label={"University"} type={"text"} value={this.state.university} change={this.changeUniversity}/>
+                <TextBox label={"University"} type={"text"} value={this.state.university}
+                         change={this.changeUniversity}/>
                 <div style={this.state.errorMessageBoolean ? {color: "red"} : {color: "green"}}
                      className="error-messages">
                     {this.state.errorMessage}

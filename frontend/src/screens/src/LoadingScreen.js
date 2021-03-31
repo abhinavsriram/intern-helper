@@ -12,20 +12,26 @@ class LoadingScreen extends Component {
         }
     }
 
-    componentDidMount() {
+    checkIfUserLoggedIn = () => {
         let authFlag = true;
-        firebase.auth().onAuthStateChanged((user) => {
-            if (authFlag) {
-                authFlag = false;
-                if (user) {
-                    // window.location.href = "/home";
-                    // set redirect to false
-                    this.id = setTimeout(() => this.setState({redirect: true}), 3000);
-                } else {
-                    this.id = setTimeout(() => this.setState({redirect: true}), 3000);
+        firebase
+            .auth()
+            .onAuthStateChanged((user) => {
+                if (authFlag) {
+                    authFlag = false;
+                    if (user) {
+                        // window.location.href = "/home";
+                        // set redirect to false
+                        this.id = setTimeout(() => this.setState({redirect: true}), 1000);
+                    } else {
+                        this.id = setTimeout(() => this.setState({redirect: true}), 1000);
+                    }
                 }
-            }
-        });
+            });
+    }
+
+    componentDidMount() {
+        this.checkIfUserLoggedIn();
     }
 
     componentWillUnmount() {
