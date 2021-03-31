@@ -92,15 +92,13 @@ class CreateProfileScreen2 extends Component {
         this.setState({modalVisible: true});
     }
 
-    writeToDatabase = () => {
-        let docID = this.state.title + this.state.company + this.state.startDate + this.state.endDate;
-        docID = docID.replace(/\s/g, '');
+    writeToDatabase = (id) => {
         firebase
             .firestore()
             .collection("user-data")
             .doc(this.state.uid)
             .collection("experiences")
-            .doc(docID)
+            .doc(id)
             .set({
                 title: this.state.title,
                 company: this.state.company,
@@ -132,12 +130,12 @@ class CreateProfileScreen2 extends Component {
                                          description={this.state.description}
                                          key={Math.random()}/>]
             }));
-            let docID = this.state.title + this.state.company + this.state.startDate + this.state.endDate;
-            docID = docID.replace(/\s/g, '');
+            let crypto = require("crypto");
+            let id = crypto.randomBytes(28).toString('hex');
             this.setState(prevState => ({
-                experiencesList: [...prevState.experiencesList, docID]
+                experiencesList: [...prevState.experiencesList, id]
             }));
-            this.writeToDatabase();
+            this.writeToDatabase(id);
         } else {
             this.setState({errorMessage: "Oops! Please make sure all fields are filled."})
         }
