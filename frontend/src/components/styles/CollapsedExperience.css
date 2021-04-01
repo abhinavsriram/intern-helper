@@ -2,7 +2,7 @@
 
 .exp-wrapper {
     min-height: 300px;
-    width: 1500px;
+    width: 1200px;
     background-color: #ccedff;
     padding: 20px;
     margin-bottom: 20px;
@@ -23,4 +23,16 @@
 .description {
     font-size: 20px;
     font-family: Montserrat, sans-serif;
+}
+
+.delete-button {
+    position: absolute;
+    right: 1%;
+    top: 5%;
+}
+
+.row-wrapper {
+    position: relative;
+    display: flex;
+    flex-direction: row;
 }

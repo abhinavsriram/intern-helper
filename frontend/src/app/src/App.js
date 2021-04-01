@@ -8,6 +8,7 @@ import SignUpScreen from "../../screens/src/SignUpScreen";
 import HomeScreen from "../../screens/src/HomeScreen";
 import CreateProfileScreen1 from "../../screens/src/CreateProfileScreen1";
 import CreateProfileScreen2 from "../../screens/src/CreateProfileScreen2";
+import ViewProfileScreen from "../../screens/src/ViewProfileScreen";
 
 class App extends Component {
 
@@ -22,6 +23,7 @@ class App extends Component {
                         <Route path="/home" component={() => <HomeScreen/>} exact/>
                         <Route path="/profile1" component={() => <CreateProfileScreen1/>} exact/>
                         <Route path="/profile2" component={() => <CreateProfileScreen2/>} exact/>
+                        <Route path="/account" component={() => <ViewProfileScreen/>} exact/>
                     </Switch>
                 </div>
             </BrowserRouter>

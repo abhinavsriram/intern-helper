@@ -1,0 +1,73 @@
+.main-div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 100vw;
+}
+
+.custom-header {
+    position: absolute;
+    left: 18%;
+    top: 8%;
+    font-size: 86px;
+    font-family: Montserrat, sans-serif;
+    color: #9cdcff;
+}
+
+.denied-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.box-wrapper {
+    --gap: 140px;
+    display: inline-flex;
+    flex-wrap: wrap;
+    margin: calc(-1 * var(--gap)) 0 0 calc(-1 * var(--gap));
+    width: calc(100% + var(--gap));
+}
+
+.box-wrapper > * {
+    margin: var(--gap) 0 0 var(--gap);
+}
+
+.save-changes {
+    position: absolute;
+    top: 3%;
+    right: 2%
+}
+
+.back-button-p {
+    position: absolute;
+    top: 3%;
+    left: 2%;
+}
+
+.collapsed-wrapper {
+    margin-top: 250px;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 50px;
+}
+
+.button-wrapper {
+    margin: 15px;
+}
+
+.next-button-wrapper {
+    position: absolute;
+    bottom: 5%;
+    right: 5%
+}
+
+.message-p {
+    font-size: 34px;
+    margin-bottom: 30px;
+    font-family: Montserrat, sans-serif;
+}
+
+textarea {
+    padding: 10px;
+}

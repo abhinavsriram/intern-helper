@@ -1,6 +1,6 @@
-import '../styles/TextBox.css';
+import '../styles/MediumTextBox.css';
 
-function TextBox(props) {
+function MediumTextBox(props) {
 
     return (
         <div>
@@ -8,7 +8,7 @@ function TextBox(props) {
                 <div className="custom-label">
                     {props.label}
                 </div>
-                <input className="input" type={props.type} value={props.value}
+                <textarea className="inputMedium" type={props.type} value={props.value}
                           onChange={(e) => props.change(e.target.value)} placeholder={props.placeholder}/>
             </label>
         </div>
@@ -16,4 +16,4 @@ function TextBox(props) {
 
 }
 
-export default TextBox;
+export default MediumTextBox;
