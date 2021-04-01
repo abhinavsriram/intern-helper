@@ -40,8 +40,12 @@ class HomeScreen extends Component {
         firebase.auth().signOut().then(() => {
             window.location.href = "/landing"
         }).catch((error) => {
-            // An error happened.
+            // error happened
         });
+    }
+
+    viewProfile = () => {
+        window.location.href = "/account";
     }
 
     render() {
@@ -55,15 +59,17 @@ class HomeScreen extends Component {
                     <div className="log-out">
                         <CustomButton value={"Log Out"} onClick={this.logOutUser}/>
                     </div>
-                    <BigCustomButton value={"View Your Profile"}/>
+                    <BigCustomButton value={"View Your Profile"} onClick={this.viewProfile}/>
                     <br/> <br/> <br/> <br/>
                     <BigCustomButton value={"Search For Internships"}/>
                 </div>
                 :
                 <div className={"denied-wrapper"}>
                     <img src={image} alt={"access denied"} style={{height: "330px"}}/>
-                    <br /> <br /> <br /> <br />
-                    <BigCustomButton value={"Click Here To Log In"} onClick={() => {window.location.href = "/landing"}}/>
+                    <br/> <br/> <br/> <br/>
+                    <BigCustomButton value={"Click Here To Log In"} onClick={() => {
+                        window.location.href = "/landing"
+                    }}/>
                 </div>
         );
     }

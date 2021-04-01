@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat");
+
 .main-div {
     display: flex;
     justify-content: center;
@@ -5,26 +7,38 @@
     min-width: 100vw;
 }
 
-.collapsed-wrapper {
+.collapsed-wrapper-cp {
+    margin-top: 50px;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
 }
 
-.button-wrapper {
-    margin: 15px;
+.button-wrapper-cp {
+    left: 20%;
+    margin-top: 15px;
+    margin-bottom: 50px;
 }
 
-.next-button-wrapper {
-    position: absolute;
-    bottom: 5%;
-    right: 5%
+.next-button-wrapper-cp {
+    margin-top: 15px;
+    margin-bottom: 50px;
+    margin-left: 88%;
 }
 
-.message {
+.buttons {
+    display: flex;
+    flex-direction: row;
+}
+
+.message-cp {
     margin-top: 50px;
     font-size: 34px;
     margin-bottom: 50px;
     font-family: Montserrat, sans-serif;
+}
+
+.subheading-cp {
+    font-size: 24px;
+    font-family: Montserrat, sans-serif;
+    margin-bottom: 13px;
 }

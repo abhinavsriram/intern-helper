@@ -14,11 +14,12 @@ class CreateProfileScreen1 extends Component {
             firstName: "",
             lastName: "",
             major: "",
+            degree: "",
             university: "",
             errorMessage: "",
             errorMessageBoolean: false,
             uid: "",
-            access: false
+            access: true
         }
     }
 
@@ -71,6 +72,10 @@ class CreateProfileScreen1 extends Component {
         this.setState({major: newMajor});
     }
 
+    changeDegree = (newDegree) => {
+        this.setState({degree: newDegree});
+    }
+
     changeUniversity = (newUniversity) => {
         this.setState({university: newUniversity});
     }
@@ -85,6 +90,7 @@ class CreateProfileScreen1 extends Component {
                 last_name: this.state.lastName,
                 major: this.state.major,
                 university: this.state.university,
+                degree: this.state.degree,
                 initial_profile_setup_complete: false,
             })
             .then(() => {
@@ -98,7 +104,7 @@ class CreateProfileScreen1 extends Component {
     }
 
     next = () => {
-        if (this.state.firstName !== "" && this.state.lastName !== "" && this.state.major !== "" && this.state.university !== "") {
+        if (this.state.firstName !== "" && this.state.lastName !== "" && this.state.major !== "" && this.state.university !== "" && this.state.degree !== "") {
             this.setState({errorMessage: ""});
             this.setState({errorMessageBoolean: false});
             this.writeToDatabase();
@@ -117,12 +123,15 @@ class CreateProfileScreen1 extends Component {
                         Create Your Profile
                     </div>
                     <TextBox label={"First Name"} type={"text"} value={this.state.firstName}
-                             change={this.changeFirstName}/>
+                             change={this.changeFirstName} placeholder={"Josiah"}/>
                     <TextBox label={"Last Name"} type={"text"} value={this.state.lastName}
-                             change={this.changeLastName}/>
-                    <TextBox label={"Major"} type={"text"} value={this.state.major} change={this.changeMajor}/>
+                             change={this.changeLastName} placeholder={"Carberry"}/>
+                    <TextBox label={"Major"} type={"text"} value={this.state.major}
+                             change={this.changeMajor} placeholder={"Psychoceramics"}/>
+                    <TextBox label={"Degree"} type={"text"} value={this.state.degree}
+                             change={this.changeDegree} placeholder={"Bachelor of Arts (A.B.)"}/>
                     <TextBox label={"University"} type={"text"} value={this.state.university}
-                             change={this.changeUniversity}/>
+                             change={this.changeUniversity} placeholder={"Brown University"}/>
                     <div style={this.state.errorMessageBoolean ? {color: "red"} : {color: "green"}}
                          className="error-messages">
                         {this.state.errorMessage}

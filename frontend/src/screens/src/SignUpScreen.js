@@ -151,7 +151,9 @@ class SignUpScreen extends Component {
             .createUserWithEmailAndPassword(email, password)
             .then((userCredential) => {
                 const user = userCredential.user;
-                this.setState({uid: user.uid}, () => {this.writeToDatabase()});
+                this.setState({uid: user.uid}, () => {
+                    this.writeToDatabase()
+                });
             })
             .catch((error) => {
                 this.setState({errorMessage: "Oops! It looks like something went wrong. Please try again."});
