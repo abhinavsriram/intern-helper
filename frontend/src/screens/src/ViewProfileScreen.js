@@ -298,7 +298,7 @@ class ViewProfileScreen extends Component {
         }
         const addExperienceModal = {
             position: "absolute",
-            top: "5%",
+            top: "2%",
             left: "30%",
             zIndex: "10"
         }
@@ -309,10 +309,10 @@ class ViewProfileScreen extends Component {
                 <div>
                     <div className="main-div" style={this.state.modalVisible ? blurDiv : normalDiv}
                          onClick={this.triggerMainDivVisibility}>
-                        <div className="custom-header">
-                            Your Profile
-                        </div>
                         <div className="collapsed-wrapper">
+                            <div className="custom-header">
+                                Your Profile
+                            </div>
                             <div className="back-button-p">
                                 <CustomButton value={"Go Back"} onClick={this.goBackButton}/>
                             </div>

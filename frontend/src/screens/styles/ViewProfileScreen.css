@@ -6,9 +6,7 @@
 }
 
 .custom-header {
-    position: absolute;
-    left: 18%;
-    top: 8%;
+    margin-bottom: 30px;
     font-size: 86px;
     font-family: Montserrat, sans-serif;
     color: #9cdcff;
@@ -46,7 +44,7 @@
 }
 
 .collapsed-wrapper {
-    margin-top: 250px;
+    margin-top: 110px;
     display: flex;
     flex-direction: column;
     margin-bottom: 50px;
