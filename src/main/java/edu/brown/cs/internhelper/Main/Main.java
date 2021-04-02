@@ -1,5 +1,12 @@
 package edu.brown.cs.internhelper.Main;
 
+import edu.brown.cs.internhelper.Database.SQLDatabase;
+import edu.brown.cs.internhelper.Functionality.Job;
+import edu.brown.cs.internhelper.Functionality.JobEdge;
+import edu.brown.cs.internhelper.Functionality.JobGraphBuilder;
+import edu.brown.cs.internhelper.Graph.DirectedGraph;
+import edu.brown.cs.internhelper.Graph.Edge;
+import edu.brown.cs.internhelper.Graph.Vertex;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
 import spark.ExceptionHandler;
@@ -9,6 +16,7 @@ import spark.Spark;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.sql.ResultSet;
 
 /**
  * The Main class of our project. This is where execution begins.
@@ -42,6 +50,41 @@ public final class Main {
     parser.accepts("port").withRequiredArg().ofType(Integer.class)
             .defaultsTo(DEFAULT_PORT);
     OptionSet options = parser.parse(args);
+
+    JobGraphBuilder graphBuilder = new JobGraphBuilder();
+    graphBuilder.readData();
+    graphBuilder.calculateJobScores();
+    graphBuilder.printJobScores();
+
+
+
+
+    /**
+
+    DirectedGraph graph = new DirectedGraph();
+
+    Job job1 = new Job();
+    job1.setTitle("apple");
+    Job job2 = new Job();
+    job2.setTitle("facebook");
+
+    JobEdge e = new JobEdge(job1, job2, 5);
+
+    graph.addEdge(e);
+     **/
+
+
+
+
+
+
+
+//    DirectedGraph graph = new DirectedGraph();
+//    Vertex startV = new Vertex();
+//    Vertex endV = new Vertex();
+//    Edge e = new Edge(startV, endV, 1);
+//    graph.addEdge(e);
+//    System.out.println(graph.getVertexConnections().values());
 
     if (options.has("gui")) {
       runSparkServer((int) options.valueOf("port"));
