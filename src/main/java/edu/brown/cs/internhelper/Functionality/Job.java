@@ -15,6 +15,7 @@ public class Job extends Vertex<Job, JobEdge> {
   private String preferredQualifications;
   private String link;
   private List<Double> similarityScores = new ArrayList<>();
+  private double compositeSimilarityScore;
 
 
   public Job() {
@@ -25,6 +26,7 @@ public class Job extends Vertex<Job, JobEdge> {
     this.requiredQualifications = "";
     this.preferredQualifications = "";
     this.link = "";
+    this.compositeSimilarityScore = 0.0;
   }
 
   public void setId(int newId) {
@@ -89,6 +91,14 @@ public class Job extends Vertex<Job, JobEdge> {
 
   public List<Double> getSimilarityScores() {
     return this.similarityScores;
+  }
+
+  public void setCompositeSimilarityScore(double newSimilarityScore) {
+    this.compositeSimilarityScore = newSimilarityScore;
+  }
+
+  public double getCompositeSimilarityScore() {
+    return this.compositeSimilarityScore;
   }
 
 
