@@ -11,6 +11,7 @@ class HomeScreen extends Component {
         super(props);
         this.state = {
             uid: "",
+            firstName: "",
             access: true
         }
     }
@@ -25,10 +26,29 @@ class HomeScreen extends Component {
                     if (user) {
                         this.setState({uid: user.uid});
                         this.setState({access: true});
+                        this.getUserName();
                     } else {
                         this.setState({access: false});
                     }
                 }
+            });
+    }
+
+    getUserName = () => {
+        firebase
+            .firestore()
+            .collection("user-data")
+            .doc(this.state.uid)
+            .get()
+            .then((doc) => {
+                if (doc.exists) {
+                    this.setState({firstName: ", " + doc.data().first_name});
+                } else {
+                    console.log("no data acquired");
+                }
+            })
+            .catch((error) => {
+                console.log(error.message);
             });
     }
 
@@ -54,7 +74,7 @@ class HomeScreen extends Component {
                 ?
                 <div className="main-div">
                     <div className="header">
-                        WELCOME
+                        Welcome{this.state.firstName}
                     </div>
                     <div className="log-out">
                         <CustomButton value={"Log Out"} onClick={this.logOutUser}/>
