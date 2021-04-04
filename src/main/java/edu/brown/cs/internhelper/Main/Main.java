@@ -54,7 +54,9 @@ public final class Main {
     JobGraphBuilder graphBuilder = new JobGraphBuilder();
     graphBuilder.readData();
     graphBuilder.calculateJobScores();
-    graphBuilder.printJobScores();
+    graphBuilder.calculateJobCompositeScore();
+    graphBuilder.buildJobGraph();
+    graphBuilder.printMap();
 
 
 
