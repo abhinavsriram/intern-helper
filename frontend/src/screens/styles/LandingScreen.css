@@ -13,14 +13,32 @@
     font-family: Montserrat, sans-serif;
 }
 
+.message-ls {
+    font-size: 34px;
+    margin-bottom: 50px;
+    font-family: Montserrat, sans-serif;
+}
+
 .error-messages {
     font-size: 20px;
     font-family: Montserrat, sans-serif;
 }
 
+.error-messages-ls {
+    font-size: 20px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-family: Montserrat, sans-serif;
+}
+
+.custom-link {
+    text-transform: none;
+    font-family: Montserrat, sans-serif;
+}
+
 .header {
     position: absolute;
-    top: 10%;
+    top: 8%;
     font-size: 82px;
     font-family: Montserrat, sans-serif;
     color: #9cdcff;
