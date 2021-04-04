@@ -1,4 +1,5 @@
 .main-div {
     display: flex;
     min-height: 100vh;
+    min-width: 200vw;
 }

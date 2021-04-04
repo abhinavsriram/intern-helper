@@ -5,6 +5,7 @@ import CustomButton from "../../components/src/CustomButton";
 import firebase from "../../firebase";
 import image from "../../media/accessdenied.jpeg";
 import BigCustomButton from "../../components/src/BigCustomButton";
+import {WaveLoading} from "react-loadingg";
 
 class CreateProfileScreen1 extends Component {
 
@@ -19,7 +20,8 @@ class CreateProfileScreen1 extends Component {
             errorMessage: "",
             errorMessageBoolean: false,
             uid: "",
-            access: true
+            access: true,
+            loading: true
         }
     }
 
@@ -58,6 +60,11 @@ class CreateProfileScreen1 extends Component {
 
     componentDidMount() {
         this.getUserID();
+        this.id = setTimeout(() => this.setState({loading: false}), 1000);
+    }
+
+    componentWillUnmount() {
+        clearTimeout(this.id);
     }
 
     changeFirstName = (newName) => {
@@ -118,29 +125,33 @@ class CreateProfileScreen1 extends Component {
         return (
             this.state.access
                 ?
-                <div className="main-div">
-                    <div className="message">
-                        Create Your Profile
+                this.state.loading
+                    ?
+                    <WaveLoading/>
+                    :
+                    <div className="main-div">
+                        <div className="message">
+                            Create Your Profile
+                        </div>
+                        <TextBox label={"First Name"} type={"text"} value={this.state.firstName}
+                                 change={this.changeFirstName} placeholder={"Josiah"}/>
+                        <TextBox label={"Last Name"} type={"text"} value={this.state.lastName}
+                                 change={this.changeLastName} placeholder={"Carberry"}/>
+                        <TextBox label={"Major"} type={"text"} value={this.state.major}
+                                 change={this.changeMajor} placeholder={"Psychoceramics"}/>
+                        <TextBox label={"Degree"} type={"text"} value={this.state.degree}
+                                 change={this.changeDegree} placeholder={"Bachelor of Arts (A.B.)"}/>
+                        <TextBox label={"University"} type={"text"} value={this.state.university}
+                                 change={this.changeUniversity} placeholder={"Brown University"}/>
+                        <div style={this.state.errorMessageBoolean ? {color: "red"} : {color: "green"}}
+                             className="error-messages">
+                            {this.state.errorMessage}
+                        </div>
+                        <br/>
+                        <div className="next-button">
+                            <CustomButton value={"Next"} onClick={this.next}/>
+                        </div>
                     </div>
-                    <TextBox label={"First Name"} type={"text"} value={this.state.firstName}
-                             change={this.changeFirstName} placeholder={"Josiah"}/>
-                    <TextBox label={"Last Name"} type={"text"} value={this.state.lastName}
-                             change={this.changeLastName} placeholder={"Carberry"}/>
-                    <TextBox label={"Major"} type={"text"} value={this.state.major}
-                             change={this.changeMajor} placeholder={"Psychoceramics"}/>
-                    <TextBox label={"Degree"} type={"text"} value={this.state.degree}
-                             change={this.changeDegree} placeholder={"Bachelor of Arts (A.B.)"}/>
-                    <TextBox label={"University"} type={"text"} value={this.state.university}
-                             change={this.changeUniversity} placeholder={"Brown University"}/>
-                    <div style={this.state.errorMessageBoolean ? {color: "red"} : {color: "green"}}
-                         className="error-messages">
-                        {this.state.errorMessage}
-                    </div>
-                    <br/>
-                    <div className="next-button">
-                        <CustomButton value={"Next"} onClick={this.next}/>
-                    </div>
-                </div>
                 :
                 <div className={"denied-wrapper"}>
                     <img src={image} alt={"access denied"} style={{height: "330px"}}/>

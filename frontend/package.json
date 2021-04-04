@@ -11,10 +11,12 @@
     "base-64": "^1.0.0",
     "firebase": "^8.3.1",
     "react": "^17.0.2",
+    "react-bootstrap": "^1.5.2",
     "react-dom": "^17.0.2",
     "react-loadingg": "^1.7.2",
     "react-router": "^5.2.0",
     "react-scripts": "4.0.3",
+    "styled-content-loader": "^1.2.2",
     "web-vitals": "^1.0.1"
   },
   "scripts": {
