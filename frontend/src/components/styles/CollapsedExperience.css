@@ -31,6 +31,12 @@
     top: 5%;
 }
 
+.edit-button {
+    position: absolute;
+    right: 5%;
+    top: 5%;
+}
+
 .row-wrapper {
     position: relative;
     display: flex;

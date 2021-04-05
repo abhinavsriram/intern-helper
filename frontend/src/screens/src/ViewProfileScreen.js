@@ -8,7 +8,6 @@ import TextBox from "../../components/src/TextBox";
 import AddExperience from "../../components/src/AddExperience";
 import CollapsedExperience from "../../components/src/CollapsedExperience";
 import MediumTextBox from "../../components/src/MediumTextBox";
-import Alert from 'react-bootstrap/Alert'
 import {WaveLoading} from "react-loadingg";
 
 class ViewProfileScreen extends Component {
@@ -37,7 +36,8 @@ class ViewProfileScreen extends Component {
             uid: "",
             access: true,
             changedBoolean: false,
-            loading: true
+            loading: true,
+            tempConcat: ""
         }
     }
 
@@ -54,7 +54,6 @@ class ViewProfileScreen extends Component {
                         this.getUserData();
                         this.getExperiencesList();
                     } else {
-                        console.log("log in failed");
                         this.setState({access: false});
                     }
                 }
@@ -77,13 +76,96 @@ class ViewProfileScreen extends Component {
                     this.setState({skills: doc.data().skills});
                     this.setState({cumulativeGPA: doc.data().cumulative_gpa});
                     this.setState({majorGPA: doc.data().major_gpa});
-                } else {
-                    console.log("no data acquired");
                 }
             })
             .catch((error) => {
-                console.log(error.message);
+                this.setState({errorMessage: "Oops! It looks like something went wrong. Please try again."});
             });
+    }
+
+    deleteExperience = (concat) => {
+        let crypto = require("crypto-js");
+        let IDToDelete = crypto.SHA256(concat).toString();
+        let localList = [...this.state.experiencesList];
+        for (const currID of localList) {
+            let currIndex = localList.indexOf(currID);
+            if (currID === IDToDelete) {
+                localList.splice(currIndex, 1);
+                this.setState({experiencesList: localList}, () => {
+                    firebase
+                        .firestore()
+                        .collection("user-data")
+                        .doc(this.state.uid)
+                        .collection("experiences")
+                        .doc("Experiences List")
+                        .set({
+                            experiencesList: this.state.experiencesList
+                        })
+                        .then(() => {
+                            firebase
+                                .firestore()
+                                .collection("user-data")
+                                .doc(this.state.uid)
+                                .collection("experiences")
+                                .doc(IDToDelete)
+                                .delete()
+                                .then(() => {
+                                    if (this.state.tempConcat !== "") {
+                                        // editing an experience
+                                        this.setState({experiences: []}, () => {
+                                            let crypto = require("crypto-js");
+                                            let concat = this.state.company + this.state.title + this.state.startDate + " - " + this.state.endDate + this.state.description;
+                                            let ID = crypto.SHA256(concat).toString();
+                                            setTimeout(() => this.setState({modalVisible: false}), 1000);
+                                            this.setState(prevState => ({
+                                                experiencesList: [...prevState.experiencesList, ID]
+                                            }), () => {
+                                                this.writeToDatabase(ID);
+                                                firebase
+                                                    .firestore()
+                                                    .collection("user-data")
+                                                    .doc(this.state.uid)
+                                                    .collection("experiences")
+                                                    .doc("Experiences List")
+                                                    .set({
+                                                        experiencesList: this.state.experiencesList
+                                                    })
+                                                    .then(() => {
+                                                        this.setState({modalVisible: false});
+                                                        this.setState({tempConcat: ""});
+                                                        this.getExperiencesList();
+                                                    })
+                                                    .catch((error) => {
+                                                        this.setState({errorMessage: "Oops! It looks like something went wrong. Please try again."});
+                                                    });
+                                            });
+                                        })
+                                    } else {
+                                        this.setState({experiences: []}, () => {
+                                            this.getExperiencesList();
+                                        })
+                                    }
+                                })
+                                .catch((error) => {
+                                    this.setState({errorMessage: "Oops! It looks like something went wrong. Please try again."});
+                                });
+                        })
+                        .catch((error) => {
+                            this.setState({errorMessage: "Oops! It looks like something went wrong. Please try again."});
+                        });
+                });
+            }
+        }
+    }
+
+    editExperience = (values) => {
+        this.setState({title: values[0]});
+        this.setState({company: values[1]});
+        this.setState({startDate: values[2].split(" - ")[0]});
+        this.setState({endDate: values[2].split(" - ")[1]});
+        this.setState({description: values[3]});
+        this.setState({modalVisible: true});
+        this.setState({tempConcat: values[0] + values[1] + values[2] + values[3]});
     }
 
     getExperiencesList = () => {
@@ -113,28 +195,26 @@ class ViewProfileScreen extends Component {
                                                                      title={doc.data().title}
                                                                      dates={doc.data().start_date + " - " + doc.data().end_date}
                                                                      description={doc.data().description}
-                                                                     key={Math.random()}/>]
+                                                                     key={this.state.experiencesList[i]}
+                                                                     delete={this.deleteExperience}
+                                                                     edit={this.editExperience}/>]
                                         }));
-                                    } else {
-                                        console.log("no data acquired");
                                     }
                                 })
                                 .catch((error) => {
-                                    console.log(error.message);
+                                    this.setState({errorMessage: "Oops! It looks like something went wrong. Please try again."});
                                 });
                         }
                     });
-                } else {
-                    console.log("no data acquired");
                 }
             })
             .catch((error) => {
-                console.log(error.message);
+                this.setState({errorMessage: "Oops! It looks like something went wrong. Please try again."});
             });
     };
 
     componentDidMount() {
-        document.body.style.zoom="80%";
+        document.body.style.zoom = "80%";
         this.getUserID();
         this.id = setTimeout(() => this.setState({loading: false}), 1000);
     }
@@ -174,6 +254,7 @@ class ViewProfileScreen extends Component {
     }
 
     changeStartDate = (newStartDate) => {
+        this.setState({changedBoolean: true});
         this.setState({startDate: newStartDate});
     }
 
@@ -246,20 +327,25 @@ class ViewProfileScreen extends Component {
         if (this.state.company !== "" && this.state.title !== "" &&
             this.state.startDate !== "" && this.state.endDate !== "" &&
             this.state.description !== "") {
-            this.setState({modalVisible: false});
-            this.setState(prevState => ({
-                experiences: [...prevState.experiences,
-                    <CollapsedExperience company={this.state.company} title={this.state.title}
-                                         dates={this.state.startDate + " - " + this.state.endDate}
-                                         description={this.state.description}
-                                         key={Math.random()}/>]
-            }));
-            let crypto = require("crypto");
-            let id = crypto.randomBytes(28).toString('hex');
-            this.setState(prevState => ({
-                experiencesList: [...prevState.experiencesList, id]
-            }));
-            this.writeToDatabase(id);
+            if (this.state.tempConcat !== "") {
+                this.deleteExperience(this.state.tempConcat);
+            } else {
+                let crypto = require("crypto-js");
+                let concat = this.state.company + this.state.title + this.state.startDate + " - " + this.state.endDate + this.state.description;
+                let ID = crypto.SHA256(concat).toString();
+                this.setState({modalVisible: false});
+                this.setState(prevState => ({
+                    experiences: [...prevState.experiences,
+                        <CollapsedExperience company={this.state.company} title={this.state.title}
+                                             dates={this.state.startDate + " - " + this.state.endDate}
+                                             description={this.state.description} key={ID}
+                                             delete={this.deleteExperience} edit={this.editExperience}/>]
+                }));
+                this.setState(prevState => ({
+                    experiencesList: [...prevState.experiencesList, ID]
+                }));
+                this.writeToDatabase(ID);
+            }
         } else {
             this.setState({errorMessage: "Oops! Please make sure all fields are filled."})
         }
@@ -305,15 +391,32 @@ class ViewProfileScreen extends Component {
         if (!this.state.changedBoolean) {
             window.location.href = "/home";
         } else {
-            this.setState({changedBoolean: false});
-            alert("Oops! It looks like you have made changes that are unsaved. Press Save Changes to save all changes or press" +
-                " Go Back to return home without saving changes");
+            if (window.confirm("Oops! It looks like you have made changes that are unsaved. Are you sure you wish to leave?")) {
+                window.location.href = "/home";
+                this.setState({changedBoolean: false});
+            }
         }
     }
 
     triggerMainDivVisibility = () => {
         if (this.state.modalVisible) {
-            this.setState({modalVisible: false})
+            if (this.state.changedBoolean) {
+                if (window.confirm("Oops! It looks like you have made changes that are unsaved. Are you sure you wish to leave?")) {
+                    this.setState({modalVisible: false});
+                    this.setState({title: ""});
+                    this.setState({company: ""});
+                    this.setState({startDate: ""});
+                    this.setState({endDate: ""});
+                    this.setState({description: ""});
+                }
+            } else {
+                this.setState({modalVisible: false});
+                this.setState({title: ""});
+                this.setState({company: ""});
+                this.setState({startDate: ""});
+                this.setState({endDate: ""});
+                this.setState({description: ""});
+            }
         }
     }
 
@@ -328,7 +431,7 @@ class ViewProfileScreen extends Component {
         }
         const addExperienceModal = {
             position: "absolute",
-            top: "6%",
+            top: "4%",
             left: "30%",
             zIndex: "10"
         }
@@ -389,7 +492,8 @@ class ViewProfileScreen extends Component {
                                            company={this.state.company} changeCompany={this.changeCompany}
                                            startDate={this.state.startDate} changeStartDate={this.changeStartDate}
                                            endDate={this.state.endDate} changeEndDate={this.changeEndDate}
-                                           description={this.state.description} changeDescription={this.changeDescription}
+                                           description={this.state.description}
+                                           changeDescription={this.changeDescription}
                                            errorMessage={this.state.errorMessage}
                                            changeErrorMessage={this.changeErrorMessage}/>
                         </div>

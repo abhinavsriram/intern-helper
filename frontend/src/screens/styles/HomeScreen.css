@@ -18,3 +18,10 @@
     top: 3%;
     right: 2%
 }
+
+.header-home {
+    font-size: 76px;
+    font-family: Montserrat, sans-serif;
+    color: #9cdcff;
+    margin-bottom: 100px;
+}

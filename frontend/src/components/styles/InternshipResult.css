@@ -1,0 +1,33 @@
+.int-wrapper {
+    height: 200px;
+    width: 1100px;
+    border: 1px solid black;
+    margin-bottom: 20px;
+    padding: 15px;
+    position: relative;
+}
+
+.int-title {
+    font-family: Montserrat, sans-serif;
+    font-size: 40px;
+    width: 1200px;
+}
+
+.int-company {
+    font-family: Montserrat, sans-serif;
+    font-size: 28px;
+    width: 1200px;
+    margin-bottom: 10px;
+}
+
+.int-description {
+    width: 750px;
+    font-family: Montserrat, sans-serif;
+    font-size: 18px;
+}
+
+.apply-button {
+    position: absolute;
+    top: 35%;
+    right: 2%;
+}

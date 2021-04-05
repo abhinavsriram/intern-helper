@@ -44,7 +44,7 @@ class HomeScreen extends Component {
             .get()
             .then((doc) => {
                 if (doc.exists) {
-                    this.setState({firstName: ", " + doc.data().first_name});
+                    this.setState({firstName: ", " + doc.data().first_name + "!"});
                 } else {
                     console.log("no data acquired");
                 }
@@ -75,6 +75,10 @@ class HomeScreen extends Component {
         window.location.href = "/account";
     }
 
+    viewInternshipsForMe = () => {
+        window.location.href = "/internshipsforme";
+    }
+
     render() {
         return (
             this.state.access
@@ -91,6 +95,8 @@ class HomeScreen extends Component {
                             <CustomButton value={"Log Out"} onClick={this.logOutUser}/>
                         </div>
                         <BigCustomButton value={"View Your Profile"} onClick={this.viewProfile}/>
+                        <br/> <br/> <br/> <br/>
+                        <BigCustomButton value={"Internships For Me"} onClick={this.viewInternshipsForMe}/>
                         <br/> <br/> <br/> <br/>
                         <BigCustomButton value={"Search For Internships"}/>
                     </div>

@@ -50,12 +50,17 @@ class LandingScreen extends Component {
                 <div className="header">
                     INTERN HELPER
                 </div>
-                <div className="message">
+                <div className="message-ls">
                     Please Log In or Sign Up Below
                 </div>
                 <TextBox label={"Email"} type={"text"} value={this.state.email} change={this.changeEmail}/>
                 <TextBox label={"Password"} type={"password"} value={this.state.password}
                          change={this.changePassword}/>
+                <div className="error-messages-ls">
+                    <a href="/forgotpassword" style={{color: "#3bb3f5"}} className="custom-link">
+                        Forgot Password?
+                    </a>
+                </div>
                 <div style={{color: "red"}} className="error-messages">
                     {this.state.errorMessage}
                 </div>
