@@ -361,6 +361,10 @@ class ViewProfileScreen extends Component {
                 last_name: this.state.lastName,
                 major: this.state.major,
                 university: this.state.university,
+                cumulative_gpa: this.state.cumulativeGPA,
+                major_gpa: this.state.majorGPA,
+                coursework: this.state.coursework,
+                skills: this.state.skills,
                 initial_profile_setup_complete: true,
             })
             .then(() => {
