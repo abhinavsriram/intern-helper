@@ -19,7 +19,6 @@ function InternshipResult(props) {
             <div className={"apply-button"}>
                 <CustomButton value={"Apply"} onClick={props.apply}/>
             </div>
-
         </div>
     );
 
