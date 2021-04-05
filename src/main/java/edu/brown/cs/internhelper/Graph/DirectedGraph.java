@@ -16,12 +16,14 @@ import java.util.Set;
 public class DirectedGraph<V extends Vertex<V, E>, E extends Edge<V, E>> {
 
   private final Map<V, Set<E>> vertexConnections;
+  private final Map<V, Set<E>> incomingConnections;
 
   /**
    * In the constructor we initialize the HashMap.
    */
   public DirectedGraph() {
     vertexConnections = new HashMap<>();
+    incomingConnections = new HashMap<>();
   }
 
   /**
@@ -31,6 +33,7 @@ public class DirectedGraph<V extends Vertex<V, E>, E extends Edge<V, E>> {
    */
   public void addVertex(V vertexToAdd) {
     vertexConnections.put(vertexToAdd, new HashSet<>());
+    incomingConnections.put(vertexToAdd, new HashSet<>());
   }
 
   /**
@@ -43,6 +46,12 @@ public class DirectedGraph<V extends Vertex<V, E>, E extends Edge<V, E>> {
     Set<E> edgeList = vertexConnections.getOrDefault(sourceVertex, new HashSet<>());
     edgeList.add(edgeToAdd);
     vertexConnections.put(sourceVertex, edgeList);
+
+    V destVertex = edgeToAdd.getDestinationVertex();
+    Set<E> destEdgeList = incomingConnections.getOrDefault(destVertex, new HashSet<>());
+    destEdgeList.add(edgeToAdd);
+    incomingConnections.put(destVertex, destEdgeList);
+
   }
 
   /**
@@ -52,6 +61,28 @@ public class DirectedGraph<V extends Vertex<V, E>, E extends Edge<V, E>> {
    */
   public Map<V, Set<E>> getVertexConnections() {
     return vertexConnections;
+  }
+
+  public Map<V, Set<E>> getIncomingConnections() {
+    return incomingConnections;
+  }
+
+
+  public int numVertexConnections () {
+    return vertexConnections.size();
+  }
+
+  public int numIncomingConnections () {
+    return incomingConnections.size();
+  }
+
+  public V opposite(V opp, E e) {
+    if (e.getDestinationVertex() == opp) {
+      return e.getSourceVertex();
+    }
+    else {
+      return e.getDestinationVertex();
+    }
   }
 
 }

@@ -4,6 +4,7 @@ import edu.brown.cs.internhelper.Database.SQLDatabase;
 import edu.brown.cs.internhelper.Functionality.Job;
 import edu.brown.cs.internhelper.Functionality.JobEdge;
 import edu.brown.cs.internhelper.Functionality.JobGraphBuilder;
+import edu.brown.cs.internhelper.Functionality.PageRank;
 import edu.brown.cs.internhelper.Graph.DirectedGraph;
 import edu.brown.cs.internhelper.Graph.Edge;
 import edu.brown.cs.internhelper.Graph.Vertex;
@@ -56,7 +57,9 @@ public final class Main {
     graphBuilder.calculateJobScores();
     graphBuilder.calculateJobCompositeScore();
     graphBuilder.buildJobGraph();
-    graphBuilder.printMap();
+    //graphBuilder.printMap();
+    //graphBuilder.runPageRank();
+    graphBuilder.userResults();
 
 
 
