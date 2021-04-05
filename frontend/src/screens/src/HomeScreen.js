@@ -44,7 +44,7 @@ class HomeScreen extends Component {
             .get()
             .then((doc) => {
                 if (doc.exists) {
-                    this.setState({firstName: ", " + doc.data().first_name});
+                    this.setState({firstName: ", " + doc.data().first_name + "!"});
                 } else {
                     console.log("no data acquired");
                 }

@@ -83,7 +83,7 @@ class ViewProfileScreen extends Component {
             });
     }
 
-    deleteExperience = async (concat) => {
+    deleteExperience = (concat) => {
         let crypto = require("crypto-js");
         let IDToDelete = crypto.SHA256(concat).toString();
         let localList = [...this.state.experiencesList];
@@ -91,7 +91,7 @@ class ViewProfileScreen extends Component {
             let currIndex = localList.indexOf(currID);
             if (currID === IDToDelete) {
                 localList.splice(currIndex, 1);
-                await this.setState({experiencesList: localList}, () => {
+                this.setState({experiencesList: localList}, () => {
                     firebase
                         .firestore()
                         .collection("user-data")
@@ -102,9 +102,53 @@ class ViewProfileScreen extends Component {
                             experiencesList: this.state.experiencesList
                         })
                         .then(() => {
-                            this.setState({experiences: []}, () => {
-                                this.getExperiencesList();
-                            })
+                            firebase
+                                .firestore()
+                                .collection("user-data")
+                                .doc(this.state.uid)
+                                .collection("experiences")
+                                .doc(IDToDelete)
+                                .delete()
+                                .then(() => {
+                                    if (this.state.tempConcat !== "") {
+                                        // editing an experience
+                                        this.setState({experiences: []}, () => {
+                                            let crypto = require("crypto-js");
+                                            let concat = this.state.company + this.state.title + this.state.startDate + " - " + this.state.endDate + this.state.description;
+                                            let ID = crypto.SHA256(concat).toString();
+                                            setTimeout(() => this.setState({modalVisible: false}), 1000);
+                                            this.setState(prevState => ({
+                                                experiencesList: [...prevState.experiencesList, ID]
+                                            }), () => {
+                                                this.writeToDatabase(ID);
+                                                firebase
+                                                    .firestore()
+                                                    .collection("user-data")
+                                                    .doc(this.state.uid)
+                                                    .collection("experiences")
+                                                    .doc("Experiences List")
+                                                    .set({
+                                                        experiencesList: this.state.experiencesList
+                                                    })
+                                                    .then(() => {
+                                                        this.setState({modalVisible: false});
+                                                        this.setState({tempConcat: ""});
+                                                        this.getExperiencesList();
+                                                    })
+                                                    .catch((error) => {
+                                                        this.setState({errorMessage: "Oops! It looks like something went wrong. Please try again."});
+                                                    });
+                                            });
+                                        })
+                                    } else {
+                                        this.setState({experiences: []}, () => {
+                                            this.getExperiencesList();
+                                        })
+                                    }
+                                })
+                                .catch((error) => {
+                                    this.setState({errorMessage: "Oops! It looks like something went wrong. Please try again."});
+                                });
                         })
                         .catch((error) => {
                             this.setState({errorMessage: "Oops! It looks like something went wrong. Please try again."});
@@ -284,43 +328,12 @@ class ViewProfileScreen extends Component {
             this.state.startDate !== "" && this.state.endDate !== "" &&
             this.state.description !== "") {
             if (this.state.tempConcat !== "") {
-                this.deleteExperience(this.state.tempConcat).then(() => {
-                    let crypto = require("crypto-js");
-                    let concat = this.state.company + this.state.title + this.state.startDate + " - " + this.state.endDate + this.state.description;
-                    let ID = crypto.SHA256(concat).toString();
-                    setTimeout(() => this.setState({modalVisible: false}), 1000);
-                    this.setState(prevState => ({
-                        experiences: [...prevState.experiences,
-                            <CollapsedExperience company={this.state.company} title={this.state.title}
-                                                 dates={this.state.startDate + " - " + this.state.endDate}
-                                                 description={this.state.description} key={ID}
-                                                 delete={this.deleteExperience} edit={this.editExperience}/>]
-                    }));
-                    this.setState(prevState => ({
-                        experiencesList: [...prevState.experiencesList, ID]
-                    }));
-                    this.writeToDatabase(ID);
-                    firebase
-                        .firestore()
-                        .collection("user-data")
-                        .doc(this.state.uid)
-                        .collection("experiences")
-                        .doc("Experiences List")
-                        .set({
-                            experiencesList: this.state.experiencesList
-                        })
-                        .then(() => {
-                        })
-                        .catch((error) => {
-                            this.setState({errorMessage: "Oops! It looks like something went wrong. Please try again."});
-                        });
-                });
-                this.setState({tempConcat: ""});
+                this.deleteExperience(this.state.tempConcat);
             } else {
                 let crypto = require("crypto-js");
                 let concat = this.state.company + this.state.title + this.state.startDate + " - " + this.state.endDate + this.state.description;
                 let ID = crypto.SHA256(concat).toString();
-                setTimeout(() => this.setState({modalVisible: false}), 1000);
+                this.setState({modalVisible: false});
                 this.setState(prevState => ({
                     experiences: [...prevState.experiences,
                         <CollapsedExperience company={this.state.company} title={this.state.title}
