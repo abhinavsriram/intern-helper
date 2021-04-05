@@ -8,6 +8,8 @@ import TextBox from "../../components/src/TextBox";
 import AddExperience from "../../components/src/AddExperience";
 import CollapsedExperience from "../../components/src/CollapsedExperience";
 import MediumTextBox from "../../components/src/MediumTextBox";
+import Alert from 'react-bootstrap/Alert'
+import {WaveLoading} from "react-loadingg";
 
 class ViewProfileScreen extends Component {
 
@@ -34,7 +36,8 @@ class ViewProfileScreen extends Component {
             errorMessageBoolean: false,
             uid: "",
             access: true,
-            changedBoolean: false
+            changedBoolean: false,
+            loading: true
         }
     }
 
@@ -51,6 +54,7 @@ class ViewProfileScreen extends Component {
                         this.getUserData();
                         this.getExperiencesList();
                     } else {
+                        console.log("log in failed");
                         this.setState({access: false});
                     }
                 }
@@ -130,30 +134,42 @@ class ViewProfileScreen extends Component {
     };
 
     componentDidMount() {
+        document.body.style.zoom="80%";
         this.getUserID();
+        this.id = setTimeout(() => this.setState({loading: false}), 1000);
+    }
+
+    componentWillUnmount() {
+        clearTimeout(this.id);
     }
 
     changeFirstName = (newName) => {
+        this.setState({changedBoolean: true});
         this.setState({firstName: newName});
     }
 
     changeLastName = (newName) => {
+        this.setState({changedBoolean: true});
         this.setState({lastName: newName});
     }
 
     changeMajor = (newMajor) => {
+        this.setState({changedBoolean: true});
         this.setState({major: newMajor});
     }
 
     changeUniversity = (newUniversity) => {
+        this.setState({changedBoolean: true});
         this.setState({university: newUniversity});
     }
 
     changeTitle = (newTitle) => {
+        this.setState({changedBoolean: true});
         this.setState({title: newTitle});
     }
 
     changeCompany = (newCompany) => {
+        this.setState({changedBoolean: true});
         this.setState({company: newCompany});
     }
 
@@ -162,10 +178,12 @@ class ViewProfileScreen extends Component {
     }
 
     changeEndDate = (newEndDate) => {
+        this.setState({changedBoolean: true});
         this.setState({endDate: newEndDate});
     }
 
     changeDescription = (newDescription) => {
+        this.setState({changedBoolean: true});
         this.setState({description: newDescription});
     }
 
@@ -174,18 +192,22 @@ class ViewProfileScreen extends Component {
     }
 
     changeCumulativeGPA = (newGPA) => {
+        this.setState({changedBoolean: true});
         this.setState({cumulativeGPA: newGPA});
     }
 
     changeMajorGPA = (newGPA) => {
+        this.setState({changedBoolean: true});
         this.setState({majorGPA: newGPA});
     }
 
     changeCoursework = (newCoursework) => {
+        this.setState({changedBoolean: true});
         this.setState({coursework: newCoursework});
     }
 
     changeSkills = (newSkills) => {
+        this.setState({changedBoolean: true});
         this.setState({skills: newSkills});
     }
 
@@ -220,6 +242,7 @@ class ViewProfileScreen extends Component {
     }
 
     doneExperienceButton = () => {
+        this.setState({changedBoolean: true});
         if (this.state.company !== "" && this.state.title !== "" &&
             this.state.startDate !== "" && this.state.endDate !== "" &&
             this.state.description !== "") {
@@ -279,7 +302,13 @@ class ViewProfileScreen extends Component {
     }
 
     goBackButton = () => {
-        window.location.href = "/home";
+        if (!this.state.changedBoolean) {
+            window.location.href = "/home";
+        } else {
+            this.setState({changedBoolean: false});
+            alert("Oops! It looks like you have made changes that are unsaved. Press Save Changes to save all changes or press" +
+                " Go Back to return home without saving changes");
+        }
     }
 
     triggerMainDivVisibility = () => {
@@ -291,14 +320,15 @@ class ViewProfileScreen extends Component {
     render() {
         const blurDiv = {
             filter: "blur(3px)",
-            backgroundColor: "#ebebeb"
+            backgroundColor: "#ebebeb",
+            minWidth: "127vw"
         }
         const normalDiv = {
             backgroundColor: "white"
         }
         const addExperienceModal = {
             position: "absolute",
-            top: "2%",
+            top: "6%",
             left: "30%",
             zIndex: "10"
         }
@@ -306,60 +336,64 @@ class ViewProfileScreen extends Component {
         return (
             this.state.access
                 ?
-                <div>
-                    <div className="main-div" style={this.state.modalVisible ? blurDiv : normalDiv}
-                         onClick={this.triggerMainDivVisibility}>
-                        <div className="collapsed-wrapper">
-                            <div className="custom-header">
-                                Your Profile
-                            </div>
-                            <div className="back-button-p">
-                                <CustomButton value={"Go Back"} onClick={this.goBackButton}/>
-                            </div>
-                            <div className="save-changes">
-                                <CustomButton value={"Save Changes"} onClick={this.saveChangesButton}/>
-                            </div>
-                            <div className="box-wrapper">
-                                <TextBox label={"First Name"} value={this.state.firstName}
-                                         change={this.changeFirstName}/>
+                this.state.loading
+                    ?
+                    <WaveLoading/>
+                    :
+                    <div>
+                        <div className="main-div" style={this.state.modalVisible ? blurDiv : normalDiv}
+                             onClick={this.triggerMainDivVisibility}>
+                            <div className="collapsed-wrapper">
+                                <div className="custom-header">
+                                    Your Profile
+                                </div>
+                                <div className="back-button-p">
+                                    <CustomButton value={"Go Back"} onClick={this.goBackButton}/>
+                                </div>
+                                <div className="save-changes">
+                                    <CustomButton value={"Save Changes"} onClick={this.saveChangesButton}/>
+                                </div>
+                                <div className="box-wrapper">
+                                    <TextBox label={"First Name"} value={this.state.firstName}
+                                             change={this.changeFirstName}/>
 
-                                <TextBox label={"Last Name"} value={this.state.lastName}
-                                         change={this.changeLastName}/>
-                            </div>
-                            <div className="box-wrapper">
-                                <TextBox label={"Major"} value={this.state.major}
-                                         change={this.changeMajor}/>
-                                <TextBox label={"University"} value={this.state.university}
-                                         change={this.changeUniversity}/>
-                            </div>
-                            <div className="box-wrapper">
-                                <TextBox label={"Cumulative GPA"} value={this.state.cumulativeGPA}
-                                         change={this.changeCumulativeGPA}/>
-                                <TextBox label={"Major GPA"} value={this.state.majorGPA}
-                                         change={this.changeMajorGPA}/>
-                            </div>
-                            <MediumTextBox label={"Relevant Coursework"} value={this.state.coursework}
-                                           change={this.changeCoursework}/>
-                            <MediumTextBox label={"Relevant Skills"} value={this.state.skills}
-                                           change={this.changeSkills}/>
-                            <div className="subheading-cp">Relevant Experiences</div>
-                            {this.state.experiences}
-                            <div className="button-wrapper-cp">
-                                <CustomButton value={"Add Experience"} onClick={this.addExperienceButton}/>
+                                    <TextBox label={"Last Name"} value={this.state.lastName}
+                                             change={this.changeLastName}/>
+                                </div>
+                                <div className="box-wrapper">
+                                    <TextBox label={"Major"} value={this.state.major}
+                                             change={this.changeMajor}/>
+                                    <TextBox label={"University"} value={this.state.university}
+                                             change={this.changeUniversity}/>
+                                </div>
+                                <div className="box-wrapper">
+                                    <TextBox label={"Cumulative GPA"} value={this.state.cumulativeGPA}
+                                             change={this.changeCumulativeGPA}/>
+                                    <TextBox label={"Major GPA"} value={this.state.majorGPA}
+                                             change={this.changeMajorGPA}/>
+                                </div>
+                                <MediumTextBox label={"Relevant Coursework"} value={this.state.coursework}
+                                               change={this.changeCoursework}/>
+                                <MediumTextBox label={"Relevant Skills"} value={this.state.skills}
+                                               change={this.changeSkills}/>
+                                <div className="subheading-cp">Relevant Experiences</div>
+                                {this.state.experiences}
+                                <div className="button-wrapper-cp">
+                                    <CustomButton value={"Add Experience"} onClick={this.addExperienceButton}/>
+                                </div>
                             </div>
                         </div>
+                        <div style={addExperienceModal}>
+                            <AddExperience hidden={this.state.modalVisible} done={this.doneExperienceButton}
+                                           title={this.state.title} changeTitle={this.changeTitle}
+                                           company={this.state.company} changeCompany={this.changeCompany}
+                                           startDate={this.state.startDate} changeStartDate={this.changeStartDate}
+                                           endDate={this.state.endDate} changeEndDate={this.changeEndDate}
+                                           description={this.state.description} changeDescription={this.changeDescription}
+                                           errorMessage={this.state.errorMessage}
+                                           changeErrorMessage={this.changeErrorMessage}/>
+                        </div>
                     </div>
-                    <div style={addExperienceModal}>
-                        <AddExperience hidden={this.state.modalVisible} done={this.doneExperienceButton}
-                                       title={this.state.title} changeTitle={this.changeTitle}
-                                       company={this.state.company} changeCompany={this.changeCompany}
-                                       startDate={this.state.startDate} changeStartDate={this.changeStartDate}
-                                       endDate={this.state.endDate} changeEndDate={this.changeEndDate}
-                                       description={this.state.description} changeDescription={this.changeDescription}
-                                       errorMessage={this.state.errorMessage}
-                                       changeErrorMessage={this.changeErrorMessage}/>
-                    </div>
-                </div>
                 :
                 <div className={"denied-wrapper"}>
                     <img src={image} alt={"access denied"} style={{height: "330px"}}/>

@@ -9,6 +9,7 @@ import image from "../../media/accessdenied.jpeg";
 import BigCustomButton from "../../components/src/BigCustomButton";
 import MediumTextBox from "../../components/src/MediumTextBox";
 import TextBox from "../../components/src/TextBox";
+import {WaveLoading} from "react-loadingg";
 
 class CreateProfileScreen2 extends Component {
 
@@ -26,10 +27,12 @@ class CreateProfileScreen2 extends Component {
             endDate: "",
             description: "",
             errorMessage: "",
+            errorMessageMainDiv: "",
             coursework: "",
             skills: "",
             uid: "",
-            access: true
+            access: true,
+            loading: true
         }
     }
 
@@ -67,42 +70,57 @@ class CreateProfileScreen2 extends Component {
     }
 
     componentDidMount() {
+        document.body.style.zoom="80%";
         this.getUserID();
+        this.id = setTimeout(() => this.setState({loading: false}), 1000);
+    }
+
+    componentWillUnmount() {
+        clearTimeout(this.id);
     }
 
     changeTitle = (newTitle) => {
+        this.setState({errorMessage: ""});
         this.setState({title: newTitle});
     }
 
     changeCompany = (newCompany) => {
+        this.setState({errorMessage: ""});
         this.setState({company: newCompany});
     }
 
     changeStartDate = (newStartDate) => {
+        this.setState({errorMessage: ""});
         this.setState({startDate: newStartDate});
     }
 
     changeEndDate = (newEndDate) => {
+        this.setState({errorMessage: ""});
         this.setState({endDate: newEndDate});
     }
 
     changeDescription = (newDescription) => {
+        this.setState({errorMessage: ""});
         this.setState({description: newDescription});
     }
 
     changeCumulativeGPA = (newGPA) => {
+        this.setState({errorMessageMainDiv: ""});
         this.setState({cumulativeGPA: newGPA});
     }
 
     changeMajorGPA = (newGPA) => {
+        this.setState({errorMessageMainDiv: ""});
         this.setState({majorGPA: newGPA});
     }
 
     changeCoursework = (newCoursework) => {
+        this.setState({errorMessageMainDiv: ""});
         this.setState({coursework: newCoursework});
     }
 
     changeSkills = (newSkills) => {
+        this.setState({errorMessageMainDiv: ""});
         this.setState({skills: newSkills});
     }
 
@@ -136,7 +154,7 @@ class CreateProfileScreen2 extends Component {
                 this.setState({description: ""});
             })
             .catch((error) => {
-                this.setState({errorMessage: "Oops! It looks like something went wrong. Please try again."});
+                this.setState({errorMessageMainDiv: "Oops! It looks like something went wrong. Please try again."});
             });
     }
 
@@ -164,39 +182,43 @@ class CreateProfileScreen2 extends Component {
     }
 
     nextButton = () => {
-        firebase
-            .firestore()
-            .collection("user-data")
-            .doc(this.state.uid)
-            .update({
-                initial_profile_setup_complete: true,
-                cumulative_gpa: this.state.cumulativeGPA,
-                major_gpa: this.state.majorGPA,
-                coursework: this.state.coursework,
-                skills: this.state.skills,
-            })
-            .then(() => {
-                firebase
-                    .firestore()
-                    .collection("user-data")
-                    .doc(this.state.uid)
-                    .collection("experiences")
-                    .doc("Experiences List")
-                    .set({
-                        experiencesList: this.state.experiencesList
-                    })
-                    .then(() => {
-                        if (this.state.errorMessage === "") {
-                            window.location.href = "/home";
-                        }
-                    })
-                    .catch((error) => {
-                        this.setState({errorMessage: "Oops! It looks like something went wrong. Please try again."});
-                    });
-            })
-            .catch((error) => {
-                this.setState({errorMessage: "Oops! It looks like something went wrong. Please try again."});
-            });
+        if (this.state.experiencesList.length >= 1 && this.state.cumulativeGPA !== "" && this.state.majorGPA !== "" && this.state.coursework !== "" && this.state.skills !== "") {
+            firebase
+                .firestore()
+                .collection("user-data")
+                .doc(this.state.uid)
+                .update({
+                    initial_profile_setup_complete: true,
+                    cumulative_gpa: this.state.cumulativeGPA,
+                    major_gpa: this.state.majorGPA,
+                    coursework: this.state.coursework,
+                    skills: this.state.skills,
+                })
+                .then(() => {
+                    firebase
+                        .firestore()
+                        .collection("user-data")
+                        .doc(this.state.uid)
+                        .collection("experiences")
+                        .doc("Experiences List")
+                        .set({
+                            experiencesList: this.state.experiencesList
+                        })
+                        .then(() => {
+                            if (this.state.errorMessageMainDiv === "") {
+                                window.location.href = "/home";
+                            }
+                        })
+                        .catch((error) => {
+                            this.setState({errorMessageMainDiv: "Oops! It looks like something went wrong. Please try again."});
+                        });
+                })
+                .catch((error) => {
+                    this.setState({errorMessageMainDiv: "Oops! It looks like something went wrong. Please try again."});
+                });
+        } else {
+            this.setState({errorMessageMainDiv: "Oops! You must fill all fields and add at least one experience."});
+        }
     }
 
     triggerMainDivVisibility = () => {
@@ -208,16 +230,22 @@ class CreateProfileScreen2 extends Component {
     render() {
         const blurDiv = {
             filter: "blur(3px)",
-            backgroundColor: "#ebebeb"
+            backgroundColor: "#ebebeb",
+            minWidth: "127vw",
+            minHeight: "127vh"
         }
         const normalDiv = {
             backgroundColor: "white"
         }
         const addExperienceModal = {
             position: "absolute",
-            top: "5%",
+            top: "6%",
             left: "30%",
             zIndex: "10"
+        }
+        const errorMessage = {
+            color: "red",
+            marginBottom: "20px"
         }
         const cGPA = "";
         const mGPA = "";
@@ -227,43 +255,52 @@ class CreateProfileScreen2 extends Component {
         return (
             this.state.access
                 ?
-                <div>
-                    <div className="main-div" style={this.state.modalVisible ? blurDiv : normalDiv}
-                         onClick={this.triggerMainDivVisibility}>
-                        <div className="collapsed-wrapper-cp">
-                            <div className="message">
-                                Tell Us a Bit About What You've Done
-                            </div>
-                            <TextBox label={"Cumulative GPA"} value={this.state.cumulativeGPA}
-                                     change={this.changeCumulativeGPA} placeholder={cGPA}/>
-                            <TextBox label={"Major GPA"} value={this.state.majorGPA}
-                                     change={this.changeMajorGPA} placeholder={mGPA}/>
-                            <MediumTextBox label={"Relevant Coursework"} value={this.state.coursework}
-                                           change={this.changeCoursework} placeholder={coursework}/>
-                            <MediumTextBox label={"Relevant Skills"} value={this.state.skills}
-                                           change={this.changeSkills} placeholder={skills}/>
-                            <div className="subheading-cp">Relevant Experiences</div>
-                            {this.state.experiences}
-                            <div className="buttons">
-                                <div className="button-wrapper-cp">
-                                    <CustomButton value={"Add Experience"} onClick={this.addExperienceButton}/>
+                this.state.loading
+                    ?
+                    <WaveLoading/>
+                    :
+                    <div>
+                        <div className="main-div" style={this.state.modalVisible ? blurDiv : normalDiv}
+                             onClick={this.triggerMainDivVisibility}>
+                            <div className="collapsed-wrapper-cp">
+                                <div className="message">
+                                    Tell Us a Bit About What You've Done
                                 </div>
-                                <div className="next-button-wrapper-cp">
-                                    <CustomButton value={"Next"} onClick={this.nextButton}/>
+                                <div style={errorMessage} className="error-messages">
+                                    {this.state.errorMessageMainDiv}
+                                </div>
+                                <TextBox label={"Cumulative GPA"} value={this.state.cumulativeGPA}
+                                         change={this.changeCumulativeGPA} placeholder={cGPA}/>
+                                <TextBox label={"Major GPA"} value={this.state.majorGPA}
+                                         change={this.changeMajorGPA} placeholder={mGPA}/>
+                                <MediumTextBox label={"Relevant Coursework"} value={this.state.coursework}
+                                               change={this.changeCoursework} placeholder={coursework}/>
+                                <MediumTextBox label={"Relevant Skills"} value={this.state.skills}
+                                               change={this.changeSkills} placeholder={skills}/>
+                                <div className="subheading-cp">Relevant Experiences</div>
+                                {this.state.experiences}
+                                <div className="buttons">
+                                    <div className="button-wrapper-cp">
+                                        <CustomButton value={"Add Experience"} onClick={this.addExperienceButton}/>
+                                    </div>
+                                    <div className="next-button-wrapper-cp">
+                                        <CustomButton value={"Next"} onClick={this.nextButton}/>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                        <div style={addExperienceModal}>
+                            <AddExperience hidden={this.state.modalVisible} done={this.doneExperienceButton}
+                                           title={this.state.title} changeTitle={this.changeTitle}
+                                           company={this.state.company} changeCompany={this.changeCompany}
+                                           startDate={this.state.startDate} changeStartDate={this.changeStartDate}
+                                           endDate={this.state.endDate} changeEndDate={this.changeEndDate}
+                                           description={this.state.description}
+                                           changeDescription={this.changeDescription}
+                                           errorMessage={this.state.errorMessage}
+                                           changeErrorMessage={this.changeErrorMessage}/>
+                        </div>
                     </div>
-                    <div style={addExperienceModal}>
-                        <AddExperience hidden={this.state.modalVisible} done={this.doneExperienceButton}
-                                       title={this.state.title} changeTitle={this.changeTitle}
-                                       company={this.state.company} changeCompany={this.changeCompany}
-                                       startDate={this.state.startDate} changeStartDate={this.changeStartDate}
-                                       endDate={this.state.endDate} changeEndDate={this.changeEndDate}
-                                       description={this.state.description} changeDescription={this.changeDescription}
-                                       errorMessage={this.state.errorMessage} changeErrorMessage={this.changeErrorMessage}/>
-                    </div>
-                </div>
                 :
                 <div className={"denied-wrapper"}>
                     <img src={image} alt={"access denied"} style={{height: "330px"}}/>

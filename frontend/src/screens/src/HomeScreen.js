@@ -4,6 +4,7 @@ import firebase from "../../firebase";
 import BigCustomButton from "../../components/src/BigCustomButton";
 import image from "../../media/accessdenied.jpeg"
 import CustomButton from "../../components/src/CustomButton";
+import {WaveLoading} from "react-loadingg";
 
 class HomeScreen extends Component {
 
@@ -12,7 +13,8 @@ class HomeScreen extends Component {
         this.state = {
             uid: "",
             firstName: "",
-            access: true
+            access: true,
+            loading: true
         }
     }
 
@@ -54,6 +56,11 @@ class HomeScreen extends Component {
 
     componentDidMount() {
         this.getUserID();
+        this.id = setTimeout(() => this.setState({loading: false}), 1000);
+    }
+
+    componentWillUnmount() {
+        clearTimeout(this.id);
     }
 
     logOutUser = () => {
@@ -72,17 +79,21 @@ class HomeScreen extends Component {
         return (
             this.state.access
                 ?
-                <div className="main-div">
-                    <div className="header">
-                        Welcome{this.state.firstName}
+                this.state.loading
+                    ?
+                    <WaveLoading/>
+                    :
+                    <div className="main-div">
+                        <div className="header-home">
+                            Welcome{this.state.firstName}
+                        </div>
+                        <div className="log-out">
+                            <CustomButton value={"Log Out"} onClick={this.logOutUser}/>
+                        </div>
+                        <BigCustomButton value={"View Your Profile"} onClick={this.viewProfile}/>
+                        <br/> <br/> <br/> <br/>
+                        <BigCustomButton value={"Search For Internships"}/>
                     </div>
-                    <div className="log-out">
-                        <CustomButton value={"Log Out"} onClick={this.logOutUser}/>
-                    </div>
-                    <BigCustomButton value={"View Your Profile"} onClick={this.viewProfile}/>
-                    <br/> <br/> <br/> <br/>
-                    <BigCustomButton value={"Search For Internships"}/>
-                </div>
                 :
                 <div className={"denied-wrapper"}>
                     <img src={image} alt={"access denied"} style={{height: "330px"}}/>
