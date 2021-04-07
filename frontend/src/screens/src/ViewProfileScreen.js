@@ -396,12 +396,14 @@ class ViewProfileScreen extends Component {
     }
 
     okErrorButton = () => {
-        this.setState({errorOkay: true});
+        window.location.href = "/home";
         this.setState({errorVisible: false});
+        this.setState({errorOkay: false});
+        this.setState({changedBoolean: false});
     }
 
     cancelErrorButton = () => {
-        this.setState({errorCancel: true});
+        this.setState({errorCancel: false});
         this.setState({errorVisible: false});
     }
 
@@ -410,21 +412,21 @@ class ViewProfileScreen extends Component {
             window.location.href = "/home";
         } else {
             //if (window.confirm("Oops! It looks like you have made changes that are unsaved. Are you sure you wish to leave?")) {
-                //window.location.href = "/home";
-                //this.setState({changedBoolean: false});
+            //window.location.href = "/home";
+            //this.setState({changedBoolean: false});
             //}
             this.setState({errorVisible: true});
-            if(this.state.errorOkay) {
-                console.log("ok!")
-                window.location.href = "/home";
-                this.setState({errorOkay: false});
-                this.setState({changedBoolean: false});
-            }
-            if(this.state.errorCancel) {
-                console.log("cancel!")
-                this.setState({errorCancel: false});
-                this.setState({changedBoolean: false});
-            }
+            // if (this.state.errorOkay) {
+            //     console.log("ok!");
+            //     window.location.href = "/home";
+            //     this.setState({errorOkay: false});
+            //     this.setState({changedBoolean: false});
+            // }
+            // if (this.state.errorCancel) {
+            //     console.log("cancel!");
+            //     this.setState({errorCancel: false});
+            //     this.setState({changedBoolean: false});
+            // }
         }
     }
 
@@ -533,7 +535,8 @@ class ViewProfileScreen extends Component {
                                            changeErrorMessage={this.changeErrorMessage}/>
                         </div>
                         <div style={errorMessageModal}>
-                            <ErrorMessage hidden={this.state.errorVisible} ok={this.okErrorButton} cancel={this.cancelErrorButton}/>
+                            <ErrorMessage hidden={this.state.errorVisible} ok={this.okErrorButton}
+                                          cancel={this.cancelErrorButton}/>
                         </div>
                     </div>
                 :

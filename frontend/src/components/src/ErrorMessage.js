@@ -32,7 +32,7 @@ function ErrorMessage(props) {
                     <CustomButton value={"Cancel"} onClick={props.cancel}/>
                 </div>
                 <div className="ok-button" style={buttons}>
-                    <CustomButton value={"OK"} onClick={props.okay}/>
+                    <CustomButton value={"OK"} onClick={props.ok}/>
                 </div>
             </div>
             <br/>
