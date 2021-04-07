@@ -17,7 +17,16 @@ import spark.Spark;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import com.google.cloud.firestore.Firestore;
+//import firebase from "firebase";
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.FirebaseOptions;
+import com.google.auth.oauth2.GoogleCredentials;
+import java.io.FileInputStream;
+import java.io.InputStream;
+
 import java.sql.ResultSet;
+
 
 /**
  * The Main class of our project. This is where execution begins.
@@ -60,6 +69,19 @@ public final class Main {
     //graphBuilder.printMap();
     //graphBuilder.runPageRank();
     graphBuilder.userResults();
+    try {
+//      InputStream is = new FileInputStream("firebaseCredentials.json");
+//      FirebaseOptions fbOptions = FirebaseOptions.builder()
+//        .setCredentials(GoogleCredentials.fromStream(is))
+//        .build();
+      FirebaseApp.initializeApp("./firebaseCredentials.json");
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+
+
+
+//    CollectionReference cities = db.collection("cities");
 
 
 
