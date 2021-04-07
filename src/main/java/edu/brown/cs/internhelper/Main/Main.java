@@ -17,15 +17,9 @@ import spark.Spark;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import com.google.cloud.firestore.Firestore;
-//import firebase from "firebase";
-import com.google.firebase.FirebaseApp;
-import com.google.firebase.FirebaseOptions;
-import com.google.auth.oauth2.GoogleCredentials;
-import java.io.FileInputStream;
-import java.io.InputStream;
 
-import java.sql.ResultSet;
+import java.io.FileInputStream;
+
 
 
 /**
@@ -66,52 +60,12 @@ public final class Main {
     graphBuilder.calculateJobScores();
     graphBuilder.calculateJobCompositeScore();
     graphBuilder.buildJobGraph();
-    //graphBuilder.printMap();
-    //graphBuilder.runPageRank();
     graphBuilder.userResults();
+    MyFirebase fb = new MyFirebase();
+    fb.setUp();
     try {
-//      InputStream is = new FileInputStream("firebaseCredentials.json");
-//      FirebaseOptions fbOptions = FirebaseOptions.builder()
-//        .setCredentials(GoogleCredentials.fromStream(is))
-//        .build();
-      FirebaseApp.initializeApp("./firebaseCredentials.json");
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-
-
-
-//    CollectionReference cities = db.collection("cities");
-
-
-
-
-    /**
-
-    DirectedGraph graph = new DirectedGraph();
-
-    Job job1 = new Job();
-    job1.setTitle("apple");
-    Job job2 = new Job();
-    job2.setTitle("facebook");
-
-    JobEdge e = new JobEdge(job1, job2, 5);
-
-    graph.addEdge(e);
-     **/
-
-
-
-
-
-
-
-//    DirectedGraph graph = new DirectedGraph();
-//    Vertex startV = new Vertex();
-//    Vertex endV = new Vertex();
-//    Edge e = new Edge(startV, endV, 1);
-//    graph.addEdge(e);
-//    System.out.println(graph.getVertexConnections().values());
+      fb.connectToApp();
+    } catch (Exception e) {}
 
     if (options.has("gui")) {
       runSparkServer((int) options.valueOf("port"));
