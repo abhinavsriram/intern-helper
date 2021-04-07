@@ -6,6 +6,7 @@ import image from "../../media/accessdenied.jpeg"
 import CustomButton from "../../components/src/CustomButton";
 import TextBox from "../../components/src/TextBox";
 import AddExperience from "../../components/src/AddExperience";
+import ErrorMessage from "../../components/src/ErrorMessage";
 import CollapsedExperience from "../../components/src/CollapsedExperience";
 import MediumTextBox from "../../components/src/MediumTextBox";
 import {WaveLoading} from "react-loadingg";
@@ -26,6 +27,9 @@ class ViewProfileScreen extends Component {
             experiences: [],
             experiencesList: [],
             modalVisible: false,
+            errorVisible: false,
+            errorOkay: false,
+            errorCancel: false,
             title: "",
             company: "",
             startDate: "",
@@ -391,12 +395,34 @@ class ViewProfileScreen extends Component {
             });
     }
 
+    okErrorButton = () => {
+        this.setState({errorOkay: true});
+        this.setState({errorVisible: false});
+    }
+
+    cancelErrorButton = () => {
+        this.setState({errorCancel: true});
+        this.setState({errorVisible: false});
+    }
+
     goBackButton = () => {
         if (!this.state.changedBoolean) {
             window.location.href = "/home";
         } else {
-            if (window.confirm("Oops! It looks like you have made changes that are unsaved. Are you sure you wish to leave?")) {
+            //if (window.confirm("Oops! It looks like you have made changes that are unsaved. Are you sure you wish to leave?")) {
+                //window.location.href = "/home";
+                //this.setState({changedBoolean: false});
+            //}
+            this.setState({errorVisible: true});
+            if(this.state.errorOkay) {
+                console.log("ok!")
                 window.location.href = "/home";
+                this.setState({errorOkay: false});
+                this.setState({changedBoolean: false});
+            }
+            if(this.state.errorCancel) {
+                console.log("cancel!")
+                this.setState({errorCancel: false});
                 this.setState({changedBoolean: false});
             }
         }
@@ -439,7 +465,12 @@ class ViewProfileScreen extends Component {
             left: "30%",
             zIndex: "10"
         }
-
+        const errorMessageModal = {
+            position: "absolute",
+            top: "4%",
+            left: "30%",
+            zIndex: "10"
+        }
         return (
             this.state.access
                 ?
@@ -500,6 +531,9 @@ class ViewProfileScreen extends Component {
                                            changeDescription={this.changeDescription}
                                            errorMessage={this.state.errorMessage}
                                            changeErrorMessage={this.changeErrorMessage}/>
+                        </div>
+                        <div style={errorMessageModal}>
+                            <ErrorMessage hidden={this.state.errorVisible} ok={this.okErrorButton} cancel={this.cancelErrorButton}/>
                         </div>
                     </div>
                 :
