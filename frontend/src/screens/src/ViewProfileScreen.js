@@ -10,6 +10,8 @@ import ErrorMessage from "../../components/src/ErrorMessage";
 import CollapsedExperience from "../../components/src/CollapsedExperience";
 import MediumTextBox from "../../components/src/MediumTextBox";
 import {WaveLoading} from "react-loadingg";
+import axios from 'axios';
+
 
 class ViewProfileScreen extends Component {
 
@@ -53,6 +55,24 @@ class ViewProfileScreen extends Component {
                 if (authFlag) {
                     authFlag = false;
                     if (user) {
+                        const toSend = {
+                            id: user.uid,
+                        }
+                        let config = {
+                            headers: {
+                                'Accept': 'application/json',
+                                'Access-Control-Allow-Origin': '*',
+                            }
+                        }
+                        axios.post(
+                            "http://localhost:4567/userID",
+                            toSend,
+                            config
+                        ).then(response => {
+                            console.log(response.data["userID"])
+                        }).catch(function(error) {
+                            console.log(error)
+                        });
                         this.setState({uid: user.uid});
                         this.setState({access: true});
                         this.getUserData();
@@ -62,6 +82,9 @@ class ViewProfileScreen extends Component {
                     }
                 }
             });
+
+
+
     }
 
     getUserData = () => {

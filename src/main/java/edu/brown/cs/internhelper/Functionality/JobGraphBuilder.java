@@ -175,31 +175,31 @@ public class JobGraphBuilder {
     return temp;
   }
 
-  public Map<Job, Double> calculateJobResumeSimilarity(Map<Job, Double> jobRanks) {
+  public Map<Job, Double> calculateJobResumeSimilarity(Map<Job, Double> jobRanks, String resume) {
     LevenshteinDistance distance = new LevenshteinDistance();
-    String resume = "Currently enrolled in or recently graduated from a Bachelor's Degree\n" +
-        "Knowledge of UI/UX best practices and trends\n" +
-        "Portfolio of UI/UX related work Experience or interest designing and shipping web-based " +
-        "products and interfaces\n" +
-        "Strong experience working from flows and wireframes through to the final product\n" +
-        "UX and UI experience\n" +
-        "Experience working with a SaaS product\n" +
-        "Designing wireframes and mock-ups of new features\n" +
-        "Collaborating with team members during design reviews to refine the user experience\n" +
-        "Working with software engineers to ensure consistency between design and implementation" +
-        ".\n" +
-        "Propose solutions to solve design/user experience challenges\n" +
-        "Writing clean, concise and descriptive documentation of your features. At least 18 years" +
-        " old, currently enrolled in a four year academic institution completing an undergrad, " +
-        "grad, or PhD degree in Business/Economics, Human-Computer Interaction, Computer Science " +
-        "or a related STEM field.\n" +
-        "Legally authorized to work in the United States. Due to the limited duration of this " +
-        "program, sponsorship for employment visa status is not available for this position.\n" +
-        "Availability to complete the full 10-12-week internship program during summer 2021, with" +
-        " a time commitment of approximately 30-40 hours per week.\n" +
-        "Must be highly proficient in SQL and Microsoft Excel\n" +
-        "Strong understanding of growth principles, product development, and product go to market" +
-        " processes";
+//    String resume = "Currently enrolled in or recently graduated from a Bachelor's Degree\n" +
+//        "Knowledge of UI/UX best practices and trends\n" +
+//        "Portfolio of UI/UX related work Experience or interest designing and shipping web-based " +
+//        "products and interfaces\n" +
+//        "Strong experience working from flows and wireframes through to the final product\n" +
+//        "UX and UI experience\n" +
+//        "Experience working with a SaaS product\n" +
+//        "Designing wireframes and mock-ups of new features\n" +
+//        "Collaborating with team members during design reviews to refine the user experience\n" +
+//        "Working with software engineers to ensure consistency between design and implementation" +
+//        ".\n" +
+//        "Propose solutions to solve design/user experience challenges\n" +
+//        "Writing clean, concise and descriptive documentation of your features. At least 18 years" +
+//        " old, currently enrolled in a four year academic institution completing an undergrad, " +
+//        "grad, or PhD degree in Business/Economics, Human-Computer Interaction, Computer Science " +
+//        "or a related STEM field.\n" +
+//        "Legally authorized to work in the United States. Due to the limited duration of this " +
+//        "program, sponsorship for employment visa status is not available for this position.\n" +
+//        "Availability to complete the full 10-12-week internship program during summer 2021, with" +
+//        " a time commitment of approximately 30-40 hours per week.\n" +
+//        "Must be highly proficient in SQL and Microsoft Excel\n" +
+//        "Strong understanding of growth principles, product development, and product go to market" +
+//        " processes";
 
 
 
@@ -215,9 +215,9 @@ public class JobGraphBuilder {
 
   }
 
-  public void userResults() {
+  public void userResults(String resume) {
     Map<Job, Double> pageRankResults = this.runPageRank();
-    Map<Job, Double> resumeSimilarityResults = this.calculateJobResumeSimilarity(pageRankResults);
+    Map<Job, Double> resumeSimilarityResults = this.calculateJobResumeSimilarity(pageRankResults, resume);
 
     System.out.println("THIS IS WHAT THE COMPARISON TO RESUME RESULTS WOULD BE");
     System.out.println("============================================");

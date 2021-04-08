@@ -16,6 +16,9 @@ import com.google.cloud.firestore.DocumentReference;
 import com.google.cloud.firestore.DocumentSnapshot;
 import com.google.cloud.firestore.Firestore;
 import com.google.firebase.cloud.FirestoreClient;
+import edu.brown.cs.internhelper.Functionality.Experience;
+import edu.brown.cs.internhelper.Functionality.Resume;
+import edu.brown.cs.internhelper.Functionality.User;
 
 public class MyFirebase {
 
@@ -46,45 +49,67 @@ public class MyFirebase {
 
   }
 
-  public void connectToApp() throws ExecutionException, InterruptedException {
+  public User getFirebaseResumeData(String userID){
     Firestore db = FirestoreClient.getFirestore();
-    ApiFuture<QuerySnapshot> future = db.collection("user-data").get();
-// future.get() blocks on response
-    List<QueryDocumentSnapshot> documents = future.get().getDocuments();
-    for (QueryDocumentSnapshot document : documents) {
-      Map<String, Object> data = document.getData();
-      System.out.println(document.getId() + " => " + data.keySet());
-      DocumentReference docRef = db.document(document.getId());
-
-      try {
-        System.out.println(docRef.collection("experiences"));
-      } catch (Exception e) {
-        e.printStackTrace();
-      }
-
-
-    }
-
-
-
-
-
-    /**
-    Firestore db = FirestoreClient.getFirestore();
-    CollectionReference userData = db.collection("user-data");
-
-    DocumentReference docRef = userData.document("EjI1c27266U9z3qQbVjcTIc5tdh1");
+    DocumentReference userDataRef = db.collection("user-data").document(userID);
 // asynchronously retrieve the document
-    ApiFuture<DocumentSnapshot> future = docRef.get();
-// ...
-// future.get() blocks on response
-    DocumentSnapshot document = future.get();
-    if (document.exists()) {
-      System.out.println("Document data: " + document.getData());
-    } else {
-      System.out.println("No such document!");
+    ApiFuture<DocumentSnapshot> userDataSnapshot = userDataRef.get();
+    User user = new User();
+    Resume resume = new Resume();
+
+    try {
+      DocumentSnapshot userDataDoc = userDataSnapshot.get();
+      if (userDataDoc.exists()) {
+        user = userDataDoc.toObject(User.class);
+        user.setId(userID);
+        System.out.println("ID " + user.getId());
+        System.out.println("SKILLS " + user.getSkills());
+        System.out.println("MAJOR GPA " + user.getMajor_GPA());
+        System.out.println("MAJOR " + user.getMajor());
+        System.out.println("CUMULATIVE GPA " + user.getCumulative_GPA());
+        System.out.println("UNIVERSITY " + user.getUniversity());
+        System.out.println("DEGREE " + user.getDegree());
+        System.out.println("LAST NAME " + user.getLast_Name());
+        System.out.println("COURSEWORK " + user.getCoursework());
+        System.out.println("FIRST NAME " + user.getFirst_Name());
+        System.out.println("EMAIL " + user.getEmail());
+        System.out.println("PROFILE COMPLETE " + user.getInitial_Profile_Setup_Complete());
+
+      } else {
+        System.out.println("No such document!");
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
     }
-     **/
+
+    ApiFuture<QuerySnapshot> experiencesDataSnapshot = db.collection("user-data").document(userID)
+        .collection("experiences").get();
+    try {
+      List<QueryDocumentSnapshot> experienceDocs = experiencesDataSnapshot.get().getDocuments();
+      System.out.println("==========================================");
+      for (QueryDocumentSnapshot experienceDoc : experienceDocs) {
+        if (!(experienceDoc.getId().equals("Experiences List"))) {
+          Experience experience = experienceDoc.toObject(Experience.class);
+          experience.setId(experienceDoc.getId());
+          System.out.println("ID " + experience.getId());
+          System.out.println("END DATE " + experience.getEnd_Date());
+          System.out.println("DESCRIPTION " + experience.getDescription());
+          System.out.println("COMPANY " + experience.getCompany());
+          System.out.println("TITLE " + experience.getTitle());
+          System.out.println("START DATE " + experience.getStart_Date());
+          System.out.println("==========================================");
+          //System.out.println(resume);
+          resume.addExperience(experience);
+
+        }
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+
+    user.setResume(resume);
+    return user;
+    //System.out.println(resume.numResumeExperiences());
 
   }
 

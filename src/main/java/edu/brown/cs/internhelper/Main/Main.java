@@ -1,25 +1,36 @@
 package edu.brown.cs.internhelper.Main;
 
+import com.google.common.collect.ImmutableMap;
 import edu.brown.cs.internhelper.Database.SQLDatabase;
+import edu.brown.cs.internhelper.Functionality.Experience;
 import edu.brown.cs.internhelper.Functionality.Job;
 import edu.brown.cs.internhelper.Functionality.JobEdge;
 import edu.brown.cs.internhelper.Functionality.JobGraphBuilder;
 import edu.brown.cs.internhelper.Functionality.PageRank;
+import edu.brown.cs.internhelper.Functionality.User;
 import edu.brown.cs.internhelper.Graph.DirectedGraph;
 import edu.brown.cs.internhelper.Graph.Edge;
 import edu.brown.cs.internhelper.Graph.Vertex;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
+import org.json.JSONException;
+import org.json.JSONObject;
 import spark.ExceptionHandler;
 import spark.Request;
 import spark.Response;
+import spark.Route;
 import spark.Spark;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
 import java.io.FileInputStream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
+import com.google.gson.Gson;
 
 
 /**
@@ -28,6 +39,11 @@ import java.io.FileInputStream;
 public final class Main {
 
   private static final int DEFAULT_PORT = 4567;
+  private static final Gson GSON = new Gson();
+  private static final MyFirebase fb = new MyFirebase();
+
+
+
 
   /**
    * The initial method called when execution begins.
@@ -55,17 +71,10 @@ public final class Main {
             .defaultsTo(DEFAULT_PORT);
     OptionSet options = parser.parse(args);
 
-    JobGraphBuilder graphBuilder = new JobGraphBuilder();
-    graphBuilder.readData();
-    graphBuilder.calculateJobScores();
-    graphBuilder.calculateJobCompositeScore();
-    graphBuilder.buildJobGraph();
-    graphBuilder.userResults();
-    MyFirebase fb = new MyFirebase();
-    fb.setUp();
-    try {
-      fb.connectToApp();
-    } catch (Exception e) {}
+
+//    try {
+//      fb.connectToApp();
+//    } catch (Exception e) {}
 
     if (options.has("gui")) {
       runSparkServer((int) options.valueOf("port"));
@@ -90,12 +99,44 @@ public final class Main {
     });
     Spark.before((request, response) -> response.header("Access-Control-Allow-Origin", "*"));
     Spark.exception(Exception.class, new ExceptionPrinter());
+    Spark.get("/userID", new UserIDHandler());
+    Spark.post("/userID", new UserIDHandler());
   }
+
+
+  private static class UserIDHandler implements Route {
+
+    @Override
+    public String handle(Request req, Response res)
+        throws JSONException, ExecutionException, InterruptedException {
+      JSONObject data = new JSONObject(req.body());
+      String id = data.getString("id");
+      System.out.println(id);
+      fb.setUp();
+      User user = fb.getFirebaseResumeData(id);
+
+      JobGraphBuilder graphBuilder = new JobGraphBuilder();
+      graphBuilder.readData();
+      graphBuilder.calculateJobScores();
+      graphBuilder.calculateJobCompositeScore();
+      graphBuilder.buildJobGraph();
+
+      String userResumeDescriptions = "";
+      for (Experience experience : user.getResume().getResumeExperiences()) {
+        userResumeDescriptions += experience.getDescription();
+      }
+      graphBuilder.userResults(userResumeDescriptions);
+
+      Map<String, Object> variables = ImmutableMap.of("userID", id);
+      return GSON.toJson(variables);
+    }
+  }
+
 
   /**
    * Displays an error page when an exception occurs in the server.
    */
-  private static class ExceptionPrinter implements ExceptionHandler<Exception> {
+  private static class ExceptionPrinter implements ExceptionHandler {
     @Override
     public void handle(Exception e, Request req, Response res) {
       res.status(500);
@@ -108,5 +149,5 @@ public final class Main {
       res.body(stacktrace.toString());
     }
   }
-
 }
+
