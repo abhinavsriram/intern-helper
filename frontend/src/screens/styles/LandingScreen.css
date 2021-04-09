@@ -14,7 +14,7 @@
 }
 
 .message-ls {
-    font-size: 34px;
+    font-size: 30px;
     margin-bottom: 50px;
     font-family: Montserrat, sans-serif;
 }
@@ -39,7 +39,7 @@
 .header {
     position: absolute;
     top: 8%;
-    font-size: 82px;
+    font-size: 74px;
     font-family: Montserrat, sans-serif;
     color: #9cdcff;
 }

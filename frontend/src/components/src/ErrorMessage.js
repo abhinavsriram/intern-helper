@@ -1,5 +1,6 @@
 import React from "react";
 import CustomButton from "./CustomButton";
+import '../styles/ErrorMessage.css';
 
 function ErrorMessage(props) {
 
@@ -10,33 +11,27 @@ function ErrorMessage(props) {
     const visibleStyles = {
         display: "block",
         zIndex: "10",
-        backgroundColor: "white",
-        padding: "50px"
-    }
-
-    const contained = {
-        width: "100%"
-    }
-
-    const buttons = {
-        margin: "5%",
-        float: "right"
+        backgroundColor: "pink",
+        padding: "50px",
+        fontFamily: "Montserrat",
+        fontSize: "24px",
+        width: "1000px"
     }
 
     return (
         <div style={props.hidden ? visibleStyles : invisibleStyles}>
-            <div>Oops! It looks like you have made changes that are unsaved. Are you sure you wish to leave?</div>
-            <br/>
-            <div style={contained}>
-                <div className="cancel-button" style={buttons}>
-                    <CustomButton value={"Cancel"} onClick={props.cancel}/>
-                </div>
-                <div className="ok-button" style={buttons}>
-                    <CustomButton value={"OK"} onClick={props.ok}/>
-                </div>
+            <div>
+                {props.message}
             </div>
             <br/>
-            <br/>
+            <div className={"buttons-container"}>
+                <div>
+                    <CustomButton value={"No"} onClick={props.cancel}/>
+                </div>
+                <div>
+                    <CustomButton value={"Yes"} onClick={props.ok}/>
+                </div>
+            </div>
         </div>
     );
 

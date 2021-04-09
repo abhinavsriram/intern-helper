@@ -46,8 +46,6 @@
   "devDependencies": {
     "crypto-js": "^4.0.0",
     "firebase-admin": "^9.6.0",
-    "react-bones": "^1.0.3",
-    "react-navigation": "^4.4.4",
     "react-router-dom": "^5.2.0"
   }
 }

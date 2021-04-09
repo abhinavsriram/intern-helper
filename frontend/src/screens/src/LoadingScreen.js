@@ -1,43 +1,33 @@
-import React, {Component} from 'react';
-import firebase from '../../firebase.js';
-import {WaveLoading} from 'react-loadingg';
+import React, { Component } from "react";
+import firebase from "../../firebase.js";
+import { WaveLoading } from "react-loadingg";
 
 class LoadingScreen extends Component {
+  checkIfUserLoggedIn = () => {
+    let authFlag = true;
+    firebase.auth().onAuthStateChanged((user) => {
+      if (authFlag) {
+        authFlag = false;
+        if (user) {
+          window.location.href = "/home";
+        } else {
+          window.location.href = "/landing";
+        }
+      }
+    });
+  };
 
-    constructor(props) {
-        super(props);
-    }
+  componentDidMount() {
+    this.checkIfUserLoggedIn();
+  }
 
-    checkIfUserLoggedIn = () => {
-        let authFlag = true;
-        firebase
-            .auth()
-            .onAuthStateChanged((user) => {
-                if (authFlag) {
-                    authFlag = false;
-                    if (user) {
-                        window.location.href = "/home";
-                    } else {
-                        window.location.href = "/landing";
-                    }
-                }
-            });
-    }
+  componentWillUnmount() {
+    clearTimeout(this.id);
+  }
 
-    componentDidMount() {
-        this.checkIfUserLoggedIn();
-    }
-
-    componentWillUnmount() {
-        clearTimeout(this.id)
-    }
-
-    render() {
-        return (
-            <WaveLoading/>
-        );
-    }
-
+  render() {
+    return <WaveLoading />;
+  }
 }
 
 export default LoadingScreen;
