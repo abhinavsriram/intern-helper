@@ -215,9 +215,13 @@ public class JobGraphBuilder {
 
   }
 
-  public void userResults(String resume) {
+  public Map<Job, Double>  userResults(Resume resume) {
     Map<Job, Double> pageRankResults = this.runPageRank();
-    Map<Job, Double> resumeSimilarityResults = this.calculateJobResumeSimilarity(pageRankResults, resume);
+    String userResumeDescriptions = "";
+    for (Experience experience : resume.getResumeExperiences()) {
+      userResumeDescriptions += experience.getDescription();
+    }
+    Map<Job, Double> resumeSimilarityResults = this.calculateJobResumeSimilarity(pageRankResults, userResumeDescriptions);
 
     System.out.println("THIS IS WHAT THE COMPARISON TO RESUME RESULTS WOULD BE");
     System.out.println("============================================");
@@ -248,6 +252,8 @@ public class JobGraphBuilder {
       System.out.println("Key = " + en.getKey().getTitle() + ","
           + en.getKey().getCompositeSimilarityScore() + " Value = " + en.getValue());
     }
+
+    return sortedUserResults;
 
 
   }

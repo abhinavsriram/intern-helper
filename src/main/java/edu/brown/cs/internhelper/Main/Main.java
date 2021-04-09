@@ -7,6 +7,7 @@ import edu.brown.cs.internhelper.Functionality.Job;
 import edu.brown.cs.internhelper.Functionality.JobEdge;
 import edu.brown.cs.internhelper.Functionality.JobGraphBuilder;
 import edu.brown.cs.internhelper.Functionality.PageRank;
+import edu.brown.cs.internhelper.Functionality.Resume;
 import edu.brown.cs.internhelper.Functionality.User;
 import edu.brown.cs.internhelper.Graph.DirectedGraph;
 import edu.brown.cs.internhelper.Graph.Edge;
@@ -26,6 +27,7 @@ import java.io.StringWriter;
 
 import java.io.FileInputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
@@ -99,12 +101,12 @@ public final class Main {
     });
     Spark.before((request, response) -> response.header("Access-Control-Allow-Origin", "*"));
     Spark.exception(Exception.class, new ExceptionPrinter());
-    Spark.get("/userID", new UserIDHandler());
-    Spark.post("/userID", new UserIDHandler());
+    Spark.get("/userJobResults", new UserJobResultsHandler());
+    Spark.post("/userJobResults", new UserJobResultsHandler());
   }
 
 
-  private static class UserIDHandler implements Route {
+  private static class UserJobResultsHandler implements Route {
 
     @Override
     public String handle(Request req, Response res)
@@ -121,13 +123,19 @@ public final class Main {
       graphBuilder.calculateJobCompositeScore();
       graphBuilder.buildJobGraph();
 
-      String userResumeDescriptions = "";
-      for (Experience experience : user.getResume().getResumeExperiences()) {
-        userResumeDescriptions += experience.getDescription();
-      }
-      graphBuilder.userResults(userResumeDescriptions);
+//      String userResumeDescriptions = "";
+//      for (Experience experience : user.getResume().getResumeExperiences()) {
+//        userResumeDescriptions += experience.getDescription();
+//      }
+      Resume resume = user.getResume();
+      Map<Job, Double> jobResults = graphBuilder.userResults(resume);
 
-      Map<String, Object> variables = ImmutableMap.of("userID", id);
+      Map<Double, Job> tempJobResults = new HashMap<>();
+      for (Map.Entry<Job, Double> en : jobResults.entrySet()) {
+        tempJobResults.put(en.getValue(), en.getKey());
+      }
+
+      Map<String, Object> variables = ImmutableMap.of("userJobResults", tempJobResults);
       return GSON.toJson(variables);
     }
   }
