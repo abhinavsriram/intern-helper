@@ -1,2 +1,2 @@
-backend: java $JAVA_OPTS -cp target/classes:target/dependency/* edu.brown.cs.internhelper.Main.Main
 frontend: cd frontend && npm install && npm start
+backend: java $JAVA_OPTS -cp target/classes:target/dependency/* edu.brown.cs.internhelper.Main.Main
