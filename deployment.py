@@ -24,12 +24,12 @@ def run_script():
     os.system('yarn install')
     print(f"{bcolors.OKCYAN}EXECUTING: yarn start as bg process{bcolors.ENDC}")
     os.system('yarn start &')
-    print(f"{bcolors.WARNING}CHANGE DIRECTORY: os.chdir('../'): in project root directory{bcolors.ENDC}")
-    os.chdir('../')
-    print(f"{bcolors.OKCYAN}EXECUTING: mvn package{bcolors.ENDC}")
-    os.system('mvn package')
-    print(f"{bcolors.OKCYAN}EXECUTING: ./run{bcolors.ENDC}")
-    os.system('./run')
+    # print(f"{bcolors.WARNING}CHANGE DIRECTORY: os.chdir('../'): in project root directory{bcolors.ENDC}")
+    # os.chdir('../')
+    # print(f"{bcolors.OKCYAN}EXECUTING: mvn package{bcolors.ENDC}")
+    # os.system('mvn package')
+    # print(f"{bcolors.OKCYAN}EXECUTING: ./run{bcolors.ENDC}")
+    # os.system('./run')
     print(f"\n{bcolors.FAIL}TERMINATED: all processes terminated{bcolors.ENDC}")
 
 # def kill_processes():
