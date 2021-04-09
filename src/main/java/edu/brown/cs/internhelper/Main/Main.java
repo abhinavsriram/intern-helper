@@ -92,7 +92,6 @@ public final class Main {
     return DEFAULT_PORT; //return default port if heroku-port isn't set (i.e. on localhost)
   }
 
-
   private static class UserJobResultsHandler implements Route {
 
     @Override

@@ -29,7 +29,7 @@ def run_script():
     print(f"{bcolors.OKCYAN}EXECUTING: mvn package{bcolors.ENDC}")
     os.system('mvn package')
     print(f"{bcolors.OKCYAN}EXECUTING: ./run{bcolors.ENDC}")
-    os.system('./run --gui')
+    os.system('./run')
     print(f"\n{bcolors.FAIL}TERMINATED: all processes terminated{bcolors.ENDC}")
 
 # def kill_processes():
