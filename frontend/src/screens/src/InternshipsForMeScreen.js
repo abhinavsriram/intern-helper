@@ -6,7 +6,7 @@ import image from "../../media/accessdenied.jpeg";
 import CustomButton from "../../components/src/CustomButton";
 import { WaveLoading } from "react-loadingg";
 import InternshipResult from "../../components/src/InternshipResult";
-import axios from 'axios';
+import axios from "axios";
 
 class InternshipsForMeScreen extends Component {
   constructor(props) {
@@ -15,38 +15,7 @@ class InternshipsForMeScreen extends Component {
       uid: "",
       access: true,
       loading: true,
-      internships: [
-        <InternshipResult
-          title={"Software Engineering Intern"}
-          company={"Amazon"}
-          apply={""}
-          description={
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ornare faucibus justo, vitae lobortis arcu\n" +
-            "vehicula et. Pellentesque ex purus, elementum id purus dictum, facilisis hendrerit ante. Etiam nulla elit,\n" +
-            "tristique id tristique ut, cursus sed mi. Duis sem ipsum, lacinia ac nibh et, mollis pretium est."
-          }
-        />,
-        <InternshipResult
-          title={"Software Engineering Intern"}
-          company={"Amazon"}
-          apply={""}
-          description={
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ornare faucibus justo, vitae lobortis arcu\n" +
-            "vehicula et. Pellentesque ex purus, elementum id purus dictum, facilisis hendrerit ante. Etiam nulla elit,\n" +
-            "tristique id tristique ut, cursus sed mi. Duis sem ipsum, lacinia ac nibh et, mollis pretium est."
-          }
-        />,
-        <InternshipResult
-          title={"Software Engineering Intern"}
-          company={"Amazon"}
-          apply={""}
-          description={
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ornare faucibus justo, vitae lobortis arcu\n" +
-            "vehicula et. Pellentesque ex purus, elementum id purus dictum, facilisis hendrerit ante. Etiam nulla elit,\n" +
-            "tristique id tristique ut, cursus sed mi. Duis sem ipsum, lacinia ac nibh et, mollis pretium est."
-          }
-        />,
-      ],
+      internships: [],
     };
   }
 
@@ -56,42 +25,37 @@ class InternshipsForMeScreen extends Component {
       if (authFlag) {
         authFlag = false;
         if (user) {
-            const toSend = {
-                id: user.uid,
-            }
-            let config = {
-                headers: {
-                    'Accept': 'application/json',
-                    'Access-Control-Allow-Origin': '*',
-                }
-            }
-            axios.post(
-                "http://localhost:4567/userJobResults",
-                toSend,
-                config
-            ).then(response => {
-                //console.log(response.data["userJobResults"])
-                let jobs = [];
-                Object.entries(response.data["userJobResults"]).map(([key,value]) => {
-                    //console.log(response.data);
-                    jobs.push(
+          const toSend = {
+            id: user.uid,
+          };
+          let config = {
+            headers: {
+              Accept: "application/json",
+              "Access-Control-Allow-Origin": "*",
+            },
+          };
+          axios
+            .post("http://localhost:4567/userJobResults", toSend, config)
+            .then((response) => {
+              let jobs = [];
+              Object.entries(response.data["userJobResults"]).map(
+                ([key, value]) => {
+                  jobs.push(
                     <InternshipResult
-                        title= {value["title"]}
-                        company={value["company"]}
-                        apply={value["link"]}
-                        description={ value["requiredQualifications"]
-                        }
-                    />)
-                this.setState({internships : jobs})
-                    //create local array
-                    //push to local array
-                    //setState
-                })
-            }).catch(function(error) {
-                console.log(error)
+                      title={value["title"]}
+                      company={value["company"]}
+                      apply={value["link"]}
+                      description={value["requiredQualifications"]}
+                    />
+                  );
+                  this.setState({ internships: jobs });
+                }
+              );
+            })
+            .catch(function (error) {
+              console.log(error);
             });
-
-            this.setState({ uid: user.uid });
+          this.setState({ uid: user.uid });
           this.setState({ access: true });
         } else {
           this.setState({ access: false });
