@@ -1,17 +1,10 @@
 package edu.brown.cs.internhelper.Main;
 
 import com.google.common.collect.ImmutableMap;
-import edu.brown.cs.internhelper.Database.SQLDatabase;
-import edu.brown.cs.internhelper.Functionality.Experience;
 import edu.brown.cs.internhelper.Functionality.Job;
-import edu.brown.cs.internhelper.Functionality.JobEdge;
 import edu.brown.cs.internhelper.Functionality.JobGraphBuilder;
-import edu.brown.cs.internhelper.Functionality.PageRank;
 import edu.brown.cs.internhelper.Functionality.Resume;
 import edu.brown.cs.internhelper.Functionality.User;
-import edu.brown.cs.internhelper.Graph.DirectedGraph;
-import edu.brown.cs.internhelper.Graph.Edge;
-import edu.brown.cs.internhelper.Graph.Vertex;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
 import org.json.JSONException;
@@ -24,11 +17,7 @@ import spark.Spark;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
-
-import java.io.FileInputStream;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
@@ -42,9 +31,7 @@ public final class Main {
 
   private static final int DEFAULT_PORT = 4567;
   private static final Gson GSON = new Gson();
-  private static final MyFirebase fb = new MyFirebase();
-
-
+  private static final MyFirebase FB = new MyFirebase();
 
 
   /**
@@ -72,19 +59,11 @@ public final class Main {
     parser.accepts("port").withRequiredArg().ofType(Integer.class)
             .defaultsTo(DEFAULT_PORT);
     OptionSet options = parser.parse(args);
-
-
-//    try {
-//      fb.connectToApp();
-//    } catch (Exception e) {}
-
-    if (options.has("gui")) {
-      runSparkServer((int) options.valueOf("port"));
-    }
+    runSparkServer((int) options.valueOf("port"));
   }
 
   private void runSparkServer(int port) {
-    Spark.port(port);
+    Spark.port(getHerokuAssignedPort());
     Spark.externalStaticFileLocation("src/main/resources/static");
     Spark.options("/*", (request, response) -> {
       String accessControlRequestHeaders = request.headers("Access-Control-Request-Headers");
@@ -105,17 +84,25 @@ public final class Main {
     Spark.post("/userJobResults", new UserJobResultsHandler());
   }
 
+  static int getHerokuAssignedPort() {
+    ProcessBuilder processBuilder = new ProcessBuilder();
+    if (processBuilder.environment().get("PORT") != null) {
+      return Integer.parseInt(processBuilder.environment().get("PORT"));
+    }
+    return DEFAULT_PORT; //return default port if heroku-port isn't set (i.e. on localhost)
+  }
+
 
   private static class UserJobResultsHandler implements Route {
 
     @Override
     public String handle(Request req, Response res)
-        throws JSONException, ExecutionException, InterruptedException {
+            throws JSONException, ExecutionException, InterruptedException {
       JSONObject data = new JSONObject(req.body());
       String id = data.getString("id");
       System.out.println(id);
-      fb.setUp();
-      User user = fb.getFirebaseResumeData(id);
+      FB.setUp();
+      User user = FB.getFirebaseResumeData(id);
 
       JobGraphBuilder graphBuilder = new JobGraphBuilder();
       graphBuilder.readData();

@@ -22,7 +22,6 @@ public class JobGraphBuilder {
   private static DirectedGraph graph;
 
 
-
   public void readData() {
 
     SQLDatabase db = new SQLDatabase();
@@ -46,7 +45,6 @@ public class JobGraphBuilder {
     }
 
 
-
   }
 
   public void calculateJobScores() {
@@ -55,7 +53,7 @@ public class JobGraphBuilder {
     for (int i = 0; i < allJobs.size(); i++) {
       List scores = new ArrayList();
       for (int j = 0; j < allJobs.size(); j++) {
-        if ( i != j) {
+        if (i != j) {
           String currJob = allJobs.get(i).getRequiredQualifications();
           String otherJob = allJobs.get(j).getRequiredQualifications();
           double dist = distance.similarity(currJob, otherJob);
@@ -71,7 +69,7 @@ public class JobGraphBuilder {
 
   public void calculateJobCompositeScore() {
     for (int i = 0; i < allJobs.size(); i++) {
-      List <Double> currScores = allJobs.get(i).getJobSimilarityScores();
+      List<Double> currScores = allJobs.get(i).getJobSimilarityScores();
       double totalScore = 0.0;
       for (int j = 0; j < currScores.size(); j++) {
         totalScore += currScores.get(j);
@@ -91,7 +89,7 @@ public class JobGraphBuilder {
 
     for (int i = 0; i < allJobs.size(); i++) {
       for (int j = 0; j < allJobs.size(); j++) {
-        if ( i != j) {
+        if (i != j) {
           Job currJob = allJobs.get(i);
           Job otherJob = allJobs.get(j);
           if (currJob.getCompositeSimilarityScore() <= otherJob.getCompositeSimilarityScore()) {
@@ -107,12 +105,12 @@ public class JobGraphBuilder {
   public static void printMap() {
     Iterator it = graph.getVertexConnections().entrySet().iterator();
     while (it.hasNext()) {
-      Map.Entry<Job, Set<JobEdge>> pair = (Map.Entry)it.next();
+      Map.Entry<Job, Set<JobEdge>> pair = (Map.Entry) it.next();
       System.out.println("JOB TITLE " + pair.getKey().getTitle() + " who has a score of " + pair.getKey().getCompositeSimilarityScore());
       System.out.println("THESE ARE THE OUTGOING EDGES: ");
       for (JobEdge edge : pair.getValue()) {
         System.out.println("EDGE IS CONNECTED TO : " + edge.getDestinationVertex().getTitle()
-            + " who has a score of " + edge.getDestinationVertex().getCompositeSimilarityScore());
+                + " who has a score of " + edge.getDestinationVertex().getCompositeSimilarityScore());
       }
       System.out.println("---------------------------------------------");
       it.remove(); // avoids a ConcurrentModificationException
@@ -120,12 +118,12 @@ public class JobGraphBuilder {
     System.out.println("===============================================");
     Iterator it2 = graph.getIncomingConnections().entrySet().iterator();
     while (it2.hasNext()) {
-      Map.Entry<Job, Set<JobEdge>> pair = (Map.Entry)it2.next();
+      Map.Entry<Job, Set<JobEdge>> pair = (Map.Entry) it2.next();
       System.out.println("JOB TITLE " + pair.getKey().getTitle() + " who has a score of " + pair.getKey().getCompositeSimilarityScore());
       System.out.println("THESE ARE THE INCOMING EDGES: ");
       for (JobEdge edge : pair.getValue()) {
         System.out.println("EDGE IS CONNECTED TO : " + edge.getSourceVertex().getTitle()
-            + " who has a score of " + edge.getSourceVertex().getCompositeSimilarityScore());
+                + " who has a score of " + edge.getSourceVertex().getCompositeSimilarityScore());
       }
       System.out.println("---------------------------------------------");
       it2.remove(); // avoids a ConcurrentModificationException
@@ -133,7 +131,7 @@ public class JobGraphBuilder {
 
   }
 
-  public Map<Job, Double>  runPageRank() {
+  public Map<Job, Double> runPageRank() {
     PageRank pageRank = new PageRank();
     Map<Job, Double> jobPageRanks = pageRank.calcPageRank(graph);
 
@@ -149,20 +147,17 @@ public class JobGraphBuilder {
     return jobPageRanks;
 
 
-
   }
 
-  public static Map<Job, Double> sortByValue(Map<Job, Double> hm)
-  {
+  public static Map<Job, Double> sortByValue(Map<Job, Double> hm) {
     // Create a list from elements of HashMap
-    List<Map.Entry<Job, Double> > list =
-        new LinkedList<Map.Entry<Job, Double> >(hm.entrySet());
+    List<Map.Entry<Job, Double>> list =
+            new LinkedList<Map.Entry<Job, Double>>(hm.entrySet());
 
     // Sort the list
-    Collections.sort(list, new Comparator<Map.Entry<Job, Double> >() {
+    Collections.sort(list, new Comparator<Map.Entry<Job, Double>>() {
       public int compare(Map.Entry<Job, Double> o1,
-                         Map.Entry<Job, Double> o2)
-      {
+                         Map.Entry<Job, Double> o2) {
         return (o2.getValue()).compareTo(o1.getValue());
       }
     });
@@ -202,7 +197,6 @@ public class JobGraphBuilder {
 //        " processes";
 
 
-
     for (Map.Entry<Job, Double> en : jobRanks.entrySet()) {
       String currJob = en.getKey().getRequiredQualifications();
       double dist = distance.similarity(currJob, resume);
@@ -215,13 +209,14 @@ public class JobGraphBuilder {
 
   }
 
-  public Map<Job, Double>  userResults(Resume resume) {
+  public Map<Job, Double> userResults(Resume resume) {
     Map<Job, Double> pageRankResults = this.runPageRank();
     String userResumeDescriptions = "";
     for (Experience experience : resume.getResumeExperiences()) {
       userResumeDescriptions += experience.getDescription();
     }
-    Map<Job, Double> resumeSimilarityResults = this.calculateJobResumeSimilarity(pageRankResults, userResumeDescriptions);
+    Map<Job, Double> resumeSimilarityResults = this.calculateJobResumeSimilarity(pageRankResults,
+            userResumeDescriptions);
 
     System.out.println("THIS IS WHAT THE COMPARISON TO RESUME RESULTS WOULD BE");
     System.out.println("============================================");
@@ -250,7 +245,7 @@ public class JobGraphBuilder {
     Map<Job, Double> sortedUserResults = sortByValue(userResults);
     for (Map.Entry<Job, Double> en : sortedUserResults.entrySet()) {
       System.out.println("Key = " + en.getKey().getTitle() + ","
-          + en.getKey().getCompositeSimilarityScore() + " Value = " + en.getValue());
+              + en.getKey().getCompositeSimilarityScore() + " Value = " + en.getValue());
     }
 
     return sortedUserResults;

@@ -1,6 +1,5 @@
 package edu.brown.cs.internhelper.Database;
 
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -33,9 +32,6 @@ public class SQLDatabase {
       return rs;
     }
   }
-
-
-
 
 
 }

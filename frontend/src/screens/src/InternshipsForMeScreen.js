@@ -48,7 +48,7 @@ class InternshipsForMeScreen extends Component {
                         <InternshipResult
                           title={doc.data().title}
                           company={doc.data().company}
-                          apply={doc.data().apply}
+                          apply={doc.data().link}
                           description={doc.data().description}
                           key={Math.random()}
                         />,

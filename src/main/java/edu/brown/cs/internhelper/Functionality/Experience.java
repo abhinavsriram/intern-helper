@@ -9,7 +9,7 @@ public class Experience {
   private String title;
   private String start_date;
 
-  public Experience () {
+  public Experience() {
     this.id = "";
     this.end_date = "";
     this.description = "";
@@ -22,11 +22,15 @@ public class Experience {
   public void setId(String newId) {
     this.id = newId;
   }
-  public String getId() { return this.id; }
+
+  public String getId() {
+    return this.id;
+  }
 
   public void setEnd_Date(String newEndDate) {
     this.end_date = newEndDate;
   }
+
   public String getEnd_Date() {
     return this.end_date;
   }
@@ -34,6 +38,7 @@ public class Experience {
   public void setDescription(String newDescription) {
     this.description = newDescription;
   }
+
   public String getDescription() {
     return this.description;
   }
@@ -41,6 +46,7 @@ public class Experience {
   public void setCompany(String newCompany) {
     this.company = newCompany;
   }
+
   public String getCompany() {
     return this.company;
   }
@@ -48,6 +54,7 @@ public class Experience {
   public void setTitle(String newTitle) {
     this.title = newTitle;
   }
+
   public String getTitle() {
     return this.title;
   }
@@ -55,6 +62,7 @@ public class Experience {
   public void setStart_Date(String newStartDate) {
     this.start_date = newStartDate;
   }
+
   public String getStart_Date() {
     return this.start_date;
   }

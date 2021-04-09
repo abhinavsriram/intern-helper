@@ -1,8 +1,6 @@
 package edu.brown.cs.internhelper.Functionality;
 
 import edu.brown.cs.internhelper.Graph.DirectedGraph;
-import edu.brown.cs.internhelper.Graph.Edge;
-import edu.brown.cs.internhelper.Graph.Vertex;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,7 +29,7 @@ public class PageRank {
     // instance variable for graph
     _graph = g;
     // vertices iterator
-   // Iterator<Job> allVertIterator = _graph.();
+    // Iterator<Job> allVertIterator = _graph.();
     // an arraylist that will store all the vertices at specific indices
     _vertices = new ArrayList<Job>();
     // an array that will keep track of each vertex's outgoing edges with matching
@@ -94,7 +92,7 @@ public class PageRank {
           // divides the previous page rank of the oppositeVertex by its corresponding
           // number of outgoing edges
           double previous_divided_outgoing = (_previousPageRank[_vertices.indexOf(oppVertex)])
-              / (_vertOutgoingEdges[_vertices.indexOf(oppVertex)]);
+                  / (_vertOutgoingEdges[_vertices.indexOf(oppVertex)]);
           // sets the current page rank of the vertex to be the sum of its current page
           // rank + previous page rank divided by outgoing
           _currentPageRank[v] = _currentPageRank[v] + previous_divided_outgoing;

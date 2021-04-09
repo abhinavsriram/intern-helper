@@ -1,7 +1,5 @@
 package edu.brown.cs.internhelper.Functionality;
 
-import java.util.ArrayList;
-import java.util.List;
 
 public class User {
 
@@ -18,7 +16,6 @@ public class User {
   private String email;
   private boolean initial_profile_setup_complete;
   private Resume resume;
-
 
 
   public User() {
@@ -39,6 +36,7 @@ public class User {
   public void setId(String newId) {
     this.id = newId;
   }
+
   public String getId() {
     return this.id;
   }
@@ -46,6 +44,7 @@ public class User {
   public void setSkills(String newSkills) {
     this.skills = newSkills;
   }
+
   public String getSkills() {
     return this.skills;
   }
@@ -53,6 +52,7 @@ public class User {
   public void setMajor_GPA(String newMajorGPA) {
     this.major_gpa = newMajorGPA;
   }
+
   public String getMajor_GPA() {
     return this.major_gpa;
   }
@@ -60,11 +60,15 @@ public class User {
   public void setMajor(String newMajor) {
     this.major = newMajor;
   }
+
   public String getMajor() {
     return this.major;
   }
 
-  public void setCumulative_GPA(String newCumulativeGPA) { this.cumulative_gpa = newCumulativeGPA; }
+  public void setCumulative_GPA(String newCumulativeGPA) {
+    this.cumulative_gpa = newCumulativeGPA;
+  }
+
   public String getCumulative_GPA() {
     return this.cumulative_gpa;
   }
@@ -72,6 +76,7 @@ public class User {
   public void setUniversity(String newUniversity) {
     this.university = newUniversity;
   }
+
   public String getUniversity() {
     return this.university;
   }
@@ -79,6 +84,7 @@ public class User {
   public void setDegree(String newDegree) {
     this.degree = newDegree;
   }
+
   public String getDegree() {
     return this.degree;
   }
@@ -86,6 +92,7 @@ public class User {
   public void setLast_Name(String newLastName) {
     this.last_name = newLastName;
   }
+
   public String getLast_Name() {
     return this.last_name;
   }
@@ -93,6 +100,7 @@ public class User {
   public void setCoursework(String newCoursework) {
     this.coursework = newCoursework;
   }
+
   public String getCoursework() {
     return this.coursework;
   }
@@ -100,6 +108,7 @@ public class User {
   public void setFirst_Name(String newFirstName) {
     this.first_name = newFirstName;
   }
+
   public String getFirst_Name() {
     return this.first_name;
   }
@@ -107,6 +116,7 @@ public class User {
   public void setEmail(String newEmail) {
     this.email = newEmail;
   }
+
   public String getEmail() {
     return this.email;
   }
@@ -114,6 +124,7 @@ public class User {
   public void setInitial_Profile_Setup_Complete(boolean bool) {
     this.initial_profile_setup_complete = bool;
   }
+
   public boolean getInitial_Profile_Setup_Complete() {
     return this.initial_profile_setup_complete;
   }
@@ -121,6 +132,7 @@ public class User {
   public void setResume(Resume newResume) {
     this.resume = newResume;
   }
+
   public Resume getResume() {
     return this.resume;
   }
