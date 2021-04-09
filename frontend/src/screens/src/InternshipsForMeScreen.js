@@ -107,7 +107,7 @@ class InternshipsForMeScreen extends Component {
       },
     };
     axios
-      .post("http://localhost:4567/userJobResults", toSend, config)
+      .post("http://localhost:5000/userJobResults", toSend, config)
       .then((response) => {
         let localInternships = [];
         let localInternshipsList = [];
