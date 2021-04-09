@@ -16,8 +16,168 @@ class InternshipsForMeScreen extends Component {
       access: true,
       loading: true,
       internships: [],
+      internshipsList: [],
+      changedResume: false,
     };
   }
+
+  getInternships = (user) => {
+    firebase
+      .firestore()
+      .collection("user-data")
+      .doc(user.uid)
+      .collection("internships")
+      .doc("Internships List")
+      .get()
+      .then((doc) => {
+        if (doc.exists) {
+          this.setState({ internshipsList: doc.data().internshipsList }, () => {
+            for (let i = 0; i < this.state.internshipsList.length; i++) {
+              firebase
+                .firestore()
+                .collection("user-data")
+                .doc(user.uid)
+                .collection("internships")
+                .doc(this.state.internshipsList[i])
+                .get()
+                .then((doc) => {
+                  if (doc.exists) {
+                    this.setState((prevState) => ({
+                      internships: [
+                        ...prevState.internships,
+                        <InternshipResult
+                          title={doc.data().title}
+                          company={doc.data().company}
+                          apply={doc.data().apply}
+                          description={doc.data().description}
+                          key={Math.random()}
+                        />,
+                      ],
+                    }));
+                  }
+                })
+                .catch((error) => {
+                  this.setState({
+                    errorMessage:
+                      "Oops! It looks like something went wrong. Please try again.",
+                  });
+                });
+            }
+          });
+        }
+      })
+      .catch((error) => {
+        this.setState({
+          errorMessage:
+            "Oops! It looks like something went wrong. Please try again.",
+        });
+      });
+  };
+
+  writeToDatabase = (id, title, company, description, link) => {
+    firebase
+      .firestore()
+      .collection("user-data")
+      .doc(this.state.uid)
+      .collection("internships")
+      .doc(id)
+      .set({
+        title: title,
+        company: company,
+        description: description,
+        link: link,
+      })
+      .then(() => {})
+      .catch((error) => {
+        this.setState({
+          errorMessage:
+            "Oops! It looks like something went wrong. Please try again.",
+        });
+      });
+  };
+
+  getResultsFromBackend = (user) => {
+    const toSend = {
+      id: user.uid,
+    };
+    let config = {
+      headers: {
+        Accept: "application/json",
+        "Access-Control-Allow-Origin": "*",
+      },
+    };
+    axios
+      .post("http://localhost:4567/userJobResults", toSend, config)
+      .then((response) => {
+        let localInternships = [];
+        let localInternshipsList = [];
+        Object.entries(response.data["userJobResults"]).forEach(
+          ([key, value]) => {
+            let crypto = require("crypto-js");
+            let concat =
+              value["title"] +
+              value["company"] +
+              value["link"] +
+              value["requiredQualifications"];
+            let ID = crypto.SHA256(concat).toString();
+            localInternshipsList.push(ID);
+            localInternships.push(
+              <InternshipResult
+                title={value["title"]}
+                company={value["company"]}
+                apply={value["link"]}
+                description={value["requiredQualifications"]}
+                key={Math.random()}
+              />
+            );
+            this.writeToDatabase(
+              ID,
+              value["title"],
+              value["company"],
+              value["requiredQualifications"],
+              value["link"]
+            );
+          }
+        );
+        this.setState({ internships: localInternships });
+        this.setState({ internshipsList: localInternshipsList }, () => {
+          firebase
+            .firestore()
+            .collection("user-data")
+            .doc(this.state.uid)
+            .collection("internships")
+            .doc("Internships List")
+            .set({
+              internshipsList: this.state.internshipsList,
+            })
+            .then(() => {
+              firebase
+                .firestore()
+                .collection("user-data")
+                .doc(this.state.uid)
+                .update({
+                  changed_resume: false,
+                })
+                .then(() => {})
+                .catch((error) => {
+                  this.setState({
+                    errorMessage:
+                      "Oops! It looks like something went wrong. Please try again.",
+                  });
+                });
+            })
+            .catch((error) => {
+              this.setState({
+                errorMessage:
+                  "Oops! It looks like something went wrong. Please try again.",
+              });
+            });
+        });
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
 
   getUserID = () => {
     let authFlag = true;
@@ -25,35 +185,22 @@ class InternshipsForMeScreen extends Component {
       if (authFlag) {
         authFlag = false;
         if (user) {
-          const toSend = {
-            id: user.uid,
-          };
-          let config = {
-            headers: {
-              Accept: "application/json",
-              "Access-Control-Allow-Origin": "*",
-            },
-          };
-          axios
-            .post("http://localhost:4567/userJobResults", toSend, config)
-            .then((response) => {
-              let jobs = [];
-              Object.entries(response.data["userJobResults"]).map(
-                ([key, value]) => {
-                  jobs.push(
-                    <InternshipResult
-                      title={value["title"]}
-                      company={value["company"]}
-                      apply={value["link"]}
-                      description={value["requiredQualifications"]}
-                    />
-                  );
-                  this.setState({ internships: jobs });
+          firebase
+            .firestore()
+            .collection("user-data")
+            .doc(user.uid)
+            .get()
+            .then((doc) => {
+              if (doc.exists) {
+                if (doc.data().changed_resume) {
+                  this.getResultsFromBackend(user);
+                } else {
+                  this.getInternships(user);
                 }
-              );
+              }
             })
-            .catch(function (error) {
-              console.log(error);
+            .catch((error) => {
+              console.log(error.message);
             });
           this.setState({ uid: user.uid });
           this.setState({ access: true });
@@ -66,7 +213,7 @@ class InternshipsForMeScreen extends Component {
 
   componentDidMount() {
     this.getUserID();
-    this.id = setTimeout(() => this.setState({ loading: false }), 1000);
+    this.id = setTimeout(() => this.setState({ loading: false }), 3000);
   }
 
   componentWillUnmount() {

@@ -12,14 +12,16 @@ class bcolors:
     UNDERLINE = '\033[4m'
 
 def run_script():
-    print(f"{bcolors.OKCYAN}EXECUTING: npm start as bg process{bcolors.ENDC}")
     print(f"{bcolors.WARNING}CHANGE DIRECTORY: os.chdir('./frontend'): in frontend directory{bcolors.ENDC}")
     os.chdir('./frontend')
     # https://stackoverflow.com/questions/1196074/how-to-start-a-background-process-in-python
     # os.spawnl(os.P_DETACH, 'npm start')
     # os.spawnl(os.P_NOWAIT, 'npm start')
     # runs npm start as bg process - may only work on unix based systems
-    os.system('npm start &')
+    print(f"{bcolors.OKCYAN}EXECUTING: yarn install{bcolors.ENDC}")
+    os.system('yarn install')
+    print(f"{bcolors.OKCYAN}EXECUTING: yarn start as bg process{bcolors.ENDC}")
+    os.system('yarn start &')
     print(f"{bcolors.WARNING}CHANGE DIRECTORY: os.chdir('../'): in project root directory{bcolors.ENDC}")
     os.chdir('../')
     print(f"{bcolors.OKCYAN}EXECUTING: mvn package{bcolors.ENDC}")

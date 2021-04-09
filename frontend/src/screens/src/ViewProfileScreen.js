@@ -440,6 +440,7 @@ class ViewProfileScreen extends Component {
         coursework: this.state.coursework,
         skills: this.state.skills,
         initial_profile_setup_complete: true,
+        changed_resume: true,
       })
       .then(() => {
         firebase

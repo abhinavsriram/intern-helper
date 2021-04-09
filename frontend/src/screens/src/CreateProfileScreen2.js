@@ -210,6 +210,7 @@ class CreateProfileScreen2 extends Component {
           major_gpa: this.state.majorGPA,
           coursework: this.state.coursework,
           skills: this.state.skills,
+          changed_resume: true
         })
         .then(() => {
           firebase
