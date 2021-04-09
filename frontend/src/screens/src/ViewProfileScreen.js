@@ -657,7 +657,7 @@ class ViewProfileScreen extends Component {
             <ErrorMessage
               hidden={this.state.deleteVisible}
               ok={() => this.deleteHelperYes(this.state.currDeleteID)}
-              cancel={this.deleteHelperNo}
+              cancel={() => this.deleteHelperNo()}
               message={"Are you sure you wish to delete this experience?"}
             />
           </div>
