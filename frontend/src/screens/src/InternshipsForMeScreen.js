@@ -6,6 +6,7 @@ import image from "../../media/accessdenied.jpeg";
 import CustomButton from "../../components/src/CustomButton";
 import { WaveLoading } from "react-loadingg";
 import InternshipResult from "../../components/src/InternshipResult";
+import axios from 'axios';
 
 class InternshipsForMeScreen extends Component {
   constructor(props) {
@@ -55,7 +56,42 @@ class InternshipsForMeScreen extends Component {
       if (authFlag) {
         authFlag = false;
         if (user) {
-          this.setState({ uid: user.uid });
+            const toSend = {
+                id: user.uid,
+            }
+            let config = {
+                headers: {
+                    'Accept': 'application/json',
+                    'Access-Control-Allow-Origin': '*',
+                }
+            }
+            axios.post(
+                "http://localhost:4567/userJobResults",
+                toSend,
+                config
+            ).then(response => {
+                //console.log(response.data["userJobResults"])
+                let jobs = [];
+                Object.entries(response.data["userJobResults"]).map(([key,value]) => {
+                    //console.log(response.data);
+                    jobs.push(
+                    <InternshipResult
+                        title= {value["title"]}
+                        company={value["company"]}
+                        apply={value["link"]}
+                        description={ value["requiredQualifications"]
+                        }
+                    />)
+                this.setState({internships : jobs})
+                    //create local array
+                    //push to local array
+                    //setState
+                })
+            }).catch(function(error) {
+                console.log(error)
+            });
+
+            this.setState({ uid: user.uid });
           this.setState({ access: true });
         } else {
           this.setState({ access: false });
