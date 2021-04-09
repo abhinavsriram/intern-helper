@@ -1,0 +1,2 @@
+backend: java $JAVA_OPTS -cp target/classes:target/dependency/* edu.brown.cs.internhelper.Main.Main
+frontend: cd frontend && yarn install && yarn start -b 0.0.0.0:3000
