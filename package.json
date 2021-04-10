@@ -48,5 +48,8 @@
     "crypto-js": "^4.0.0",
     "firebase-admin": "^9.6.0",
     "react-router-dom": "^5.2.0"
-  }
+},
+    "engines": {
+         "node": "14.16.0"
+    }
 }
