@@ -1,2 +1,3 @@
-frontend: cd frontend && yarn install --network-timeout=100000 && yarn start
+movefile: python3 movefile.py
+frontend: cd frontend && yarn start
 backend: java $JAVA_OPTS -cp target/classes:target/dependency/* edu.brown.cs.internhelper.Main.Main
