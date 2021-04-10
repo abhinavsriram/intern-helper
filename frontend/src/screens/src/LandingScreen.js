@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import "../styles/LandingScreen.css";
 import firebase from "../../firebase.js";
-
 import TextBox from "../../components/src/TextBox";
 import CustomButton from "../../components/src/CustomButton";
 

@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 import "../styles/SignUpScreen.css";
-
 import firebase from "../../firebase";
-
 import TextBox from "../../components/src/TextBox";
 import CustomButton from "../../components/src/CustomButton";
 
