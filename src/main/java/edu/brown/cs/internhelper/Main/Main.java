@@ -43,6 +43,7 @@ public final class Main {
     try {
       new Main(args).run();
     } catch (Exception e) {
+      e.printStackTrace();
       System.out.println("ERROR: oops something went wrong");
     }
   }
