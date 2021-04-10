@@ -1,21 +1,41 @@
-{
-   "name": "frontend",
+ {
+   "name": "intern-helper",
    "version": "0.1.0",
-   "description": "Intern Helper.",
-   "main": "web.js",
-   "scripts": {
-     "test": "echo \"Error: no test specified\" && exit 1"
-   },
-   "keywords": [
-     "example",
-     "heroku"
-   ],
-   "author": "jane-doe",
-   "license": "MIT",
+   "private": true,
    "dependencies": {
-     "express": "^4.9.8"
+     "@testing-library/jest-dom": "^5.11.4",
+     "@testing-library/react": "^11.1.0",
+     "@testing-library/user-event": "^12.1.10",
+     "react": "^17.0.2",
+     "react-dom": "^17.0.2",
+     "react-scripts": "4.0.3",
+     "web-vitals": "^1.0.1"
    },
-   "engines": {
-     "node": "14.16.0"
-   }
+   "scripts": {
+     "start": "",
+     "build": "",
+     "test": "react-scripts test",
+     "eject": "react-scripts eject"
+   },
+   "eslintConfig": {
+     "extends": [
+       "react-app",
+       "react-app/jest"
+     ]
+   },
+   "browserslist": {
+     "production": [
+       ">0.2%",
+       "not dead",
+       "not op_mini all"
+     ],
+     "development": [
+       "last 1 chrome version",
+       "last 1 firefox version",
+       "last 1 safari version"
+     ]
+ },
+ "engines": {
+   "node": "14.16.0"
+ }
  }
