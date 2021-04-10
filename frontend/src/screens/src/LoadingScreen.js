@@ -18,6 +18,7 @@ class LoadingScreen extends Component {
   };
 
   componentDidMount() {
+    console.log("GETS TO LOADING SCREEN");
     this.checkIfUserLoggedIn();
   }
 
