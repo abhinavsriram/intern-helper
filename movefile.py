@@ -6,6 +6,5 @@ try:
     original = cwd + "/node_modules"
     target = cwd + "/frontend"
     shutil.move(original,target)
-    input("prompt: ")
 except:
-    input("prompt: ")
+    print("oops")
