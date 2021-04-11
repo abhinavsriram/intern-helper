@@ -19,7 +19,7 @@ with open('linkedin_cre.csv', 'w', newline='') as x:
 
 driver.find_element_by_xpath('//*[@id="JOBS"]/section[2]/button').click()
 search = driver.find_element_by_name("keywords")
-search.send_keys("Accounting Intern")
+search.send_keys("Commercial Real Estate Intern")
 search.send_keys(Keys.RETURN)
 
 try:

@@ -13,13 +13,13 @@ driver = webdriver.Chrome(ChromeDriverManager().install())
 driver.get("https://www.linkedin.com/jobs")
 
 # creates the csv file
-with open('linkedin_cre.csv', 'w', newline='') as x:
+with open('linkedin_se.csv', 'w', newline='') as x:
     writer = csv.writer(x)
     writer.writerow(['title','company','location', 'requirements', 'link'])
 
 driver.find_element_by_xpath('//*[@id="JOBS"]/section[2]/button').click()
 search = driver.find_element_by_name("keywords")
-search.send_keys("Accounting Intern")
+search.send_keys("Systems Engineer Intern")
 search.send_keys(Keys.RETURN)
 
 try:
@@ -94,7 +94,7 @@ try:
         else:
             pass
         try:
-            with open('linkedin_cre.csv', 'a+', newline='') as x:
+            with open('linkedin_se.csv', 'a+', newline='') as x:
                 writer = csv.writer(x)
                 writer.writerow([title.text, company.text, location.text, requirements.text, link])
         except:
