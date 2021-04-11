@@ -15,7 +15,7 @@ class bcolors:
     UNDERLINE = '\033[4m'
 
 def run_script():
-    suffix = ['a', 'c', 'cn', 'da', 'de', 'ds', 'e', 'gd', 'hr', 'ia', 'l', 'm', 'mm', 'o', 'p', 'ph', 'pm', 'pr', 'r', 'sm', 'swe', 'ux'];
+    suffix = ['a', 'bank', 'bd', 'bs', 'c', 'ca', 'camp', 'cc', 'cd', 'cnc','cn', 'corstrat', 'cre','da', 'de', 'ds', 'dt','e','ei','eq','fi', 'ga','gd', 'gr','hr','hcc','hcr','hcra','ib','ia', 'la','l','lob','m', 'mm', 'md','ne','o','oure','p','pe','ph', 'pm', 'po','pr', 'ps','qae','r', 'ra','red','ro','repm','reo','s','se','sa','sc','se','sm','ss','swe','sw','ta','tf','ux','wd','wm'];
     for s in suffix:
         filename = 'combined_' + s + '.py'
         csvname = 'combined_' + s + '.csv'
