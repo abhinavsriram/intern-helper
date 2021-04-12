@@ -20,13 +20,16 @@ class bcolors:
 
 
 def run_script():
-    print(f"{bcolors.OKCYAN}PUSHING: pushing all changes to github{bcolors.ENDC}")
+    print(f"{bcolors.HEADER}-----------------------CREATING RPODUCTION BUILD OF REACT APP-----------------------{bcolors.ENDC}")
+    os.system('cd frontend')
+    os.system('npm run build')
+    print(f"{bcolors.HEADER}-----------------------PUSHING PRODUCTION BUILD TO GITHUB-----------------------{bcolors.ENDC}")
     os.system('git add .')
     os.system('git commit --allow-empty -m "automated script deploying app to Heroku"')
     os.system('git push')
-    print(f"{bcolors.OKCYAN}PUSHING: pushing all changes to heroku{bcolors.ENDC}")
+    print(f"{bcolors.HEADER}-----------------------PUSHING PRODUCTION BUILD TO HEROKU-----------------------{bcolors.ENDC}")
     os.system('git push heroku master')
-    print(f"{bcolors.OKGREEN}HOSTED: successfully hosted on Heroku{bcolors.ENDC}")
+    print(f"{bcolors.OKGREEN}-----------------------SUCCESSFULLY HOSTED ON HEROKU-----------------------{bcolors.ENDC}")
 
 
 if __name__ == '__main__':
