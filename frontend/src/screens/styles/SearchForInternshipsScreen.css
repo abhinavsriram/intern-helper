@@ -1,0 +1,43 @@
+.main-div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.flex-wrap {
+    --gap: 70px;
+    display: inline-flex;
+    flex-wrap: wrap;
+    margin: calc(-1 * var(--gap)) 0 0 calc(-1 * var(--gap));
+    width: calc(100% + var(--gap));
+}
+
+.flex-wrap > * {
+    margin: var(--gap) 0 0 var(--gap);
+}
+
+.industry-wrapper {
+    margin-left: 1%;
+    margin-top: 40px;
+}
+
+.header-search {
+    font-size: 62px;
+    font-family: Montserrat, sans-serif;
+    color: #9cdcff;
+}
+
+.subheading-1 {
+    font-size: 44px;
+    font-family: Montserrat, sans-serif;
+    color: #9cdcff;
+    margin-top: 20px;
+}
+
+.subheading-2 {
+    font-size: 44px;
+    font-family: Montserrat, sans-serif;
+    color: #9cdcff;
+    margin-top: 35px;
+    margin-bottom: 35px
+}

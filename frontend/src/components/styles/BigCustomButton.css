@@ -8,6 +8,7 @@
     justify-content: center;
     align-items: center;
     font-size: 24px;
+    text-align: center;
 }
 
 .big-custom-button:hover {
