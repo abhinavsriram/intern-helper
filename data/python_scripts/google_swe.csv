@@ -1,0 +1,406 @@
+title,company,location,requirements,link
+"Software Engineer, Intern/Co-op",Facebook,"Providence, RI","*Intro:* Facebook's mission is to give people the power to build community and bring the world closer together. Through our family of apps and services, we're building a different kind of company that connects billions of people around the world, gives them ways to share what matters most to them, and helps bring people closer together. Whether we're creating new products or helping a small business expand its reach, people at Facebook are builders at heart. Our global teams are constantly iterating, solving problems, and working together to empower people around the world to build community and connect in meaningful ways. Together, we can help people build stronger communities - we're just getting started..*Summary:* Want to build new features and products that touch more than a billion people around the world? Want to build new features that improve existing products like Photos, Groups, NewsFeed, Search, and Messaging? Want to solve unique, large-scale, highly complex technical problems? Our development cycle is extremely fast, and we've built tools to keep it that way. It's common to write code and have it running live on the site hours later. If you work for us you will make an impact, immediately. Facebook is seeking interns/co-ops to join our engineering team. As a Software Engineer Intern, you'll drive the development of systems behind Facebook's products, create web applications that reach millions of people, build high volume Servers and be a part of a team that's working to help connect people around the globe.This internship/co-op has a minimum twelve (12) week duration..*Required Skills:* 1. Code high-volume software using primarily C++ and Java 2. Create web applications using primarily PHP 3. Implement web interfaces using XHTML, CSS, and JavaScript 4. Build report interfaces and data feeds.*Minimum Qualifications:* 5. 1 or more years of experience with perl, java, php, python, or C++ 6. Must be currently enrolled in a full-time, degree-seeking program and in the process of obtaining a Bachelors or Masters degree in Computer Science or a related field 7. Must obtain work authorization in country of employment at the time of hire, and maintain ongoing work authorization during employment.*Preferred Qualifications:* 8. Demonstrated software engineering experience from previous internship, work experience, coding competitions, or publications 9. Intent to return to degree-program after the completion of the internship/co-op 10. High levels of creativity and quick problem-solving capabilities.*Industry:* Internet.*Equal Opportunity:* Facebook is proud to be an Equal Opportunity and Affirmative Action employer. We do not discriminate based upon race, religion, color, national origin, sex (including pregnancy, childbirth, or related medical conditions), sexual orientation, gender, gender identity, gender expression, transgender status, sexual stereotypes, age, status as a protected veteran, status as an individual with a disability, or other applicable legally protected characteristics. We also consider qualified applicants with criminal histories, consistent with applicable federal, state and local law. Facebook is committed to providing reasonable accommodations for candidates with disabilities in our recruiting process. If you need any assistance or accommodations due to a disability, please let us know at (see below",https://www.nbc4jobs.com/jobs/software-engineer-intern-co-op-providence-rhode-island/260115592-2/?utm_campaign=google_jobs_apply&utm_source=google_jobs_apply&utm_medium=organic
+Software Engineer Intern,Virgin Pulse,"Providence, RI (+1 other)","Overview
+
+We are currently looking for a CS or Computer Engineering students to work a 6-month paid internship assignment starting in January 2021. Opportunity located in Providence, RI.
+
+LOCAL CANDIDATES ONLY
+
+Who we are:
+
+Virgin Pulse, founded as part of Sir Richard Branson’s famed Virgin Group, helps organizations build employee health and wellbeing into the DNA of their corporate cultures. As the only company to deliver a powerful, mobile-first digital platform infused with live services, including coaching and biometric screenings, Virgin Pulse takes a high-tech-meets-high-touch-approach to engage employees in improving across all aspects of their health and wellbeing, every day – from prevention and building a healthy lifestyle to condition and disease management to condition reversal, all while transparently engaging users daily in building and sustaining relevant healthy habits and behaviors. A global leader in health and wellbeing, Virgin Pulse is committed to helping change lives and businesses around the world for good so that people and organizations can thrive, together. Today, more than 3100 organizations across the globe are using Virgin Pulse’s solutions to improve health, employee wellbeing and engagement, reduce costs and create strong workplace cultures.
+
+We engage several million members worldwide through our App Store and Play Store Applications that have over 500k consumer reviews and 4.8+ ratings
+
+Who are our employees?
+
+At Virgin Pulse we’re passionate about changing lives for good. We want to make a difference in the world by helping people be healthy so they can perform at their best, every day, at work and at home. Our award-winning solutions support leading employers in improving and simplifying the employee health and wellbeing journey and engaging people in all aspects of their health. But our world-class products and programs are nothing without our people – the employees who design, build, promote, sell, test and perfect the latest innovations in workplace health and wellbeing. Our people are our top priority and we invest in their health and happiness. At Virgin Pulse, we have so much more than a strong, supportive company culture – have a shared vision for a healthier, happier world.
+Responsibilities
+
+Who you are.
+
+You are a CS or Computer Engineering student and have the desire to be a professional Software Engineer and have a goal to find a position on a technology team focused on continuing the growth of our next-generation SaaS application.
+
+In addition to the above you possess a number of desirable traits including:
+• You have outstanding problem solving and analytical skills
+• You are a good communicator (written and verbal)
+• You are enthusiastic about working in a team, and have great people skills
+• A passion for learning technologies and applying them to the right projects will make you successful in this position.
+
+In a typical week you may:
+• Build features used by hundreds-of-thousands of people around the world
+• Write code on a modern software stack (Java and AngularJS are the main flavors of the day, but we also use Scala, CQL for Cassandra, and other modern technologies)
+• Troubleshoot and investigate issues across every aspect of our platform
+• Participate and contribute to code reviews
+• Collaborate with other functional groups like design, product, technical implementation as well as our global engineering teams
+• Work on a product that changes people’s lives
+• Have fun doing all of the above
+
+Our technology.
+Our next generation SAAS platform is using an exciting mixture of technologies: Large scale, highly available, public-facing websites built in React/Angular/Angular2 and leveraging tools like Puppet, Pug, Grunt and NPM to make things automated and repeatable. Our Java/Scala/Kotlin-based REST API is built on Spring Boot and Hibernate which serves traffic to both web and mobile consumers. We’re using a combination of Mongo, MySQL, PostgreSQL, Cassandra and Redis. Redis, specifically, is used extensively in a distributed locking system, responsible for supporting real-time data processing. All of this uses Amazon Web Services extensively for stability and high availability.
+
+We practice Continuous Integration and Continuous Delivery using TeamCity; as a result we have continual smaller releases to our environments (Development, QA, Staging, Production), with integrated unit tests and code coverage analysis while eliminating the risk taken on with only a few large releases/product updates.
+Qualifications
+
+What you bring to the team.
+• Currently working toward a B.S./M.S. in Computer Science or equivalent engineering degree.
+• You are self-motivated, creative, and detail oriented
+• Skills in full-stack, web development or similar (REST, Java, JavaScript)
+• Knowledge of OO programming and applications built on distributed service architecture
+• Enjoy actively experimenting with new technologies
+• Excellent verbal and written communication skills
+
+Bonus Points for:
+• Comfort traversing the whole app (web or mobile) stack: client-side through the persistence layer
+• Hands-on experience with some of the tech we use: Git, TypeScript, AngularJS, Angular2, HTML5, CSS3, MVC/MVVM Frameworks
+• PostgreSQL, NoSQL
+• Experience with Agile methodologies including Scrum or Kanban
+• Exposure to continuous integration and/or continuous deployment and automated testing
+• Familiarity with webpack and JavaScript build tools
+
+Security Competencies:
+
+Work to ensure system and data security is maintained at a high standard, ensuring the confidentiality, integrity and availability of the Virgin Pulse application is not compromised. Ensure industry best practice coding standards are adhered to in particular ensure all code developed at Virgin Pulse is free from bugs and security vulnerabilities, such as those defined and published by OWASP.
+
+Why work here?
+
+We believe a career should provide competitive pay and benefits, a collaborative and supportive work environment, strong employee culture and cutting-edge technology and services — so many reasons to love it here.
+• We are an equal opportunity employer and all qualified applicants will receive consideration for employment without regard to any protected class status",https://venturefizz.com/jobs/other/software-engineer-intern-at-virgin-pulse-providence-ri?utm_campaign=google_jobs_apply&utm_source=google_jobs_apply&utm_medium=organic
+Software Engineering Intern,Schrader-Bridgeport International Inc.,"Attleboro, MA","Get a jump on your future career by taking advantage of some great hands-on engineering experience. Sensata is looking for some intelligent, proactive independent thinkers for summer internships.
+
+Sensata Technologies is the world's leading supplier of sensors and controls across a broad range of markets and applications. We are leaders in the global automotive, appliance, aircraft, industrial and HVAC markets with sensing and protection solutions that improve safety and efficiency for millions of people every day.
+
+Experienced colleagues are always willing to provide needed guidance. The decisions and actions of our entry level engineers have a direct and immediate impact on our products and our customers.
+This team will be focused on bringing connectivity to our next gen sensors playing a critical role in larger Industrial systems. You will work on low level embedded firmware design and implementation, real time operating systems (RTOS), device drivers, and in one or more wired/wireless connectivity technologies such as CANOpen, IOLink, ZigBee, Bluetooth, LoRa.
+
+(Note: interns are treated as engineers on the team, with real responsibility for important projects that contribute to the business.)
+
+-
+
+Most important tasks and responsibilities:
+• Our engineers are involved in all phases of product development from initial identification of customer needs to high volume production implementation. Emphasis is on the use of state-of-the-art concepts, materials, and assembly technologies. This is a hands-on position for an individual who wants to see her/his ideas embodied in successful products.
+• Creativity and innovation essential to meet customer requirements and to improve performance, quality and cost.
+• Design creativity.
+• Must be able to clearly present new, exciting, and beneficial design concepts to customers, managers, and peers.
+• Ability to collaborate effectively with team members while maintaining strong sense of individual responsibility.
+• Strong interpersonal skills to work effectively with superiors, peers, subordinates, suppliers, and customers. Frequent customer interaction with OEMs (original equipment manufacturers) is common.
+• Ability to work in a fast-paced development environment with complex project attributes.
+• Ability to develop unique, differentiated solutions to complex problems.
+• Ability to meet demands of customers on schedule and within budget.
+• Strong team leadership and team membership skills.
+• Strong sense of individual responsibility.
+• Ability to work with other business orgs. (Quality, Marketing, Purchasing, etc.)
+• Ability to influence others.
+• Evidence of participation in team-based project work and ability to fill multiple roles.
+• Ability to understand higher-level aspect of project.
+• Ability to take responsibility for things outside your direct control.
+• Ability and desire to work with global teams.
+
+-
+
+Educational requirements:
+• Pursuing a BS or MS in Computer Science, Electrical Engineering, Computer Engineering or similar degree
+• U.S. citizen or U.S. permanent resident is NOT required for this position, however proper work authorizations will be required.
+
+-
+SmarterTogether
+• Collaborating at Sensata means working with some of the world's most talented people in an enriching environment that is constantly pushing towards the next best thing.
+• Employees work across functions, countries and cultures gaining new perspectives through mutual respect and open communication.
+• As OneSensata, we are working together to make things work together
+
+NOTE: If you are a current Sensata employee (or one of our Affiliates), please back out of this application and log into Workday via the Company Intranetto apply directly. Type ""FIND JOBS"" in the Workday search bar","https://www.ziprecruiter.com/c/Schrader-Bridgeport-International-Inc./Job/Software-Engineering-Intern/-in-Attleboro,MA?jid=3f4b65c3c779c71b&utm_campaign=google_jobs_apply&utm_source=google_jobs_apply&utm_medium=organic"
+Infinity Software Engineer Intern - Summer/Fall 2021,Oracle,"Providence, RI","This job code is utilized for the majority of our temporary hires. The individual is performing hourly job duties as defined under the Fair Labor Standards Act..Oracle is an Affirmative Action-Equal Employment Opportunity Employer. All qualified applicants will receive consideration for employment without regard to race, color, religion, sex, national origin, sexual orientation, gender identity, disability, protected veterans status, age, or any other characteristic protected by law.*.This is a remote/office based position which may be performed anywhere in the United States except for within the state of Colorado.* With Oracle Infinity, marketers can put data in motion and turn it into their most powerful business asset. Oracle Infinity is an analytics solution that harnesses big data and works in Real Time to collect, process, and deliver actionable customer intelligence at scale - with unlimited flexibility. To deliver on this promise, the Infinity Engineering Team crafts solutions of the highest quality leveraging cutting edge technologies, best practices, and a test driven approach in a highly collaborative environment where accountability, innovation, and initiative are valued. Our development teams focus on enabling our customers to solve their unique business challenges by leveraging the power of our big data and streaming data platforms. Our developers design solutions that rely on choosing the right tool for the job, often with cutting edge technologies. We offer a highly collaborative work environment where accountability, innovation, and initiative are valued and best practices, coding standards, and a test driven attitude are leveraged to produce software of the highest quality. ----------------------------------------------------------------.To be considered for a Software Engineer Intern position on the Infinity team, you_must_possess the Objective Minimum Qualifications (OMQs) below*. Please ensure that your application clearly indicates that you meet these OMQs, either on your resume and/or by uploading additional documents such as a transcript.. Have less than 12 months of Full time professional work experience in a relevant technical field, EXCLUDING internships, research and/or teaching assistant roles, and military experience. Must fulfill the requirements of the*PCEP program at Portland State University*(https://www.pdx.edu/computer-science/pcep-internship). Are able to obtain work authorization in the United States in 2021.*Job:*.*All Roles*.*Organization:*.*Oracle*.*Title:*.Infinity Software Engineer Intern - Summer/Fall 2021*.*Location:*.United States*.*Requisition ID:*.21000HGV",https://www.fox8jobs.com/jobs/infinity-software-engineer-intern-summer-fall-2021-providence-rhode-island/261206953-2/?utm_campaign=google_jobs_apply&utm_source=google_jobs_apply&utm_medium=organic
+Intern - Software Engineer,Pearson,"Providence, RI","Job Information
+
+Pearson Intern - Software Engineer in Providence, Rhode Island
+
+Intern - Software Engineer - ( 2102484 )
+
+Description
+
+PEARSON INTERNSHIP PROGRAM 2021
+
+Software Engineer
+
+Pearson Interns - Helping shape the future of education
+
+Why join Pearsons intern program?
+
+Pearson is the worlds learning company. We help people of all ages acquire the knowledge and skills they need to be successful in their work and careers. We believe that everyone should be able to keep learning, every day and in every way, throughout their lives. Bringing together everything we know about the science of learning and the latest technology; were shaping the future of teaching and learning.
+
+Were looking for the next generation of talented undergraduates to join our team for an unforgettable 10-week internship. An internship at Pearson is an opportunity to bring your own unique perspective as a learner, together with your academic knowledge, technical skills, and enthusiasm, to help create products used by students like you.
+
+As one of our interns, you will gain a comprehensive introduction to our business. Youll be assigned to a team and work on real-life projects that bring our products and services to life. On the job training and professional development will be provided to enable you to contribute to the business. Youll also have direct access to a senior member of the team, as each intern will be mentored to help you make the most of the ten-week program.
+
+We foster a work environment thats inclusive as well as diverse, where our people can be themselves. Every idea and perspective is valued so that our products reflect the people we serve our teachers and learners.
+
+What Does the Internship Program Offer?
+
+Successful candidates will spend 10 weeks working with our technology teams.
+
+You will be paid for the duration of your internship. The internship begins on Monday, June 7th and ends Friday, August 13 th .
+
+Pearson is an Equal Opportunity and Affirmative Action Employer and a member of E-Verify. All qualified applicants, including minorities, women, protected veterans, and individuals with disabilities are encouraged to apply.
+
+What are we looking for in an Intern
+• Enrolled in an undergraduate or graduate technical degree in Information Science / Information Technology, Computer Science, Engineering, Mathematics, Physics, or a related field
+• Strong communication skills with the ability to discuss any issues with a wide variety of individuals and groups
+• Creative and innovative skills with regards to knowledge and awareness of industry trends and digital advances as they relate to new opportunities and business needs
+• Ability to work autonomously
+• Ability to learn quickly and apply learning to problems or activities
+• A strategic thinker and listener who acquires good problem-solving techniques
+• An organized team player who can manage multiple tasks
+• Familiarity with Excel, SQL, AWS, Google Cloud, Java, Go, Python, R, QL, TensorFlow, or Tableau
+• Min 3.0 GPA
+• Graduation date between 2022 and 2023
+• Interns should be within driving distance of office location
+
+Job description
+
+Overall Responsibilities:
+• Ensures that code artifacts produced are of the highest quality, conforming to set or agreed upon standards under the guidance of software engineer
+• Follows the Pearson practices and processes.
+• Escalates and communicates issues, risks, and concerns to the mentor
+• Makes effective use of engineering tools and technologies
+• Builds competencies in product and technology domain to the desired level.
+• Aligns self to organizational goals.
+• Adhere to Pearson values and ethical practices.
+• Maintains a sense of individuality in thinking and decision making.
+
+The anticipated starting salary range for Colorado-based individuals expressing interest in this position is $30/hr. This position is not bonus eligible
+
+Benefits available to eligible employees can be seen at: https://pearsonbenefitsus.com/
+
+Pearson is an Equal Opportunity and Affirmative Action Employer and a member of E-Verify. All qualified applicants, including minorities, women, protected veterans, and individuals with disabilities are encouraged to apply.
+
+Qualifications
+• Enrolled in an undergraduate or graduate technical degree in Information Science / Information Technology, Computer Science, Engineering, Mathematics, Physics, or a related field
+• Strong communication skills with the ability to discuss any issues with a wide variety of individuals and groups
+• Creative and innovative skills with regards to knowledge and awareness of industry trends and digital advances as they relate to new opportunities and business needs
+• Ability to work autonomously
+• Ability to learn quickly and apply learning to problems or activities
+• A strategic thinker and listener who acquires good problem-solving techniques
+• An organized team player who can manage multiple tasks
+• Familiarity with Excel, SQL, AWS, Google Cloud, Java, Go, Python, R, QL, TensorFlow, or Tableau
+• Min 3.0 GPA
+• Graduation date between 2022 and 2023
+
+Primary Location : US-RE-Remote
+
+Other Locations : US-California
+
+Work Locations :
+
+US-Remote
+
+Remote
+
+Job : Project/Temporary Workforce
+
+Organization : Technology & Operations
+
+Employee Status : Fixed Term
+
+Job Type : Internship
+
+Job Level : Entry Level
+
+Shift : Day Job
+
+Job Posting : Feb 22, 2021
+
+Job Unposting : Ongoing
+
+Schedule: : Full-time Temporary
+
+Req ID: 2102484",https://www.internships.com/posting/bug_38956935149?utm_campaign=google_jobs_apply&utm_source=google_jobs_apply&utm_medium=organic
+Software Engineering Intern,Open Learning Exchange,"Providence, RI",,https://b-jobz.com/us/web/jobposting/77098256?utm_campaign=google_jobs_apply&utm_source=google_jobs_apply&utm_medium=organic
+Software Engineer (Internship for 2021),Cisco,"Providence, RI","• *What You’ll Do**
+
+Our software engineers are the gurus behind the scenes ensuring all of our programs are easy to use and bug free. Using a keen eye, you’ll develop software and tools in support of many of our high-impact technology platforms such as operating systems, networks, databases and more. While we’re growing in the software business, you’ll still need to see the big picture and watch for hardware compatibility while even potentially influencing design.
+• *Who You’ll Work With**
+
+Our hardworking team members are busy programming magic across the globe on teams such as Engineering, Information Technology, Supply Chain, Customer Experience, Security and Trust, etc.
+
+You would play a crucial role in driving next-gen software innovations including cloud, mobile, desktop or security spaces. On any of these teams, you'll get hands-on experience working with applications that make technology accessible no matter what device they’re on. See the possibilities when creativity meets design and build solutions which will transform how we work, live, learn, and play",https://engenha.com/us/jobs/software-engineer-internship-for-2021/6014673?utm_campaign=google_jobs_apply&utm_source=google_jobs_apply&utm_medium=organic
+Cloud Engineer Intern (Summer 2021),Hasbro,Anywhere,"At Hasbro, we’re changing the face of play and entertainment. We’re looking for people who want to explore, experiment and innovate to come up with the best ideas. Our culture of Community, Passion, Integrity, Creativity and Inclusion has inspired our diverse team of highly skilled, highly creative and highly committed individuals for 90+ years and we believe the best is yet to come.
+
+As a Cloud Engineer Summer Intern, you will collaborate with software developers, system engineers and other IT staff members to manage public cloud environments. You will cross and merge the barriers that exist between software development, testing and operations teams.
+
+A day in the life of a Cloud Engineer Intern:
+• Take ownership and manage projects for teams enabling Continuous Integration and automation of service integration, delivery, deployments, and cloud infrastructure
+• Design and develop services using open source and commercial technologies
+• Work within an AWS cloud environment, leading POCs and support systems engineering efforts.
+• Focus on continuous learning and presenting learnings on a regular basis with the engineering team.
+• Have an open and curious mind to support an innovative culture.
+
+What you'll bring:
+• A background in Computer Science. Must be currently enrolled in an acredited undergrad or graduate program. May 2021 or earlier graduates are no longer eligible for Hasbro Internship opportunities.
+• Expeirence with Cloud Computing, particularly AWS and Systems Engineering
+• Ability to work proactively on a team or as an individual contributer
+• Remote candiates living in the US may be considered
+
+About Hasbro
+
+Hasbro (NASDAQ: HAS) is a global play and entertainment company committed to Creating the World's Best Play and Entertainment Experiences. From toys, games and consumer products to television, movies, digital gaming, live action, music, and virtual reality experiences, Hasbro connects to global audiences by bringing to life great innovations, stories and brands across established and inventive platforms. Hasbro’s iconic brands include NERF, MAGIC: THE GATHERING, MY LITTLE PONY, TRANSFORMERS, PLAY-DOH, MONOPOLY, BABY ALIVE, POWER RANGERS, PEPPA PIG and PJ MASKS, as well as premier partner brands. Through its global entertainment studio, eOne, Hasbro is building its brands globally through great storytelling and content on all screens. Hasbro is committed to making the world a better place for all children and all families through corporate social responsibility and philanthropy. Hasbro ranked among the 2020 100 Best Corporate Citizens by 3BL Media, has been named one of the World’s Most Ethical Companies® by Ethisphere Institute for the past nine years, and one of America’s Most JUST Companies by Forbes and JUST Capital for the past four years. We routinely share important business and brand updates on our Investor Relations website, Newsroom and social channels (@Hasbro on Twitter and Instagram, and @HasbroOfficial on Facebook.)
+
+© 2020 Hasbro, Inc. All Rights Reserved","https://www.glassdoor.com/job-listing/cloud-engineer-intern-summer-2021-hasbro-JV_IC1151256_KO0,33_KE34,40.htm?jl=4029394572&utm_campaign=google_jobs_apply&utm_source=google_jobs_apply&utm_medium=organic"
+Software Engineering Intern,"Sensata Technologies, Inc.","Attleboro, MA (+1 other)","Get a jump on your future career by taking advantage of some great hands-on engineering experience. Sensata is looking for some intelligent, proactive independent thinkers for summer internships.
+
+Sensata Technologies is the world's leading supplier of sensors and controls across a broad range of markets and applications. We are leaders in the global automotive, appliance, aircraft, industrial and HVAC markets with sensing and protection solutions that improve safety and efficiency for millions of people every day.
+
+Experienced colleagues are always willing to provide needed guidance. The decisions and actions of our entry level engineers have a direct and immediate impact on our products and our customers.
+
+This team will be focused on bringing connectivity to our next gen sensors playing a critical role in larger Industrial systems. You will work on low level embedded firmware design and implementation, real time operating systems (RTOS), device drivers, and in one or more wired/wireless connectivity technologies such as CANOpen, IOLink, ZigBee, Bluetooth, LoRa.
+• *(Note:** interns are treated as engineers on the team, with real responsibility for important projects that contribute to the business.)
+
+-
+• *Most important tasks and responsibilities:**
+
++ Our engineers are involved in all phases of product development from initial identification of customer needs to high volume production implementation. Emphasis is on the use of state-of-the-art concepts, materials, and assembly technologies. This is a hands-on position for an individual who wants to see her/his ideas embodied in successful products.
+
++ Creativity and innovation essential to meet customer requirements and to improve performance, quality and cost.
+
++ Design creativity.
+
++ Must be able to clearly present new, exciting, and beneficial design concepts to customers, managers, and peers.
+
++ Ability to collaborate effectively with team members while maintaining strong sense of individual responsibility.
+
++ Strong interpersonal skills to work effectively with superiors, peers, subordinates, suppliers, and customers. Frequent customer interaction with OEMs (original equipment manufacturers) is common.
+
++ Ability to work in a fast-paced development environment with complex project attributes.
+
++ Ability to develop unique, differentiated solutions to complex problems.
+
++ Ability to meet demands of customers on schedule and within budget.
+
++ Strong team leadership and team membership skills.
+
++ Strong sense of individual responsibility.
+
++ Ability to work with other business orgs. (Quality, Marketing, Purchasing, etc.)
+
++ Ability to influence others.
+
++ Evidence of participation in team-based project work and ability to fill multiple roles.
+
++ Ability to understand higher-level aspect of project.
+
++ Ability to take responsibility for things outside your direct control.
+
++ Ability and desire to work with global teams.
+
+-
+• *Educational requirements:**
+
++ Pursuing a BS or MS in Computer Science, Electrical Engineering, Computer Engineering or similar degree
+
++ U.S. citizen or U.S. permanent resident is NOT required for this position, however proper work authorizations will be required.
+
+-
+
+# Smarter _Together_
+
++ Collaborating at Sensata means working with some of the world's most talented people in an **enriching environment** that is constantly pushing towards the next best thing.
+
++ Employees work across functions, countries and cultures gaining **new perspectives** through mutual respect and open communication.
+
++ As OneSensata, we are working together to make things work together
+• *NOTE: If you are a current Sensata employee (or one of our Affiliates), please** **back out of this application** **and log into Workday via the Company Intranet to apply directly. Type ""FIND JOBS"" in the Workday search bar.**
+
+Return to Sensata.com
+
+# We are ready for the next century.
+
+Our vision is to be a world leader in mission-critical sensing and electrical protection while satisfying the world's growing need for safety, efficiency and a clean environment and being a partner, employer and neighbor of choice. Our sensors are the fundamental building blocks needed for a smart, connected, electrified and, ultimately, autonomous world. Click here to find out more about our Future Focus (https://www.sensata.com/about#future)
+
+# Sensing is what we do.
+
+In fact, our name Sensata comes from the Latin word sensate for 'those gifted with sense'. Our focus on sensing is also reflected in our logo, which spells Sensata in Braille.
+
+Sensata Technologies is a world leader and early innovator in mission-critical sensors and controls designed to make the world cleaner, safer and more efficient. Mission-critical means products that are essential and difficult to do. You'll find our 47,000 unique products in many applications anywhere from automotive braking systems to aircraft flight controls.
+
+Sensata devices are in systems that protect people and the environment, so what we do matters. We take pride in knowing our technologies improve safety, efficiency and comfort for millions of people every day.
+
+If you are an individual who requires a reasonable accommodation in connection with the hiring process and/or to perform the essential functions of the position for which you applied, please make a request to the recruiter or contact accommodations@sensata.com
+
+# Note to applicants for positions in the United States:
+
++ Sensata Technologies, Inc. (US) is proud to be an Equal Opportunity and Affirmative Action employer. All qualified applicants will receive consideration for employment without regard to race, color, religion, sex, gender identity, sexual orientation, age, national origin, protected veteran status, disability or any other basis protected by federal, state or local law.
+
++ View The EEO is the Law poster (https://www.dol.gov/ofccp/regs/compliance/posters/ofccpost.htm) and its supplement (https://www.dol.gov/ofccp/regs/compliance/posters/ofccpost.htm) .
+
++ Sensata Technologies, Inc. (US) participates in E-Verify. View the E-Verify posters (https://www.e-verify.gov/sites/default/files/everify/posters/EVerifyPart...)
+
+# Diversity Statement
+
+We are dedicated to ensuring our employees feel a sense of belonging (https://www.sensata.com/diversity) and respect every day. We believe that every individual has unique insights that others can learn from. Working at Sensata means you can bring your whole self to the table. Our goal is to achieve fair representation of women, minorities, veterans, people with disabilities, and all types of diversity among all levels in our organization",https://www.mendeley.com/careers/job/software-engineering-intern-3057532?utm_campaign=google_jobs_apply&utm_source=google_jobs_apply&utm_medium=organic
+Software Engineer Intern - Global Business Unit (GBU),Oracle,"Providence, RI","This job code is utilized for the majority of our temporary hires. The individual is performing hourly job duties as defined under the Fair Labor Standards Act.
+This is a remote/office based position which may be performed anywhere in the United States except for within the state of Colorado.
+Oracle is an Affirmative Action-Equal Employment Opportunity Employer. All qualified applicants will receive consideration for employment without regard to race, color, religion, sex, national origin, sexual orientation, gender identity, disability, protected veterans status, age, or any other characteristic protected by law.
+
+Software Engineer Intern - Global Business Unit (GBU)
+Oracle University Tech Recruiting
+• Locations: *Burlington - MA; Morrisville - NC; Columbia - MD; Austin - TX; Naples - FL; Cleveland - OH; Reston - VA; Minneapolis - MN; San Francisco - CA
+The Program:
+Our future success depends on hiring world-class, early in career talent who are looking to power next-generation services and solutions. We are hiring students with a diverse set of skills and experiences to work in and across multiple teams within our Global Business Unit. Our program is intended to enhance your overall learning experience, help build your network, and accelerate your opportunity to make an impact.
+The Organization:
+Global Business Unit (GBU) is a dedicated development organization with deep domain expertise, specializing in building and operating industry specific cloud applications. Our organization of over 23,000 employees works on solving the most complex business problems across a wide range of industries, globally.
+- Focused investment: $700 million annual R&D investment in industry applications
+o Over 30 acquisitions; target segment leaders
+- We serve 16M users across nearly 200,000 cloud customers in over 120 countries
+- Leverage Oracle Cloud technology, operations, and global scale
+The Global Business Unit is comprised of several industries, including:
+- Communication:Providing networks for service providers and enterprises
+- Construction and Engineering:Helping organizations plan, build, and operate critical assets
+Food and Beverage:Powering successful restaurants around the globe
+- Financial Services:Powering complex core banking, regulatory compliance, and analytics operations
+- Health Science:Transforming and advancing clinical research and patient care
+- Hospitality:Redefining guest experience in hospitality establishments around the world
+- Retail:Empowering commerce for 5,750 retailers in 96 countries
+- Utilities:Providing mission critical support for electric, gas, and water utilities worldwide
+The Company:
+Oracle is the world's leading provider of business software. With a presence in over 175 countries, we are one of the biggest technology companies on the planet. We're using innovative emerging technologies to tackle real-world problems today. From advancing energy efficiency to reimagining online commerce, the work we do is not only transforming the world of business-it's helping advance governments, power nonprofits, and giving billions of people the tools they need to outpace change.For more information about Oracle (NYSE:ORCL), visit us atoracle.com.*
+What You'll Do:
+We are seeking elite interns with the expertise and passion for solving challenging unique problems. You will use your knowledge and creativity to help design and build innovative new systems from the ground up. You will be writing code, completing programming projects, and performing testing and debugging of Oracle software. You will have the opportunity to work on cutting-edge technologies to solve real-world problems in a collaborative, agile environment.
+What You'll Bring: (Objective Minimum Qualifications)
+To be considered for a Software Engineer Intern position in the Global Business Unit, you must possess the Objective Minimum Qualifications (OMQs) below. Please ensure that your application clearly indicates that you meet these OMQs, either on your resume and/or by uploading additional documentssuch as a transcript.
+- Will be enrolled in a Bachelor's degree program in Computer Science, Computer Engineering, or an equivalent science/engineering field during the 2021-2022 school year.
+- Have completedat least your junior yeartoward your undergraduate degree, or higher, by summer 2021.
+- Haveno more than12 monthsof professional full-time work experience in the technology field (excluding internships, research and/or teaching assistant roles, and military experience).If you are interested in working at Oracle and you have more than 1 year of work experience in the technology field, please apply to Oracle's experienced job openings. For information on currently open positions at Oracle, please visit http://oracle.com/goto/careers
+- Are proficient (i.e., able to complete coding projects with no assistance) inat least twoof the following programming languages:
+o Java, Python, SQL, JavaScript, CSS, HTML
+- Have completed coursework, projects, internships, and or research inat least threeof the following:
+o Artificial Intelligence
+o Algorithms
+o Big Data
+o Data Structures
+o Database
+o Machine Learning
+o Object-Oriented Programming
+o Software Programming
+o Web/Mobile Development
+o Micro-Services Architecture
+o Container Architecture (e.g. Docker, Kubernetes)
+o User Interface Design
+- Attend a university in the US.
+- Able to obtain work authorization in the US in 2021.
+Ideal candidates will also have:
+- Experience with one or more of the following:
+o Unix/Windows Scripting
+o Mobile applications development and/or web development
+o Cloud Native Technology (K8, Containers; Virtualization; Observability tools; CI/CD)
+- Have completed at least one internship, research assistantship, or teaching assistantship
+What We'll Give You:
+High-impact projects:You'll get the opportunity to directly influence our cutting-edge products. Got a question or idea? Voice it. Your curiosity could help advance our next-generation cloud applications and help us find new ways to apply emerging technologies like AI, machine learning, and blockchain.
+Mentors that care:Work with industry-leading experts and award-winning engineers. On top of your project supervisor, you'll be assigned a peer mentor-a recent hire who can help you navigate the internship experience. You'll also be paired with intern buddies to ensure 360 degree support and engagement.
+• World-class training: *Grow from once-in-a-lifetime learning opportunities and exposure to the latest technologies. You'll benefit from comprehensive on-boarding and job-specific training that will help you get the most out of your time with us. Leadership training will help you build your business acumen.
+• A fun-filled summer: *Enjoy a close-knit, community experience alongside your class of fellow summer interns. Our interns work across the length and breadth of our business but come together for fun weekly events like tech talks, networking, volunteering, and fun social happenings.
+Getting to know you:
+Oracle is an Equal Employment Opportunity Employer. All qualified applicants will receive consideration for employment without regard to race, color, religion, sex, national origin, sexual orientation, gender identity, disability and protected veteran's status or any other characteristic protected by law.
+Job: *All Roles
+Organization: *Oracle
+Title: Software Engineer Intern - Global Business Unit (GBU)
+Location: United States
+Requisition ID: 210008O5",https://www.adzuna.com/details/2003424904?utm_campaign=google_jobs_apply&utm_source=google_jobs_apply&utm_medium=organic
