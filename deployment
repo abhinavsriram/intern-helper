@@ -20,9 +20,11 @@ class bcolors:
 
 
 def run_script():
-    print(f"{bcolors.HEADER}-----------------------CREATING RPODUCTION BUILD OF REACT APP-----------------------{bcolors.ENDC}")
-    os.system('cd frontend')
+    print(f"{bcolors.HEADER}-----------------------CREATING PRODUCTION BUILD OF REACT APP-----------------------{bcolors.ENDC}")
+    oldwd = os.getcwd()
+    os.chdir(oldwd + '/frontend')
     os.system('npm run build')
+    os.chdir(oldwd)
     print(f"{bcolors.HEADER}-----------------------PUSHING PRODUCTION BUILD TO GITHUB-----------------------{bcolors.ENDC}")
     os.system('git add .')
     os.system('git commit --allow-empty -m "automated script deploying app to Heroku"')
