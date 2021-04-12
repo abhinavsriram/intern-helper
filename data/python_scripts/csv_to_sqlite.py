@@ -78,8 +78,8 @@ def run_script():
       "ro": "Retail Operations Intern",
       "repm": "Real Estate Property Management Intern",
       "reo": "Real Estate Operations Intern",
-      "s": "Security Intern",  
-      "sa": "Sales Associate Intern",     
+      "s": "Security Intern",
+      "sa": "Sales Associate Intern",
       "sc": "Store Clerk Intern",
       "se": "Systems Engineer Intern",
       "sm": "Social Media Intern",
@@ -87,7 +87,7 @@ def run_script():
       "swe": "Software Engineering Intern",
       "sw": "Social Work Intern",
       "ta": "Teaching Assistant Intern",
-      "tf": "Teaching Fellow Intern",  
+      "tf": "Teaching Fellow Intern",
       "ux": "UI/UX Intern",
       "wd": "Web Developer Intern",
       "wm": "Wealth Management Intern"
@@ -130,6 +130,10 @@ def run_script():
                 print(f"{bcolors.FAIL}ERROR: something went wrong, please try again{bcolors.ENDC}")
         elif text == "N":
             print(f"{bcolors.FAIL}ABORTING PROCESS: script aborted{bcolors.ENDC}")
+        else:
+            print(f"{bcolors.FAIL}ERROR: illegal input{bcolors.ENDC}")
+            print(f"{bcolors.FAIL}SCRIPT ABORTED: entire script aborted{bcolors.ENDC}")
+            sys.exit(0)    
     else:
         # throws error if file already exists
         try:
