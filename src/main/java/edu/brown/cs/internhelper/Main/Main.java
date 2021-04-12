@@ -1,6 +1,7 @@
 package edu.brown.cs.internhelper.Main;
 
 import com.google.common.collect.ImmutableMap;
+import edu.brown.cs.internhelper.Functionality.CachePageRanks;
 import edu.brown.cs.internhelper.Functionality.Job;
 import edu.brown.cs.internhelper.Functionality.JobGraphBuilder;
 import edu.brown.cs.internhelper.Functionality.Resume;
@@ -60,6 +61,14 @@ public final class Main {
     parser.accepts("port").withRequiredArg().ofType(Integer.class)
             .defaultsTo(DEFAULT_PORT);
     OptionSet options = parser.parse(args);
+//    JobGraphBuilder graphBuilder = new JobGraphBuilder();
+//    graphBuilder.readData();
+//    graphBuilder.calculateJobScores();
+//    graphBuilder.calculateJobCompositeScore();
+//    graphBuilder.buildJobGraph();
+//    graphBuilder.runPageRank();
+//    CachePageRanks cachePageRanks = new CachePageRanks();
+//    cachePageRanks.cacheResults();
     runSparkServer((int) options.valueOf("port"));
   }
 
@@ -106,9 +115,9 @@ public final class Main {
       User user = FB.getFirebaseResumeData(id);
 
       JobGraphBuilder graphBuilder = new JobGraphBuilder();
-      graphBuilder.readData();
+      //graphBuilder.readData();
       graphBuilder.calculateJobScores();
-      graphBuilder.calculateJobCompositeScore();
+      //graphBuilder.calculateJobCompositeScore();
       graphBuilder.buildJobGraph();
 
 //      String userResumeDescriptions = "";
