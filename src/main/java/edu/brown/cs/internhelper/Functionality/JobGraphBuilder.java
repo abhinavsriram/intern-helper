@@ -3,6 +3,8 @@ package edu.brown.cs.internhelper.Functionality;
 import edu.brown.cs.internhelper.Database.SQLDatabase;
 import edu.brown.cs.internhelper.Graph.DirectedGraph;
 
+import java.sql.Connection;
+import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -22,11 +24,30 @@ public class JobGraphBuilder {
   private static DirectedGraph graph;
 
 
-  public void readData() {
+  public void readData(SQLDatabase db, String tableName) {
 
+    /**
     SQLDatabase db = new SQLDatabase();
-    db.connectDatabase("jdbc:sqlite:data/sample_intern_data.sqlite3");
-    ResultSet rs = db.runQuery("SELECT * FROM intern");
+    db.connectDatabase("jdbc:sqlite:data/python_scripts/internships.sqlite3");
+
+
+    Connection conn = db.getConn();
+    DatabaseMetaData md = conn.getMetaData();
+    try {
+      ResultSet rs = md.getTables(null, null, "%", null);
+      while (rs.next()) {
+        System.out.print(rs.getString(1));
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+     **/
+
+
+
+//    SQLDatabase db = new SQLDatabase();
+//    db.connectDatabase("jdbc:sqlite:data/python_scripts/internships.sqlite3");
+    ResultSet rs = db.runQuery("SELECT * FROM " + tableName + "LIMIT 250");
     allJobs = new ArrayList<>();
     try {
       while (rs.next()) {
@@ -36,13 +57,14 @@ public class JobGraphBuilder {
         job.setCompany(rs.getString(3));
         job.setLocation(rs.getString(4));
         job.setRequiredQualifications(rs.getString(5));
-        job.setPreferredQualifications(rs.getString(6));
-        job.setLink(rs.getString(7));
+        job.setLink(rs.getString(6));
         allJobs.add(job);
       }
     } catch (Exception e) {
       e.printStackTrace();
     }
+
+    System.out.println(allJobs.size());
 
 
   }
@@ -52,17 +74,28 @@ public class JobGraphBuilder {
 
     for (int i = 0; i < allJobs.size(); i++) {
       List scores = new ArrayList();
+      double totalScore = 0.0;
       for (int j = 0; j < allJobs.size(); j++) {
         if (i != j) {
           String currJob = allJobs.get(i).getRequiredQualifications();
           String otherJob = allJobs.get(j).getRequiredQualifications();
-          double dist = distance.similarity(currJob, otherJob);
-          scores.add(dist);
+          if (currJob == null || otherJob == null ) {
+            scores.add(0.0);
+          }
+          else {
+            double dist = distance.similarity(currJob, otherJob);
+            scores.add(dist);
+            totalScore+=dist;
+          }
         }
         // compare list.get(i) and list.get(j)
       }
 
       allJobs.get(i).setJobSimilarityScores(scores);
+      double compositeScore = (totalScore) / (scores.size());
+      allJobs.get(i).setCompositeSimilarityScore(compositeScore);
+      //System.out.println(compositeScore);
+
 
     }
   }
@@ -76,7 +109,6 @@ public class JobGraphBuilder {
       }
       double compositeScore = (totalScore) / (currScores.size());
       allJobs.get(i).setCompositeSimilarityScore(compositeScore);
-      //System.out.println(compositeScore);
     }
 
   }
@@ -135,14 +167,14 @@ public class JobGraphBuilder {
     PageRank pageRank = new PageRank();
     Map<Job, Double> jobPageRanks = pageRank.calcPageRank(graph);
 
-    Map<Job, Double> temp = sortByValue(jobPageRanks);
-    System.out.println("THIS IS WHAT THE PAGE RANK RESULTS WOULD BE");
-    System.out.println("============================================");
-    System.out.println("============================================");
-    for (Map.Entry<Job, Double> en : temp.entrySet()) {
-      System.out.println("Key = " + en.getKey().getTitle() + ","
-              + en.getKey().getCompositeSimilarityScore() + " Value = " + en.getValue());
-    }
+//    Map<Job, Double> temp = sortByValue(jobPageRanks);
+//    System.out.println("THIS IS WHAT THE PAGE RANK RESULTS WOULD BE");
+//    System.out.println("============================================");
+//    System.out.println("============================================");
+//    for (Map.Entry<Job, Double> en : temp.entrySet()) {
+//      System.out.println("Key = " + en.getKey().getTitle() + ","
+//              + en.getKey().getCompositeSimilarityScore() + " Value = " + en.getValue());
+//    }
 
     return jobPageRanks;
 

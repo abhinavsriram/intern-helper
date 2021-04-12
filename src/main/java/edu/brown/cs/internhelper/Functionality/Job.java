@@ -12,7 +12,6 @@ public class Job extends Vertex<Job, JobEdge> {
   private String company;
   private String location;
   private String requiredQualifications;
-  private String preferredQualifications;
   private String link;
   private List<Double> similarityScores = new ArrayList<>();
   private double compositeSimilarityScore;
@@ -25,7 +24,6 @@ public class Job extends Vertex<Job, JobEdge> {
     this.company = "";
     this.location = "";
     this.requiredQualifications = "";
-    this.preferredQualifications = "";
     this.link = "";
     this.compositeSimilarityScore = 0.0;
     this.resumeSimilarityScore = 0.0;
@@ -40,6 +38,9 @@ public class Job extends Vertex<Job, JobEdge> {
   }
 
   public void setTitle(String newTitle) {
+    if (newTitle == null) {
+      newTitle= "";
+    }
     this.title = newTitle;
   }
 
@@ -48,6 +49,9 @@ public class Job extends Vertex<Job, JobEdge> {
   }
 
   public void setCompany(String newCompany) {
+    if (newCompany == null) {
+      newCompany= "";
+    }
     this.company = newCompany;
   }
 
@@ -56,6 +60,9 @@ public class Job extends Vertex<Job, JobEdge> {
   }
 
   public void setLocation(String newLocation) {
+    if (newLocation == null) {
+      newLocation= "";
+    }
     this.location = newLocation;
   }
 
@@ -64,6 +71,9 @@ public class Job extends Vertex<Job, JobEdge> {
   }
 
   public void setRequiredQualifications(String newReqQual) {
+    if (newReqQual == null) {
+      newReqQual= "";
+    }
     this.requiredQualifications = newReqQual;
   }
 
@@ -71,15 +81,10 @@ public class Job extends Vertex<Job, JobEdge> {
     return this.requiredQualifications;
   }
 
-  public void setPreferredQualifications(String newPrefQual) {
-    this.preferredQualifications = newPrefQual;
-  }
-
-  public String getPreferredQualifications() {
-    return this.preferredQualifications;
-  }
-
   public void setLink(String newLink) {
+    if (newLink == null) {
+      newLink= "";
+    }
     this.link = newLink;
   }
 
