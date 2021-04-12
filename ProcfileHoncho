@@ -1,2 +1,2 @@
-frontend: cd frontend && npm run build && npm install -g serve && serve -s build
+frontend: cd frontend && serve -s build
 backend: java $JAVA_OPTS -cp target/classes:target/dependency/* edu.brown.cs.internhelper.Main.Main
