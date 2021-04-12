@@ -80,6 +80,10 @@ class HomeScreen extends Component {
     window.location.href = "/internshipsforme";
   };
 
+  viewSearchForInternships = () => {
+    window.location.href = "/searchforinternships";
+  }
+
   render() {
     return this.state.access ? (
       this.state.loading ? (
@@ -100,7 +104,10 @@ class HomeScreen extends Component {
             onClick={this.viewInternshipsForMe}
           />
           <br /> <br /> <br /> <br />
-          <BigCustomButton value={"Search For Internships"} />
+          <BigCustomButton
+            value={"Search For Internships"}
+            onClick={this.viewSearchForInternships}
+          />
         </div>
       )
     ) : (
