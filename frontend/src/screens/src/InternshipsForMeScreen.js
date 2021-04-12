@@ -212,8 +212,7 @@ class InternshipsForMeScreen extends Component {
   };
 
   portDetermination = () => {
-    const PORT = process.env.PORT;
-    console.log("running on port: " + PORT)
+    console.log("running on port: " + window.location.port)
   }
 
   componentDidMount() {
