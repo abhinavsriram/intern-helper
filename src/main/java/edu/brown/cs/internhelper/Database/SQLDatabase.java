@@ -33,5 +33,9 @@ public class SQLDatabase {
     }
   }
 
+  public Connection getConn() {
+    return conn;
+  }
+
 
 }
