@@ -23,7 +23,7 @@ def run_script():
     suffix = ['a', 'bank', 'bd', 'bs', 'c', 'ca', 'camp', 'cc', 'cd', 'cnc', 'cn', 'corstrat', 'cre', 'da', 'de', 'ds',
               'dt', 'e', 'ei', 'eq', 'fi', 'ga', 'gd', 'gr', 'hr', 'hcc', 'hcr', 'hcra', 'ib', 'ia', 'la', 'l', 'lob',
               'm', 'mm', 'md', 'ne', 'o', 'oure', 'p', 'pe', 'ph', 'pm', 'po', 'pr', 'ps', 'qae', 'r', 'ra', 'red',
-              'ro', 'repm', 'reo', 's', 'se', 'sa', 'sc', 'se', 'sm', 'ss', 'swe', 'sw', 'ta', 'tf', 'ux', 'wd', 'wm'];
+              'ro', 'repm', 'reo', 's', 'sa', 'sc', 'se', 'sm', 'ss', 'swe', 'sw', 'ta', 'tf', 'ux', 'wd', 'wm'];
     suffix_expansion = {
       "hcr": "Healthcare Research Intern",
       "hcra": "Healthcare Administration Intern",
@@ -121,7 +121,7 @@ def run_script():
                     # establish connection to database
                     conn = sqlite3.connect('internships.sqlite3')
                     # drop data into database
-                    text = input(f"{bcolors.OKCYAN}INSERTING: adding {suffix_expansion[s]} listings to database{bcolors.ENDC}")
+                    print(f"{bcolors.OKCYAN}INSERTING: adding {suffix_expansion[s]} listings to database{bcolors.ENDC}")
                     data.to_sql(suffix_expansion[s], conn)
                     # close database connection
                 conn.close()
@@ -143,7 +143,7 @@ def run_script():
                 # establish connection to database
                 conn = sqlite3.connect('internships.sqlite3')
                 # drop data into database
-                text = input(f"{bcolors.OKCYAN}INSERTING: adding {suffix_expansion[s]} listings to database{bcolors.ENDC}")
+                print(f"{bcolors.OKCYAN}INSERTING: adding {suffix_expansion[s]} listings to database{bcolors.ENDC}")
                 data.to_sql(suffix_expansion[s], conn)
                 # close database connection
             conn.close()

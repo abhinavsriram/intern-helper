@@ -23,8 +23,9 @@ def run_script():
     suffix = ['a', 'bank', 'bd', 'bs', 'c', 'ca', 'camp', 'cc', 'cd', 'cnc', 'cn', 'corstrat', 'cre', 'da', 'de', 'ds',
               'dt', 'e', 'ei', 'eq', 'fi', 'ga', 'gd', 'gr', 'hr', 'hcc', 'hcr', 'hcra', 'ib', 'ia', 'la', 'l', 'lob',
               'm', 'mm', 'md', 'ne', 'o', 'oure', 'p', 'pe', 'ph', 'pm', 'po', 'pr', 'ps', 'qae', 'r', 'ra', 'red',
-              'ro', 'repm', 'reo', 's', 'se', 'sa', 'sc', 'se', 'sm', 'ss', 'swe', 'sw', 'ta', 'tf', 'ux', 'wd', 'wm'];
+              'ro', 'repm', 'reo', 's', 'sa', 'sc', 'se', 'sm', 'ss', 'swe', 'sw', 'ta', 'tf', 'ux', 'wd', 'wm'];
     suffix_expansion = {
+      "a": "Accounting Intern",
       "hcr": "Healthcare Research Intern",
       "hcra": "Healthcare Administration Intern",
       "la": "Lab Assistant Intern",
@@ -79,7 +80,7 @@ def run_script():
       "p": "Policy Intern",
       "fi": "Fixed Income Intern",
       "eq": "Equities Intern",
-      "a": "Accounting Intern",
+      
       "ib": "Investment Banking Intern",
       "ra": "Risk Advisory Intern",
       "wm": "Wealth Management Intern",
