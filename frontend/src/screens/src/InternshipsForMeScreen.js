@@ -194,6 +194,7 @@ class InternshipsForMeScreen extends Component {
               if (doc.exists) {
                 if (doc.data().changed_resume) {
                   this.getResultsFromBackend(user);
+                  this.portDetermination();
                 } else {
                   this.getInternships(user);
                 }
@@ -211,8 +212,16 @@ class InternshipsForMeScreen extends Component {
     });
   };
 
+  portDetermination = () => {
+    const PORT = process.env.PORT || 80;
+    var server = app.listen(PORT, function() {
+      var host = server.address().address;
+      var port = server.address().port;
+      console.log("server is listening at http://%s:%s", host, port);
+    });
+  }
+
   componentDidMount() {
-    console.log(parseInt(process.env.PORT, 10));
     this.getUserID();
     this.id = setTimeout(() => this.setState({ loading: false }), 3000);
   }
