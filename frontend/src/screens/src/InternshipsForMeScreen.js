@@ -212,6 +212,7 @@ class InternshipsForMeScreen extends Component {
   };
 
   componentDidMount() {
+    console.log(parseInt(process.env.PORT, 10));
     this.getUserID();
     this.id = setTimeout(() => this.setState({ loading: false }), 3000);
   }
