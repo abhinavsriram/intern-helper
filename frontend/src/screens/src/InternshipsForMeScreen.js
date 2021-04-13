@@ -21,8 +21,28 @@ class InternshipsForMeScreen extends Component {
       acquiringResults: false,
       message1: "",
       message2: "",
+      port: ""
     };
   }
+
+  readPortNumber = () => {
+    firebase
+      .firestore()
+      .collection("port-data")
+      .doc(port-number)
+      .get()
+      .then((doc) => {
+        if (doc.exists) {
+          this.setState({port: doc.data().port});
+        }
+      })
+      .catch((error) => {
+        this.setState({
+          errorMessage:
+            "Oops! It looks like something went wrong. Please try again.",
+        });
+      });
+  };
 
   findRelevantJobs = () => {
     const toSend = {
@@ -35,7 +55,7 @@ class InternshipsForMeScreen extends Component {
       },
     };
     axios
-      .post("http://localhost:4567/suggestedRoles", toSend, config)
+      .post("http://localhost:" + this.state.port + "/suggestedRoles", toSend, config)
       .then((response) => {
         let localRoles = [];
         Object.entries(response.data["suggestedRoles"]).forEach(
@@ -84,13 +104,9 @@ class InternshipsForMeScreen extends Component {
     });
   };
 
-  portDetermination = () => {
-    console.log("running on port: " + process.env.port);
-  };
-
   componentDidMount() {
     this.getUserID();
-    this.portDetermination();
+    this.readPortNumber();
     this.id = setTimeout(() => this.setState({ loading: false }), 3000);
   }
 
@@ -141,7 +157,7 @@ class InternshipsForMeScreen extends Component {
           },
         };
         axios
-          .post("http://localhost:4567/searchResults", toSend, config)
+          .post("http://localhost:" + this.state.port + "/searchResults", toSend, config)
           .then((response) => {
             let localInternshipsList = [];
             Object.entries(response.data["searchResults"]).forEach(

@@ -1,6 +1,10 @@
 package edu.brown.cs.internhelper.Main;
 
+import com.google.api.core.ApiFuture;
+import com.google.cloud.firestore.Firestore;
+import com.google.cloud.firestore.WriteResult;
 import com.google.common.collect.ImmutableMap;
+import com.google.firebase.cloud.FirestoreClient;
 import edu.brown.cs.internhelper.CSV.CSVParser;
 import edu.brown.cs.internhelper.Database.SQLDatabase;
 import edu.brown.cs.internhelper.Functionality.Experience;
@@ -86,6 +90,7 @@ public final class Main {
   }
 
   private void runSparkServer(int port) {
+    FB.setUp();
     Spark.port(getHerokuAssignedPort());
     Spark.externalStaticFileLocation("src/main/resources/static");
     Spark.options("/*", (request, response) -> {
@@ -107,7 +112,6 @@ public final class Main {
     Spark.post("/userJobResults", new UserJobResultsHandler());
     Spark.get("/searchResults", new SearchInternshipsHandler());
     Spark.post("/searchResults", new SearchInternshipsHandler());
-
     Spark.get("/suggestedRoles", new DatabaseSuggestedRolesHandler());
     Spark.post("/suggestedRoles", new DatabaseSuggestedRolesHandler());
   }
@@ -116,15 +120,19 @@ public final class Main {
     ProcessBuilder processBuilder = new ProcessBuilder();
     if (processBuilder.environment().get("PORT") != null) {
       System.out.println("HEROKU ASSIGNED PORT FOR BACKEND IS: " + Integer.parseInt(processBuilder.environment().get("PORT")));
-      try {
-        File portFile = new File("port.txt");
-        FileWriter writer = new FileWriter("port.txt", false);
-        writer.write(String.valueOf(Integer.parseInt(processBuilder.environment().get("PORT"))));
-        writer.close();
-      } catch (IOException e) {
-        System.out.println("An error occurred when writing to port file!");
-        e.printStackTrace();
-      }
+      Map<String, Object> docData = new HashMap<>();
+      docData.put("port", String.valueOf(Integer.parseInt(processBuilder.environment().get("PORT"))));
+      Firestore db = FirestoreClient.getFirestore();
+      ApiFuture<WriteResult> future = db.collection("port-data").document("port-number").set(docData);
+//      try {
+//        File portFile = new File("port.txt");
+//        FileWriter writer = new FileWriter("port.txt", false);
+//        writer.write(String.valueOf(Integer.parseInt(processBuilder.environment().get("PORT"))));
+//        writer.close();
+//      } catch (IOException e) {
+//        System.out.println("An error occurred when writing to port file!");
+//        e.printStackTrace();
+//      }
       return Integer.parseInt(processBuilder.environment().get("PORT"));
     }
     return DEFAULT_PORT; //return default port if heroku-port isn't set (i.e. on localhost)
@@ -139,7 +147,6 @@ public final class Main {
 
       JSONObject data = new JSONObject(req.body());
       String id = data.getString("id");
-      FB.setUp();
       User user = FB.getFirebaseResumeData(id);
       List<String> databaseRoles = new ArrayList<>();
       try {
@@ -182,7 +189,6 @@ public final class Main {
       JSONObject data = new JSONObject(req.body());
       String role = data.getString("role");
       String id = data.getString("id");
-      FB.setUp();
       User user = FB.getFirebaseResumeData(id);
 
       String fileName = role + "pr.csv";
@@ -241,7 +247,6 @@ public final class Main {
    * JSONObject data = new JSONObject(req.body());
    * String id = data.getString("id");
    * System.out.println(id);
-   * FB.setUp();
    * User user = FB.getFirebaseResumeData(id);
    * <p>
    * JobGraphBuilder graphBuilder = new JobGraphBuilder();

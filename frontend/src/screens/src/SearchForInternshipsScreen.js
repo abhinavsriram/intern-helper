@@ -107,8 +107,28 @@ class SearchForInternshipsScreen extends Component {
       internships: [],
       internshipsList: [],
       acquiringResults: false,
+      port: ""
     };
   }
+
+  readPortNumber = () => {
+    firebase
+      .firestore()
+      .collection("port-data")
+      .doc("port-number")
+      .get()
+      .then((doc) => {
+        if (doc.exists) {
+          this.setState({port: doc.data().port});
+        }
+      })
+      .catch((error) => {
+        this.setState({
+          errorMessage:
+            "Oops! It looks like something went wrong. Please try again.",
+        });
+      });
+  };
 
   writeToDatabase = (id, title, company, description, link) => {
     firebase
@@ -153,7 +173,7 @@ class SearchForInternshipsScreen extends Component {
           },
         };
         axios
-          .post("http://localhost:4567/searchResults", toSend, config)
+          .post("http://localhost:" + this.state.port + "/searchResults", toSend, config)
           .then((response) => {
             let localInternshipsList = [];
             Object.entries(response.data["searchResults"]).forEach(
@@ -267,6 +287,7 @@ class SearchForInternshipsScreen extends Component {
 
   componentDidMount() {
     this.getUserID();
+    this.readPortNumber();
     this.populateSectors();
     this.populateRoles("Healthcare");
     this.id = setTimeout(() => this.setState({ loading: false }), 100);
