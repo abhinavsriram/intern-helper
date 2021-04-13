@@ -29,7 +29,7 @@ class InternshipsForMeScreen extends Component {
     firebase
       .firestore()
       .collection("port-data")
-      .doc(port-number)
+      .doc("port-number")
       .get()
       .then((doc) => {
         if (doc.exists) {
