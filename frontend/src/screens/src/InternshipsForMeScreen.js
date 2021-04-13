@@ -33,7 +33,9 @@ class InternshipsForMeScreen extends Component {
       .get()
       .then((doc) => {
         if (doc.exists) {
-          this.setState({port: doc.data().port});
+          this.setState({port: doc.data().port}, () => {
+            this.findRelevantJobs();
+          });
         }
       })
       .catch((error) => {
@@ -94,7 +96,7 @@ class InternshipsForMeScreen extends Component {
         authFlag = false;
         if (user) {
           this.setState({ uid: user.uid }, () => {
-            this.findRelevantJobs();
+            this.readPortNumber();
           });
           this.setState({ access: true });
         } else {
@@ -106,7 +108,6 @@ class InternshipsForMeScreen extends Component {
 
   componentDidMount() {
     this.getUserID();
-    this.readPortNumber();
     this.id = setTimeout(() => this.setState({ loading: false }), 3000);
   }
 
