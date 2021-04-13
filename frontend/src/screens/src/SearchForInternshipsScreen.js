@@ -143,7 +143,7 @@ class SearchForInternshipsScreen extends Component {
           element.ref.delete().then();
         });
         const toSend = {
-          id: this.state.uid,
+          role: this.state.currentRole,
         };
         let config = {
           headers: {
@@ -152,10 +152,10 @@ class SearchForInternshipsScreen extends Component {
           },
         };
         axios
-          .post("http://localhost:5100/userJobResults", toSend, config)
+          .post("http://localhost:4567/searchResults", toSend, config)
           .then((response) => {
             let localInternshipsList = [];
-            Object.entries(response.data["userJobResults"]).forEach(
+            Object.entries(response.data["searchResults"]).forEach(
               ([key, value]) => {
                 let crypto = require("crypto-js");
                 let concat =
@@ -305,7 +305,7 @@ class SearchForInternshipsScreen extends Component {
     // make post request here as callback to setState
     this.setState({ internshipsList: [] }, () => {
       this.setState({ currentRole: role }, () => {
-        // this.getResultsFromBackend();
+        this.getResultsFromBackend();
       });
     });
     console.log(role);
