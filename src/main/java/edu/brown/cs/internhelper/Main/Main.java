@@ -16,10 +16,13 @@ import spark.Response;
 import spark.Route;
 import spark.Spark;
 
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Map;
+import java.io.FileWriter;
+import java.io.File;
 import java.util.concurrent.ExecutionException;
 
 import com.google.gson.Gson;
@@ -98,6 +101,17 @@ public final class Main {
     ProcessBuilder processBuilder = new ProcessBuilder();
     if (processBuilder.environment().get("PORT") != null) {
       System.out.println("HEROKU ASSIGNED PORT FOR BACKEND IS: " + Integer.parseInt(processBuilder.environment().get("PORT")));
+
+      try {
+        File portFile = new File("port.txt");
+        FileWriter writer = new FileWriter("port.txt", false);
+        writer.write(Integer.parseInt(processBuilder.environment().get("PORT")));
+        writer.close();
+      } catch (IOException e) {
+        System.out.println("An error occurred when writing to port file!");
+        e.printStackTrace();
+      }
+
       return Integer.parseInt(processBuilder.environment().get("PORT"));
     }
     return DEFAULT_PORT; //return default port if heroku-port isn't set (i.e. on localhost)
