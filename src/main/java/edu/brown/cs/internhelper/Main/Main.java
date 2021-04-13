@@ -278,7 +278,7 @@ public final class Main {
 
       SQLDatabase db = new SQLDatabase();
       db.connectDatabase("jdbc:sqlite:data/python_scripts/internships.sqlite3");
-      ResultSet rs = db.runQuery("SELECT * FROM " + '"' + tableName + '"');
+      ResultSet rs = db.runQuery("SELECT * FROM " + '"' + tableName + '"' + "LIMIT 10");
       List<Job> internships = new ArrayList<>();
       try {
         while (rs.next()) {

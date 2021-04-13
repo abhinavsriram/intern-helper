@@ -5,7 +5,6 @@ import BigCustomButton from "../../components/src/BigCustomButton";
 import image from "../../media/accessdenied.jpeg";
 import CustomButton from "../../components/src/CustomButton";
 import { WaveLoading } from "react-loadingg";
-import InternshipResult from "../../components/src/InternshipResult";
 import axios from "axios";
 
 class InternshipsForMeScreen extends Component {
@@ -15,71 +14,86 @@ class InternshipsForMeScreen extends Component {
       uid: "",
       access: true,
       loading: true,
+      currentRole: "",
+      roles: [],
       internships: [],
       internshipsList: [],
-      changedResume: false,
+      acquiringResults: false,
     };
   }
 
-  getInternships = (user) => {
-    firebase
-      .firestore()
-      .collection("user-data")
-      .doc(user.uid)
-      .collection("internships")
-      .doc("Internships List")
-      .get()
-      .then((doc) => {
-        if (doc.exists) {
-          this.setState({ internshipsList: doc.data().internshipsList }, () => {
-            for (let i = 0; i < this.state.internshipsList.length; i++) {
-              firebase
-                .firestore()
-                .collection("user-data")
-                .doc(user.uid)
-                .collection("internships")
-                .doc(this.state.internshipsList[i])
-                .get()
-                .then((doc) => {
-                  if (doc.exists) {
-                    this.setState((prevState) => ({
-                      internships: [
-                        ...prevState.internships,
-                        <InternshipResult
-                          title={doc.data().title}
-                          company={doc.data().company}
-                          apply={doc.data().link}
-                          description={doc.data().description}
-                          key={Math.random()}
-                        />,
-                      ],
-                    }));
-                  }
-                })
-                .catch((error) => {
-                  this.setState({
-                    errorMessage:
-                      "Oops! It looks like something went wrong. Please try again.",
-                  });
-                });
-            }
-          });
-        }
-      })
-      .catch((error) => {
-        this.setState({
-          errorMessage:
-            "Oops! It looks like something went wrong. Please try again.",
-        });
+  findRelevantJobs = () => {
+    const toSend = {
+      id: this.state.uid,
+    };
+    let config = {
+      headers: {
+        Accept: "application/json",
+        "Access-Control-Allow-Origin": "*",
+      },
+    };
+    axios
+      .post("http://localhost:4567/suggestedRoles", toSend, config)
+      .then((response) => {
+        console.log("post req success");
+        // console.log(response.data);
+        // console.log(response.data["suggestedRoles"][0]);
+        let localRoles = [];
+        Object.entries(response.data["suggestedRoles"]).forEach(
+          ([key, value]) => {
+            console.log(key);
+            console.log(value);
+            localRoles.push(
+              <BigCustomButton
+                value={value}
+                onClick={() => this.handleSelection(value)}
+                key={Math.random()}
+              />
+            );
+            localRoles.push(<br />);
+          }
+        );
+        this.setState({ roles: localRoles });
       });
   };
+
+  getUserID = () => {
+    let authFlag = true;
+    firebase.auth().onAuthStateChanged((user) => {
+      if (authFlag) {
+        authFlag = false;
+        if (user) {
+          this.setState({ uid: user.uid }, () => {
+            this.findRelevantJobs();
+          });
+          this.setState({ access: true });
+        } else {
+          this.setState({ access: false });
+        }
+      }
+    });
+  };
+
+  portDetermination = () => {
+    console.log("running on port: " + process.env.port);
+  };
+
+  componentDidMount() {
+    this.getUserID();
+    this.portDetermination();
+    this.id = setTimeout(() => this.setState({ loading: false }), 2000);
+  }
+
+  componentWillUnmount() {
+    clearTimeout(this.id);
+  }
 
   writeToDatabase = (id, title, company, description, link) => {
     firebase
       .firestore()
       .collection("user-data")
       .doc(this.state.uid)
-      .collection("internships")
+      .collection(this.state.currentRole)
       .doc(id)
       .set({
         title: title,
@@ -96,134 +110,104 @@ class InternshipsForMeScreen extends Component {
       });
   };
 
-  getResultsFromBackend = (user) => {
-    const toSend = {
-      id: user.uid,
-    };
-    let config = {
-      headers: {
-        Accept: "application/json",
-        "Access-Control-Allow-Origin": "*",
-      },
-    };
-    axios
-      .post("http://localhost:5100/userJobResults", toSend, config)
-      .then((response) => {
-        let localInternships = [];
-        let localInternshipsList = [];
-        Object.entries(response.data["userJobResults"]).forEach(
-          ([key, value]) => {
-            let crypto = require("crypto-js");
-            let concat =
-              value["title"] +
-              value["company"] +
-              value["link"] +
-              value["requiredQualifications"];
-            let ID = crypto.SHA256(concat).toString();
-            localInternshipsList.push(ID);
-            localInternships.push(
-              <InternshipResult
-                title={value["title"]}
-                company={value["company"]}
-                apply={value["link"]}
-                description={value["requiredQualifications"]}
-                key={Math.random()}
-              />
-            );
-            this.writeToDatabase(
-              ID,
-              value["title"],
-              value["company"],
-              value["requiredQualifications"],
-              value["link"]
-            );
-          }
-        );
-        this.setState({ internships: localInternships });
-        this.setState({ internshipsList: localInternshipsList }, () => {
-          firebase
-            .firestore()
-            .collection("user-data")
-            .doc(this.state.uid)
-            .collection("internships")
-            .doc("Internships List")
-            .set({
-              internshipsList: this.state.internshipsList,
-            })
-            .then(() => {
-              firebase
-                .firestore()
-                .collection("user-data")
-                .doc(this.state.uid)
-                .update({
-                  changed_resume: false,
-                })
-                .then(() => {})
-                .catch((error) => {
-                  this.setState({
-                    errorMessage:
-                      "Oops! It looks like something went wrong. Please try again.",
-                  });
-                });
-            })
-            .catch((error) => {
-              this.setState({
-                errorMessage:
-                  "Oops! It looks like something went wrong. Please try again.",
-              });
-            });
+  getResultsFromBackend = () => {
+    firebase
+      .firestore()
+      .collection("user-data")
+      .doc(this.state.uid)
+      .collection("internships")
+      .get()
+      .then((doc) => {
+        doc.forEach((element) => {
+          element.ref.delete().then();
         });
+        const toSend = {
+          role: this.state.currentRole,
+        };
+        let config = {
+          headers: {
+            Accept: "application/json",
+            "Access-Control-Allow-Origin": "*",
+          },
+        };
+        axios
+          .post("http://localhost:4567/searchResults", toSend, config)
+          .then((response) => {
+            let localInternshipsList = [];
+            Object.entries(response.data["searchResults"]).forEach(
+              ([key, value]) => {
+                let crypto = require("crypto-js");
+                let concat =
+                  value["title"] +
+                  value["company"] +
+                  value["link"] +
+                  value["requiredQualifications"];
+                let ID = crypto.SHA256(concat).toString();
+                localInternshipsList.push(ID);
+                this.writeToDatabase(
+                  ID,
+                  value["title"],
+                  value["company"],
+                  value["requiredQualifications"],
+                  value["link"]
+                );
+              }
+            );
+            firebase
+              .firestore()
+              .collection("user-data")
+              .doc(this.state.uid)
+              .collection(this.state.currentRole)
+              .doc(this.state.currentRole + " List")
+              .set({
+                rolesList: localInternshipsList,
+              })
+              .then(() => {
+                firebase
+                  .firestore()
+                  .collection("user-data")
+                  .doc(this.state.uid)
+                  .update({
+                    recent_query: this.state.currentRole,
+                  })
+                  .then(() => {
+                    this.setState({ acquiringResults: false });
+                    window.open("/internshipresults", "_blank");
+                  })
+                  .catch((error) => {
+                    this.setState({
+                      errorMessage:
+                        "Oops! It looks like something went wrong. Please try again.",
+                    });
+                  });
+              })
+              .catch((error) => {
+                this.setState({
+                  errorMessage:
+                    "Oops! It looks like something went wrong. Please try again.",
+                });
+              });
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
       })
-      .catch(function (error) {
-        console.log(error);
+      .catch((error) => {
+        this.setState({
+          errorMessage:
+            "Oops! It looks like something went wrong. Please try again.",
+        });
       });
   };
 
-  getUserID = () => {
-    let authFlag = true;
-    firebase.auth().onAuthStateChanged((user) => {
-      if (authFlag) {
-        authFlag = false;
-        if (user) {
-          firebase
-            .firestore()
-            .collection("user-data")
-            .doc(user.uid)
-            .get()
-            .then((doc) => {
-              if (doc.exists) {
-                if (doc.data().changed_resume) {
-                  this.getResultsFromBackend(user);
-                } else {
-                  this.getInternships(user);
-                }
-              }
-            })
-            .catch((error) => {
-              console.log(error.message);
-            });
-          this.setState({ uid: user.uid });
-          this.setState({ access: true });
-        } else {
-          this.setState({ access: false });
-        }
-      }
+  handleSelection = (role) => {
+    this.setState({ internshipsList: [] }, () => {
+      this.setState({ currentRole: role }, () => {
+        this.setState({ acquiringResults: true });
+        this.getResultsFromBackend();
+      });
     });
   };
-
-  portDetermination = () => {
-    console.log("running on port: " + process.env.port)
-  }
-
-  componentDidMount() {
-    this.getUserID();
-    this.portDetermination();
-    this.id = setTimeout(() => this.setState({ loading: false }), 3000);
-  }
-
-  componentWillUnmount() {
-    clearTimeout(this.id);
-  }
 
   goBack = () => {
     window.location.href = "/home";
@@ -239,7 +223,7 @@ class InternshipsForMeScreen extends Component {
             <CustomButton value={"Go Back"} onClick={this.goBack} />
           </div>
           <div className="header-int-me">Internships For Me</div>
-          {this.state.internships}
+          {this.state.roles}
           <br /> <br /> <br /> <br />
         </div>
       )
