@@ -1,6 +1,7 @@
 import React from "react";
 import "../styles/InternshipResult.css";
 import CustomButton from "./CustomButton";
+import ProgressBar from 'react-bootstrap/ProgressBar'
 
 function InternshipResult(props) {
   function truncate(str, num) {
@@ -21,6 +22,7 @@ function InternshipResult(props) {
       <div className={"apply-button"}>
         <CustomButton value={"Apply"} onClick={() => sendToLink(props.apply)} />
       </div>
+      <ProgressBar striped variant="success" now={40} />
     </div>
   );
 }

@@ -91,7 +91,7 @@ class InternshipsForMeScreen extends Component {
   componentDidMount() {
     this.getUserID();
     this.portDetermination();
-    this.id = setTimeout(() => this.setState({ loading: false }), 2000);
+    this.id = setTimeout(() => this.setState({ loading: false }), 3000);
   }
 
   componentWillUnmount() {
