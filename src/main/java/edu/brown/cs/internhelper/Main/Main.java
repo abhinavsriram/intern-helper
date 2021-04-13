@@ -1,14 +1,12 @@
 package edu.brown.cs.internhelper.Main;
 
 import com.google.common.collect.ImmutableMap;
-import edu.brown.cs.internhelper.Csv.CsvParser;
+import edu.brown.cs.internhelper.CSV.CSVParser;
 import edu.brown.cs.internhelper.Database.SQLDatabase;
-import edu.brown.cs.internhelper.Functionality.CachePageRanks;
 import edu.brown.cs.internhelper.Functionality.Experience;
 import edu.brown.cs.internhelper.Functionality.Job;
 import edu.brown.cs.internhelper.Functionality.JobGraphBuilder;
 import edu.brown.cs.internhelper.Functionality.LevenshteinDistance;
-import edu.brown.cs.internhelper.Functionality.Resume;
 import edu.brown.cs.internhelper.Functionality.User;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
@@ -21,10 +19,7 @@ import spark.Route;
 import spark.Spark;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileReader;
-import java.io.InputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.sql.ResultSet;
@@ -35,8 +30,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.io.FileWriter;
-import java.io.File;
 import java.util.concurrent.ExecutionException;
 
 import com.google.gson.Gson;
@@ -119,17 +112,18 @@ public final class Main {
   static int getHerokuAssignedPort() {
     ProcessBuilder processBuilder = new ProcessBuilder();
     if (processBuilder.environment().get("PORT") != null) {
-      System.out.println("HEROKU ASSIGNED PORT FOR BACKEND IS: " + Integer.parseInt(processBuilder.environment().get("PORT")));
+      System.out.println("HEROKU ASSIGNED PORT FOR BACKEND IS: " + Integer.parseInt(processBuilder.environment().get(
+              "PORT")));
 
-      try {
-        File portFile = new File("port.txt");
-        FileWriter writer = new FileWriter("port.txt", false);
-        writer.write(Integer.parseInt(processBuilder.environment().get("PORT")));
-        writer.close();
-      } catch (IOException e) {
-        System.out.println("An error occurred when writing to port file!");
-        e.printStackTrace();
-      }
+//      try {
+//        File portFile = new File("port.txt");
+//        FileWriter writer = new FileWriter("port.txt", false);
+//        writer.write(Integer.parseInt(processBuilder.environment().get("PORT")));
+//        writer.close();
+//      } catch (IOException e) {
+//        System.out.println("An error occurred when writing to port file!");
+//        e.printStackTrace();
+//      }
 
       return Integer.parseInt(processBuilder.environment().get("PORT"));
     }
@@ -141,7 +135,7 @@ public final class Main {
 
     @Override
     public String handle(Request req, Response res) throws JSONException,
-        ExecutionException, InterruptedException {
+            ExecutionException, InterruptedException {
 
       JSONObject data = new JSONObject(req.body());
       String id = data.getString("id");
@@ -182,8 +176,8 @@ public final class Main {
   private static class UserJobResultsHandler implements Route {
 
     @Override
-    public String handle(Request req, Response res)  throws JSONException, ExecutionException,
-        InterruptedException {
+    public String handle(Request req, Response res) throws JSONException, ExecutionException,
+            InterruptedException {
 
       JSONObject data = new JSONObject(req.body());
       String role = data.getString("role");
@@ -197,7 +191,7 @@ public final class Main {
       Map<Job, Double> pageRanks = new HashMap<>();
       try {
         BufferedReader reader = new BufferedReader(new FileReader(fileName));
-        CsvParser csvParser = new CsvParser();
+        CSVParser csvParser = new CSVParser();
         try {
           while ((line = reader.readLine()) != null) {
             if (counter != 0) {
@@ -240,46 +234,45 @@ public final class Main {
 
 
   /**
-  private static class UserJobResultsHandler implements Route {
-
-    @Override
-    public String handle(Request req, Response res)
-            throws JSONException, ExecutionException, InterruptedException {
-      JSONObject data = new JSONObject(req.body());
-      String id = data.getString("id");
-      System.out.println(id);
-      FB.setUp();
-      User user = FB.getFirebaseResumeData(id);
-
-      JobGraphBuilder graphBuilder = new JobGraphBuilder();
-      //graphBuilder.readData();
-      graphBuilder.calculateJobScores();
-      //graphBuilder.calculateJobCompositeScore();
-      graphBuilder.buildJobGraph();
-
-//      String userResumeDescriptions = "";
-//      for (Experience experience : user.getResume().getResumeExperiences()) {
-//        userResumeDescriptions += experience.getDescription();
-//      }
-      Resume resume = user.getResume();
-      Map<Job, Double> jobResults = graphBuilder.userResults(resume);
-
-      Map<Double, Job> tempJobResults = new HashMap<>();
-      for (Map.Entry<Job, Double> en : jobResults.entrySet()) {
-        tempJobResults.put(en.getValue(), en.getKey());
-      }
-
-      Map<String, Object> variables = ImmutableMap.of("userJobResults", tempJobResults);
-      return GSON.toJson(variables);
-    }
-  }
+   * private static class UserJobResultsHandler implements Route {
+   *
+   * @Override public String handle(Request req, Response res)
+   * throws JSONException, ExecutionException, InterruptedException {
+   * JSONObject data = new JSONObject(req.body());
+   * String id = data.getString("id");
+   * System.out.println(id);
+   * FB.setUp();
+   * User user = FB.getFirebaseResumeData(id);
+   * <p>
+   * JobGraphBuilder graphBuilder = new JobGraphBuilder();
+   * //graphBuilder.readData();
+   * graphBuilder.calculateJobScores();
+   * //graphBuilder.calculateJobCompositeScore();
+   * graphBuilder.buildJobGraph();
+   * <p>
+   * //      String userResumeDescriptions = "";
+   * //      for (Experience experience : user.getResume().getResumeExperiences()) {
+   * //        userResumeDescriptions += experience.getDescription();
+   * //      }
+   * Resume resume = user.getResume();
+   * Map<Job, Double> jobResults = graphBuilder.userResults(resume);
+   * <p>
+   * Map<Double, Job> tempJobResults = new HashMap<>();
+   * for (Map.Entry<Job, Double> en : jobResults.entrySet()) {
+   * tempJobResults.put(en.getValue(), en.getKey());
+   * }
+   * <p>
+   * Map<String, Object> variables = ImmutableMap.of("userJobResults", tempJobResults);
+   * return GSON.toJson(variables);
+   * }
+   * }
    **/
 
   private static class SearchInternshipsHandler implements Route {
 
     @Override
     public String handle(Request req, Response res)
-        throws JSONException, ExecutionException, InterruptedException {
+            throws JSONException, ExecutionException, InterruptedException {
       JSONObject data = new JSONObject(req.body());
       String tableName = data.getString("role");
 

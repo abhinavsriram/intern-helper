@@ -1,8 +1,5 @@
 package edu.brown.cs.internhelper.Database;
 
-import edu.brown.cs.internhelper.Csv.CsvWriter;
-import edu.brown.cs.internhelper.Functionality.Job;
-
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
@@ -10,7 +7,6 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class SQLDatabase {
 

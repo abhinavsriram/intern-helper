@@ -1,6 +1,6 @@
 package edu.brown.cs.internhelper.Functionality;
 
-import edu.brown.cs.internhelper.Csv.CsvWriter;
+import edu.brown.cs.internhelper.CSV.CSVWriter;
 import edu.brown.cs.internhelper.Database.SQLDatabase;
 
 import java.sql.Connection;
@@ -30,7 +30,7 @@ public class CachePageRanks {
         graphBuilder.buildJobGraph();
         Map<Job, Double> pageRanks =  graphBuilder.runPageRank();
         String csvName = "data/page_rank_results/" + rs.getString(3) + "pr.csv";
-        CsvWriter csvWriter = new CsvWriter(pageRanks, csvName);
+        CSVWriter csvWriter = new CSVWriter(pageRanks, csvName);
         csvWriter.mapToCsv();
         System.out.println("DONE WITH " + rs.getString(3));
         System.out.println("=========================================");

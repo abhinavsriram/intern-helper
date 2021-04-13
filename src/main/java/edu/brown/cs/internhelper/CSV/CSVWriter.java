@@ -1,4 +1,4 @@
-package edu.brown.cs.internhelper.Csv;
+package edu.brown.cs.internhelper.CSV;
 
 import edu.brown.cs.internhelper.Functionality.Job;
 
@@ -7,12 +7,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class CsvWriter {
+public class CSVWriter {
 
   private static Map<Job, Double> hmap;
   private static String csvName;
 
-  public CsvWriter(Map<Job, Double> map, String outputCsvName) {
+  public CSVWriter(Map<Job, Double> map, String outputCsvName) {
     hmap = map;
     csvName = outputCsvName;
 

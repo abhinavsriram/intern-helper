@@ -12,6 +12,7 @@ import ViewProfileScreen from "../../screens/src/ViewProfileScreen";
 import ForgotPasswordScreen from "../../screens/src/ForgotPasswordScreen";
 import InternshipsForMeScreen from "../../screens/src/InternshipsForMeScreen";
 import SearchForInternshipsScreen from "../../screens/src/SearchForInternshipsScreen";
+import InternshipResultsScreen from "../../screens/src/InternshipResultsScreen";
 
 class App extends Component {
   render() {
@@ -51,6 +52,11 @@ class App extends Component {
             <Route
               path="/searchforinternships"
               component={() => <SearchForInternshipsScreen />}
+              exact
+            />
+            <Route
+              path="/internshipresults"
+              component={() => <InternshipResultsScreen />}
               exact
             />
           </Switch>

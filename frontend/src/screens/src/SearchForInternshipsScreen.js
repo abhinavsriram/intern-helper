@@ -4,7 +4,7 @@ import firebase from "../../firebase";
 import BigCustomButton from "../../components/src/BigCustomButton";
 import image from "../../media/accessdenied.jpeg";
 import CustomButton from "../../components/src/CustomButton";
-import { WaveLoading } from "react-loadingg";
+import { WaveLoading, SolarSystemLoading } from "react-loadingg";
 import axios from "axios";
 
 class SearchForInternshipsScreen extends Component {
@@ -106,6 +106,7 @@ class SearchForInternshipsScreen extends Component {
       currentRole: "",
       internships: [],
       internshipsList: [],
+      acquiringResults: false,
     };
   }
 
@@ -183,7 +184,25 @@ class SearchForInternshipsScreen extends Component {
               .set({
                 rolesList: localInternshipsList,
               })
-              .then(() => {})
+              .then(() => {
+                firebase
+                  .firestore()
+                  .collection("user-data")
+                  .doc(this.state.uid)
+                  .update({
+                    recent_query: this.state.currentRole,
+                  })
+                  .then(() => {
+                    this.setState({ acquiringResults: false });
+                    window.open("/internshipresults", "_blank");
+                  })
+                  .catch((error) => {
+                    this.setState({
+                      errorMessage:
+                        "Oops! It looks like something went wrong. Please try again.",
+                    });
+                  });
+              })
               .catch((error) => {
                 this.setState({
                   errorMessage:
@@ -302,13 +321,12 @@ class SearchForInternshipsScreen extends Component {
   };
 
   handleSelection = (role) => {
-    // make post request here as callback to setState
     this.setState({ internshipsList: [] }, () => {
       this.setState({ currentRole: role }, () => {
+        this.setState({ acquiringResults: true });
         this.getResultsFromBackend();
       });
     });
-    console.log(role);
   };
 
   goBack = () => {
@@ -316,33 +334,73 @@ class SearchForInternshipsScreen extends Component {
   };
 
   render() {
+    const blurDiv = {
+      filter: "blur(3px)",
+      backgroundColor: "#ebebeb",
+      overflowY: "hidden",
+      overflowX: "hidden",
+    };
+    const normalDiv = {
+      backgroundColor: "white",
+    };
+    const invisibleStyles = {
+      display: "none",
+    };
+    const visibleStyles = {
+      display: "block",
+      zIndex: "10",
+      backgroundColor: "#aee1fc",
+      padding: "50px",
+      fontFamily: "Montserrat",
+      fontSize: "20px",
+      width: "600px",
+      height: "150px",
+      textAlign: "center",
+      color: "#ff219b",
+    };
+
     return this.state.access ? (
       this.state.loading ? (
         <WaveLoading />
       ) : (
-        <div className="main-div">
-          <div className="back-button">
-            <CustomButton value={"Go Back"} onClick={this.goBack} />
+        <div>
+          <div
+            className="main-div"
+            style={this.state.acquiringResults ? blurDiv : normalDiv}
+          >
+            <div className="back-button">
+              <CustomButton value={"Go Back"} onClick={this.goBack} />
+            </div>
+            <div className="header-search">Pick a Sector, Then a Role</div>
+            <div className="subheading-1">Sectors</div>
+            <div className="industry-wrapper">
+              <div className="flex-wrap">{this.state.sectors1}</div>
+            </div>
+            <div className="industry-wrapper">
+              <div className="flex-wrap">{this.state.sectors2}</div>
+            </div>
+            <div className="subheading-2">Roles</div>
+            <div className="roles-wrapper">
+              <div className="flex-wrap">{this.state.roles1}</div>
+            </div>
+            <br />
+            <div className="roles-wrapper">
+              <div className="flex-wrap">{this.state.roles2}</div>
+            </div>
+            <br />
+            <div className="roles-wrapper">
+              <div className="flex-wrap">{this.state.roles3}</div>
+            </div>
           </div>
-          <div className="header-search">Pick a Sector, Then a Role</div>
-          <div className="subheading-1">Sectors</div>
-          <div className="industry-wrapper">
-            <div className="flex-wrap">{this.state.sectors1}</div>
-          </div>
-          <div className="industry-wrapper">
-            <div className="flex-wrap">{this.state.sectors2}</div>
-          </div>
-          <div className="subheading-2">Roles</div>
-          <div className="roles-wrapper">
-            <div className="flex-wrap">{this.state.roles1}</div>
-          </div>
-          <br />
-          <div className="roles-wrapper">
-            <div className="flex-wrap">{this.state.roles2}</div>
-          </div>
-          <br />
-          <div className="roles-wrapper">
-            <div className="flex-wrap">{this.state.roles3}</div>
+          <div className="results-modal">
+            <div
+              style={
+                this.state.acquiringResults ? visibleStyles : invisibleStyles
+              }
+            >
+              The Algorithm is at Work
+              <SolarSystemLoading size={"large"} color={"#ff219b"} />
+            </div>
           </div>
         </div>
       )

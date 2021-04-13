@@ -41,3 +41,10 @@
     margin-top: 35px;
     margin-bottom: 35px
 }
+
+.results-modal {
+    position: absolute;
+    top: 35%;
+    left: 30%;
+    z-index: 10;
+}

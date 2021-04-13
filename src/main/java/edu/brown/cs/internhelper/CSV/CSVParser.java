@@ -1,6 +1,6 @@
-package edu.brown.cs.internhelper.Csv;
+package edu.brown.cs.internhelper.CSV;
 
-public class CsvParser {
+public class CSVParser {
 
   public String[] parseCSV(String line) {
     String[] splitLines = line.split(",");
