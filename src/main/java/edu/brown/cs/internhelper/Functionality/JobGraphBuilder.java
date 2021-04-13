@@ -202,45 +202,61 @@ public class JobGraphBuilder {
     return temp;
   }
 
-  public Map<Job, Double> calculateJobResumeSimilarity(Map<Job, Double> jobRanks, String resume) {
+  public Map<Job, Double> calculateJobResumeSimilarity(Map<Job, Double> jobRanks, User user) {
     LevenshteinDistance distance = new LevenshteinDistance();
-//    String resume = "Currently enrolled in or recently graduated from a Bachelor's Degree\n" +
-//        "Knowledge of UI/UX best practices and trends\n" +
-//        "Portfolio of UI/UX related work Experience or interest designing and shipping web-based " +
-//        "products and interfaces\n" +
-//        "Strong experience working from flows and wireframes through to the final product\n" +
-//        "UX and UI experience\n" +
-//        "Experience working with a SaaS product\n" +
-//        "Designing wireframes and mock-ups of new features\n" +
-//        "Collaborating with team members during design reviews to refine the user experience\n" +
-//        "Working with software engineers to ensure consistency between design and implementation" +
-//        ".\n" +
-//        "Propose solutions to solve design/user experience challenges\n" +
-//        "Writing clean, concise and descriptive documentation of your features. At least 18 years" +
-//        " old, currently enrolled in a four year academic institution completing an undergrad, " +
-//        "grad, or PhD degree in Business/Economics, Human-Computer Interaction, Computer Science " +
-//        "or a related STEM field.\n" +
-//        "Legally authorized to work in the United States. Due to the limited duration of this " +
-//        "program, sponsorship for employment visa status is not available for this position.\n" +
-//        "Availability to complete the full 10-12-week internship program during summer 2021, with" +
-//        " a time commitment of approximately 30-40 hours per week.\n" +
-//        "Must be highly proficient in SQL and Microsoft Excel\n" +
-//        "Strong understanding of growth principles, product development, and product go to market" +
-//        " processes";
 
+    String skills = user.getSkills();
+    String coursework = user.getCoursework();
+    Resume resume = user.getResume();
+    String allResumeDescriptions = "";
+    for (Experience experience : resume.getResumeExperiences()) {
+      allResumeDescriptions = allResumeDescriptions + " " + experience.getDescription();
+    }
+
+    //skills similarity to current Job qual is 0.4
+    //coursework similarity to current Job qual is 0.35
+    //all resume  descriptions to current Job qual is 0.25
 
     for (Map.Entry<Job, Double> en : jobRanks.entrySet()) {
-      String currJob = en.getKey().getRequiredQualifications();
-      double dist = distance.similarity(currJob, resume);
-      en.getKey().setResumeSimilarityScore(dist);
-      //System.out.println("JOB TITLE " + en.getKey().getTitle() + "," + dist);
-
+      String currJobQual = en.getKey().getRequiredQualifications();
+      double skillsSimilarity = distance.similarity(skills, currJobQual);
+      double courseworkSimilarity = distance.similarity(coursework, currJobQual);
+      double descriptionsSimilarity = distance.similarity(allResumeDescriptions, currJobQual);
+      double totalSimilarityScore = 0.4 * skillsSimilarity + 0.35 * courseworkSimilarity +
+          0.25 * descriptionsSimilarity;
+      en.getKey().setResumeSimilarityScore(totalSimilarityScore);
+      System.out.println("JOB TITLE " + en.getKey().getTitle() + "," + totalSimilarityScore);
     }
 
     return jobRanks;
 
   }
 
+
+  public Map<Job, Double> calculateUserResults(User user, Map<Job, Double> pageRankResults) {
+
+    Map<Job, Double> resumeSimilarityResults = this.calculateJobResumeSimilarity(pageRankResults,
+        user);
+
+    Map<Job, Double> userResults = new HashMap<>();
+
+    for (Map.Entry<Job, Double> entry : pageRankResults.entrySet()) {
+      Job key = entry.getKey();
+      Double pageRankVal = entry.getValue();
+      Double resumeSimilarityVal = key.getResumeSimilarityScore();
+      double combined = pageRankVal + resumeSimilarityVal;
+      userResults.put(key, combined);
+      // do whatever with value1 and value2
+    }
+
+    Map<Job, Double> sortedUserResults = sortByValue(userResults);
+
+    return sortedUserResults;
+
+  }
+
+
+/**
   public Map<Job, Double> userResults(Resume resume) {
     Map<Job, Double> pageRankResults = this.runPageRank();
     String userResumeDescriptions = "";
@@ -284,5 +300,6 @@ public class JobGraphBuilder {
 
 
   }
+ **/
 
 }

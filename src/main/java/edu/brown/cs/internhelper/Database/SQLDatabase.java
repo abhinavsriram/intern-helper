@@ -1,9 +1,16 @@
 package edu.brown.cs.internhelper.Database;
 
+import edu.brown.cs.internhelper.Csv.CsvWriter;
+import edu.brown.cs.internhelper.Functionality.Job;
+
 import java.sql.Connection;
+import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class SQLDatabase {
 
@@ -35,6 +42,21 @@ public class SQLDatabase {
 
   public Connection getConn() {
     return conn;
+  }
+
+  public List<String> getTableNames () {
+    List<String> tableNames = new ArrayList<>();
+    try {
+      DatabaseMetaData md = conn.getMetaData();
+      ResultSet rs = md.getTables(null, null, "%", null);
+      while (rs.next()) {
+        String tableName = rs.getString(3);
+        tableNames.add(tableName);
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    return tableNames;
   }
 
 

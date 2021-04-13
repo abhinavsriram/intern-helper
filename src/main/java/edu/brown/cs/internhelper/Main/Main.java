@@ -1,9 +1,13 @@
 package edu.brown.cs.internhelper.Main;
 
 import com.google.common.collect.ImmutableMap;
+import edu.brown.cs.internhelper.Csv.CsvParser;
+import edu.brown.cs.internhelper.Database.SQLDatabase;
 import edu.brown.cs.internhelper.Functionality.CachePageRanks;
+import edu.brown.cs.internhelper.Functionality.Experience;
 import edu.brown.cs.internhelper.Functionality.Job;
 import edu.brown.cs.internhelper.Functionality.JobGraphBuilder;
+import edu.brown.cs.internhelper.Functionality.LevenshteinDistance;
 import edu.brown.cs.internhelper.Functionality.Resume;
 import edu.brown.cs.internhelper.Functionality.User;
 import joptsimple.OptionParser;
@@ -16,11 +20,21 @@ import spark.Response;
 import spark.Route;
 import spark.Spark;
 
-import java.io.IOException;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileReader;
+import java.io.InputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.io.FileWriter;
 import java.io.File;
 import java.util.concurrent.ExecutionException;
@@ -95,6 +109,11 @@ public final class Main {
     Spark.exception(Exception.class, new ExceptionPrinter());
     Spark.get("/userJobResults", new UserJobResultsHandler());
     Spark.post("/userJobResults", new UserJobResultsHandler());
+    Spark.get("/searchResults", new SearchInternshipsHandler());
+    Spark.post("/searchResults", new SearchInternshipsHandler());
+
+    Spark.get("/suggestedRoles", new DatabaseSuggestedRolesHandler());
+    Spark.post("/suggestedRoles", new DatabaseSuggestedRolesHandler());
   }
 
   static int getHerokuAssignedPort() {
@@ -117,6 +136,110 @@ public final class Main {
     return DEFAULT_PORT; //return default port if heroku-port isn't set (i.e. on localhost)
   }
 
+
+  private static class DatabaseSuggestedRolesHandler implements Route {
+
+    @Override
+    public String handle(Request req, Response res) throws JSONException,
+        ExecutionException, InterruptedException {
+
+      JSONObject data = new JSONObject(req.body());
+      String id = data.getString("id");
+      FB.setUp();
+      User user = FB.getFirebaseResumeData(id);
+      List<String> databaseRoles = new ArrayList<>();
+      try {
+        SQLDatabase db = new SQLDatabase();
+        db.connectDatabase("jdbc:sqlite:data/python_scripts/internships.sqlite3");
+        databaseRoles = db.getTableNames();
+        db.getConn().close();
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
+
+      Set<String> suggestedRoles = new HashSet<>();
+      for (Experience experience : user.getResume().getResumeExperiences()) {
+        String experienceTitle = experience.getTitle();
+        double mostSimilarScore = 0.0;
+        String mostSimilarRole = "";
+        for (String databaseRole : databaseRoles) {
+          LevenshteinDistance distance = new LevenshteinDistance();
+          double similarity = distance.similarity(experienceTitle, databaseRole);
+          if (similarity > mostSimilarScore) {
+            mostSimilarScore = similarity;
+            mostSimilarRole = databaseRole;
+          }
+
+        }
+        suggestedRoles.add(mostSimilarRole);
+      }
+
+      Map<String, Object> variables = ImmutableMap.of("suggestedRoles", suggestedRoles);
+      return GSON.toJson(variables);
+    }
+  }
+
+  private static class UserJobResultsHandler implements Route {
+
+    @Override
+    public String handle(Request req, Response res)  throws JSONException, ExecutionException,
+        InterruptedException {
+
+      JSONObject data = new JSONObject(req.body());
+      String role = data.getString("role");
+      String id = data.getString("id");
+      FB.setUp();
+      User user = FB.getFirebaseResumeData(id);
+
+      String fileName = role + "pr.csv";
+      String line = null;
+      int counter = 0;
+      Map<Job, Double> pageRanks = new HashMap<>();
+      try {
+        BufferedReader reader = new BufferedReader(new FileReader(fileName));
+        CsvParser csvParser = new CsvParser();
+        try {
+          while ((line = reader.readLine()) != null) {
+            if (counter != 0) {
+              String[] splitLines = csvParser.parseCSV(line);
+              Job job = new Job();
+              job.setId(Integer.valueOf(splitLines[0]));
+              job.setTitle(splitLines[1]);
+              job.setCompany(splitLines[2]);
+              job.setLocation(splitLines[3]);
+              job.setRequiredQualifications(splitLines[4]);
+              job.setLink(splitLines[5]);
+              double pageRank = Double.valueOf(splitLines[6]);
+              pageRanks.put(job, pageRank);
+              counter += 1;
+            }
+          }
+        } catch (Exception e) {
+          e.printStackTrace();
+        }
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
+
+      JobGraphBuilder graphBuilder = new JobGraphBuilder();
+
+      Map<Job, Double> jobResults = graphBuilder.calculateUserResults(user, pageRanks);
+
+      Map<Double, Job> tempJobResults = new LinkedHashMap<>();
+      for (Map.Entry<Job, Double> en : jobResults.entrySet()) {
+        tempJobResults.put(en.getValue(), en.getKey());
+      }
+
+      Map<String, Object> variables = ImmutableMap.of("userJobResults", tempJobResults);
+      return GSON.toJson(variables);
+
+
+    }
+
+  }
+
+
+  /**
   private static class UserJobResultsHandler implements Route {
 
     @Override
@@ -147,6 +270,43 @@ public final class Main {
       }
 
       Map<String, Object> variables = ImmutableMap.of("userJobResults", tempJobResults);
+      return GSON.toJson(variables);
+    }
+  }
+   **/
+
+  private static class SearchInternshipsHandler implements Route {
+
+    @Override
+    public String handle(Request req, Response res)
+        throws JSONException, ExecutionException, InterruptedException {
+      JSONObject data = new JSONObject(req.body());
+      String tableName = data.getString("role");
+
+      SQLDatabase db = new SQLDatabase();
+      db.connectDatabase("jdbc:sqlite:data/python_scripts/internships.sqlite3");
+      ResultSet rs = db.runQuery("SELECT * FROM " + '"' + tableName + '"');
+      List<Job> internships = new ArrayList<>();
+      try {
+        while (rs.next()) {
+
+          Job internship = new Job();
+          internship.setId(rs.getInt(1));
+          internship.setTitle(rs.getString(2));
+          internship.setCompany(rs.getString(3));
+          internship.setLocation(rs.getString(4));
+          internship.setRequiredQualifications(rs.getString(5));
+          internship.setLink(rs.getString(6));
+
+          internships.add(internship);
+        }
+        rs.close();
+        db.getConn().close();
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
+
+      Map<String, Object> variables = ImmutableMap.of("searchResults", internships);
       return GSON.toJson(variables);
     }
   }
