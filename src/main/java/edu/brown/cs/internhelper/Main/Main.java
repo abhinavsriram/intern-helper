@@ -119,7 +119,7 @@ public final class Main {
       try {
         File portFile = new File("port.txt");
         FileWriter writer = new FileWriter("port.txt", false);
-        writer.write(Integer.parseInt(processBuilder.environment().get("PORT")));
+        writer.write(String.valueOf(Integer.parseInt(processBuilder.environment().get("PORT"))));
         writer.close();
       } catch (IOException e) {
         System.out.println("An error occurred when writing to port file!");
