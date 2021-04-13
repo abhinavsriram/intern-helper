@@ -104,7 +104,7 @@ class InternshipResultsScreen extends Component {
 
   componentDidMount() {
     this.getUserID();
-    this.id = setTimeout(() => this.setState({ loading: false }), 4000);
+    this.id = setTimeout(() => this.setState({ loading: false }), 2000);
   }
 
   componentWillUnmount() {
