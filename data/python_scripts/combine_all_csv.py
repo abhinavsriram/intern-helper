@@ -59,7 +59,7 @@ def run_script():
       "l": "Legal Intern",
       "lob": "Lobbying Intern",
       "m": "Marketing Intern",
-      "mm": "Multimdeia Intern",
+      "mm": "Multimedia Intern",
       "md": "Merchandising Intern",
       "ne": "Network Engineer Intern",
       "o": "Operations Intern",

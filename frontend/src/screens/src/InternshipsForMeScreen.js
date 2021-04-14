@@ -57,7 +57,7 @@ class InternshipsForMeScreen extends Component {
       },
     };
     axios
-      .post("http://localhost:" + this.state.port + "/suggestedRoles", toSend, config)
+      .post("http://localhost:" + "4567" + "/suggestedRoles", toSend, config)
       .then((response) => {
         let localRoles = [];
         Object.entries(response.data["suggestedRoles"]).forEach(
@@ -85,7 +85,7 @@ class InternshipsForMeScreen extends Component {
             message2: "If that is not the case, then please search for a role:",
           });
         }
-        this.setState({ roles: localRoles.slice(0, 4) });
+        this.setState({ roles: localRoles.slice(0, 10) });
       });
   };
 
@@ -149,6 +149,7 @@ class InternshipsForMeScreen extends Component {
           element.ref.delete().then();
         });
         const toSend = {
+            id: this.state.uid,
           role: this.state.currentRole,
         };
         let config = {
@@ -158,10 +159,10 @@ class InternshipsForMeScreen extends Component {
           },
         };
         axios
-          .post("http://localhost:" + this.state.port + "/searchResults", toSend, config)
+          .post("http://localhost:" + "4567" + "/userJobResults", toSend, config)
           .then((response) => {
             let localInternshipsList = [];
-            Object.entries(response.data["searchResults"]).forEach(
+            Object.entries(response.data["userJobResults"]).forEach(
               ([key, value]) => {
                 let crypto = require("crypto-js");
                 let concat =

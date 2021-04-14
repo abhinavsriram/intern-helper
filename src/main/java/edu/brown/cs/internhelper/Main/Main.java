@@ -11,11 +11,13 @@ import edu.brown.cs.internhelper.Functionality.Experience;
 import edu.brown.cs.internhelper.Functionality.Job;
 import edu.brown.cs.internhelper.Functionality.JobGraphBuilder;
 import edu.brown.cs.internhelper.Functionality.LevenshteinDistance;
+import edu.brown.cs.internhelper.Functionality.TextSimilarity;
 import edu.brown.cs.internhelper.Functionality.User;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 import spark.ExceptionHandler;
 import spark.Request;
 import spark.Response;
@@ -28,16 +30,24 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.FileReader;
 import java.io.PrintWriter;
+import java.io.Reader;
+import java.io.StringReader;
 import java.io.StringWriter;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.concurrent.ExecutionException;
+import java.util.stream.Collectors;
 
 import com.google.gson.Gson;
 
@@ -86,6 +96,26 @@ public final class Main {
 //    graphBuilder.runPageRank();
 //    CachePageRanks cachePageRanks = new CachePageRanks();
 //    cachePageRanks.cacheResults();
+    /**
+    TextSimilarity textSimilarity = new TextSimilarity();
+    try {
+      textSimilarity.loadStopWords("data/stopwords/stopwords.txt");
+      String word = "Product Manager and Software Engineer Intern";
+      Set<String> set1 = textSimilarity.removeStopWords(word);
+
+      String word2 = "Software Engineer";
+      Set<String> set2 = textSimilarity.removeStopWords(word2);
+
+      Set<String> set3 =  textSimilarity.commonWords(set2, set1);
+
+      System.out.println(set3.size());
+      System.out.println(set1.size());
+      double percentage = (double) (set3.size()) / (set1.size());
+      System.out.println(percentage);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+     **/
     runSparkServer((int) options.valueOf("port"));
   }
 
@@ -159,67 +189,103 @@ public final class Main {
       }
 
       Set<String> suggestedRoles = new HashSet<>();
+
       for (Experience experience : user.getResume().getResumeExperiences()) {
-        String experienceTitle = experience.getTitle();
-        double mostSimilarScore = 0.0;
-        String mostSimilarRole = "";
+//        System.out.println(experience.getTitle() + "," + experience.getCompany());
+        String experienceTitle = experience.getTitle().replaceAll("Intern", "");
+        experienceTitle = experienceTitle.replaceAll("intern", "");
+        System.out.println(experienceTitle + "," + experience.getCompany());
+        Map<String, Double> unSortedMap = new HashMap<>();
         for (String databaseRole : databaseRoles) {
-          LevenshteinDistance distance = new LevenshteinDistance();
-          double similarity = distance.similarity(experienceTitle, databaseRole);
-          if (similarity > mostSimilarScore) {
-            mostSimilarScore = similarity;
-            mostSimilarRole = databaseRole;
+          TextSimilarity similarityCalculator = new TextSimilarity();
+          try {
+            similarityCalculator.loadStopWords("data/stopwords/stopwords.txt");
+          } catch (Exception e) {
+            e.printStackTrace();
           }
-
+          String modifiedDatabaseRoleTitle = databaseRole.replaceAll("Intern", "");
+          modifiedDatabaseRoleTitle = modifiedDatabaseRoleTitle.replaceAll("intern", "");
+          Set<String> resumeSet = similarityCalculator.removeStopWords(experienceTitle);
+          Set<String> databaseRoleSet = similarityCalculator.removeStopWords(modifiedDatabaseRoleTitle);
+          Set<String> commonWords =  similarityCalculator.commonWords(databaseRoleSet, resumeSet);
+          double similarity = (double) (commonWords.size()) / (resumeSet.size());
+          unSortedMap.put(databaseRole, similarity);
         }
-        suggestedRoles.add(mostSimilarRole);
-      }
+        Map<String, Double> result = unSortedMap.entrySet()
+            .stream()
+            .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+            .collect(Collectors.toMap(
+                Map.Entry::getKey,
+                Map.Entry::getValue,
+                (oldValue, newValue) -> oldValue, LinkedHashMap::new));
 
+
+        Map.Entry<String, Double> entWithMaxVal = result.entrySet().iterator().next();
+
+        if (entWithMaxVal.getValue() != 0.0) {
+          result.forEach((k, val) -> {
+            if (val.equals(entWithMaxVal.getValue())) {
+              suggestedRoles.add(k);
+            }
+          });
+        }
+      }
       Map<String, Object> variables = ImmutableMap.of("suggestedRoles", suggestedRoles);
       return GSON.toJson(variables);
     }
   }
 
+
   private static class UserJobResultsHandler implements Route {
 
     @Override
     public String handle(Request req, Response res) throws JSONException, ExecutionException,
-            InterruptedException {
+        InterruptedException {
+
+      System.out.println("HERE IN USER JOB RESULTS HANDLER");
 
       JSONObject data = new JSONObject(req.body());
       String role = data.getString("role");
       String id = data.getString("id");
+//      FB.setUp();
       User user = FB.getFirebaseResumeData(id);
 
-      String fileName = role + "pr.csv";
+      String fileName = "data/page_rank_results/" + role + "pr.csv";
       String line = null;
       int counter = 0;
       Map<Job, Double> pageRanks = new HashMap<>();
       try {
-        BufferedReader reader = new BufferedReader(new FileReader(fileName));
+        Path pathName = Path.of(fileName);
+        String text = Files.readString(pathName);
+        text = text.replace("\n", "").replace("\r", "");
+
+        Reader inputString = new StringReader(text);
+
+        BufferedReader reader = new BufferedReader(inputString);
         CSVParser csvParser = new CSVParser();
-        try {
-          while ((line = reader.readLine()) != null) {
-            if (counter != 0) {
-              String[] splitLines = csvParser.parseCSV(line);
-              Job job = new Job();
-              job.setId(Integer.valueOf(splitLines[0]));
-              job.setTitle(splitLines[1]);
-              job.setCompany(splitLines[2]);
-              job.setLocation(splitLines[3]);
-              job.setRequiredQualifications(splitLines[4]);
-              job.setLink(splitLines[5]);
-              double pageRank = Double.valueOf(splitLines[6]);
-              pageRanks.put(job, pageRank);
-              counter += 1;
-            }
+        line = reader.readLine();
+        String[] splitLines = csvParser.parseCSV(line);
+
+        int numberJobEntries = splitLines.length / 7;
+
+        if (numberJobEntries > 1) {
+          for (int i = 7; i < splitLines.length; i = i + 7) {
+            Job job = new Job();
+            job.setId(Integer.valueOf(splitLines[i]));
+            job.setTitle(splitLines[i+1]);
+            job.setCompany(splitLines[i+2]);
+            job.setLocation(splitLines[i+3]);
+            job.setRequiredQualifications(splitLines[i+4]);
+            job.setLink(splitLines[i+5]);
+            double pageRank = Double.valueOf(splitLines[i+6]);
+            pageRanks.put(job, pageRank);
           }
-        } catch (Exception e) {
-          e.printStackTrace();
         }
+
       } catch (Exception e) {
         e.printStackTrace();
       }
+
 
       JobGraphBuilder graphBuilder = new JobGraphBuilder();
 
@@ -227,6 +293,7 @@ public final class Main {
 
       Map<Double, Job> tempJobResults = new LinkedHashMap<>();
       for (Map.Entry<Job, Double> en : jobResults.entrySet()) {
+        System.out.println(en.getKey().getTitle() + " " + en.getValue());
         tempJobResults.put(en.getValue(), en.getKey());
       }
 
@@ -238,40 +305,6 @@ public final class Main {
 
   }
 
-
-  /**
-   * private static class UserJobResultsHandler implements Route {
-   *
-   * @Override public String handle(Request req, Response res)
-   * throws JSONException, ExecutionException, InterruptedException {
-   * JSONObject data = new JSONObject(req.body());
-   * String id = data.getString("id");
-   * System.out.println(id);
-   * User user = FB.getFirebaseResumeData(id);
-   * <p>
-   * JobGraphBuilder graphBuilder = new JobGraphBuilder();
-   * //graphBuilder.readData();
-   * graphBuilder.calculateJobScores();
-   * //graphBuilder.calculateJobCompositeScore();
-   * graphBuilder.buildJobGraph();
-   * <p>
-   * //      String userResumeDescriptions = "";
-   * //      for (Experience experience : user.getResume().getResumeExperiences()) {
-   * //        userResumeDescriptions += experience.getDescription();
-   * //      }
-   * Resume resume = user.getResume();
-   * Map<Job, Double> jobResults = graphBuilder.userResults(resume);
-   * <p>
-   * Map<Double, Job> tempJobResults = new HashMap<>();
-   * for (Map.Entry<Job, Double> en : jobResults.entrySet()) {
-   * tempJobResults.put(en.getValue(), en.getKey());
-   * }
-   * <p>
-   * Map<String, Object> variables = ImmutableMap.of("userJobResults", tempJobResults);
-   * return GSON.toJson(variables);
-   * }
-   * }
-   **/
 
   private static class SearchInternshipsHandler implements Route {
 

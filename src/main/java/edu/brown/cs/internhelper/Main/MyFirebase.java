@@ -62,18 +62,18 @@ public class MyFirebase {
       if (userDataDoc.exists()) {
         user = userDataDoc.toObject(User.class);
         user.setId(userID);
-        System.out.println("ID " + user.getId());
-        System.out.println("SKILLS " + user.getSkills());
-        System.out.println("MAJOR GPA " + user.getMajor_GPA());
-        System.out.println("MAJOR " + user.getMajor());
-        System.out.println("CUMULATIVE GPA " + user.getCumulative_GPA());
-        System.out.println("UNIVERSITY " + user.getUniversity());
-        System.out.println("DEGREE " + user.getDegree());
-        System.out.println("LAST NAME " + user.getLast_Name());
-        System.out.println("COURSEWORK " + user.getCoursework());
-        System.out.println("FIRST NAME " + user.getFirst_Name());
-        System.out.println("EMAIL " + user.getEmail());
-        System.out.println("PROFILE COMPLETE " + user.getInitial_Profile_Setup_Complete());
+//        System.out.println("ID " + user.getId());
+//        System.out.println("SKILLS " + user.getSkills());
+//        System.out.println("MAJOR GPA " + user.getMajor_GPA());
+//        System.out.println("MAJOR " + user.getMajor());
+//        System.out.println("CUMULATIVE GPA " + user.getCumulative_GPA());
+//        System.out.println("UNIVERSITY " + user.getUniversity());
+//        System.out.println("DEGREE " + user.getDegree());
+//        System.out.println("LAST NAME " + user.getLast_Name());
+//        System.out.println("COURSEWORK " + user.getCoursework());
+//        System.out.println("FIRST NAME " + user.getFirst_Name());
+//        System.out.println("EMAIL " + user.getEmail());
+//        System.out.println("PROFILE COMPLETE " + user.getInitial_Profile_Setup_Complete());
 
       } else {
         System.out.println("No such document!");
@@ -86,18 +86,18 @@ public class MyFirebase {
         .collection("experiences").get();
     try {
       List<QueryDocumentSnapshot> experienceDocs = experiencesDataSnapshot.get().getDocuments();
-      System.out.println("==========================================");
+//      System.out.println("==========================================");
       for (QueryDocumentSnapshot experienceDoc : experienceDocs) {
         if (!(experienceDoc.getId().equals("Experiences List"))) {
           Experience experience = experienceDoc.toObject(Experience.class);
           experience.setId(experienceDoc.getId());
-          System.out.println("ID " + experience.getId());
-          System.out.println("END DATE " + experience.getEnd_Date());
-          System.out.println("DESCRIPTION " + experience.getDescription());
-          System.out.println("COMPANY " + experience.getCompany());
-          System.out.println("TITLE " + experience.getTitle());
-          System.out.println("START DATE " + experience.getStart_Date());
-          System.out.println("==========================================");
+//          System.out.println("ID " + experience.getId());
+//          System.out.println("END DATE " + experience.getEnd_Date());
+//          System.out.println("DESCRIPTION " + experience.getDescription());
+//          System.out.println("COMPANY " + experience.getCompany());
+//          System.out.println("TITLE " + experience.getTitle());
+//          System.out.println("START DATE " + experience.getStart_Date());
+//          System.out.println("==========================================");
           //System.out.println(resume);
           resume.addExperience(experience);
 

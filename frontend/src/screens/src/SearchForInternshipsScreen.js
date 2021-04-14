@@ -55,7 +55,7 @@ class SearchForInternshipsScreen extends Component {
           ro: "Retail Operations Intern",
           cnc: "Content Creator Intern",
           bs: "Brand Strategist Intern",
-          mm: "Multimdeia Intern",
+          mm: "Multimedia Intern",
           sm: "Social Media Intern",
           gd: "Graphic Design Intern",
         },
@@ -173,7 +173,7 @@ class SearchForInternshipsScreen extends Component {
           },
         };
         axios
-          .post("http://localhost:" + this.state.port + "/searchResults", toSend, config)
+          .post("http://localhost:" + "4567" + "/searchResults", toSend, config)
           .then((response) => {
             let localInternshipsList = [];
             Object.entries(response.data["searchResults"]).forEach(
