@@ -164,6 +164,7 @@ class SearchForInternshipsScreen extends Component {
           element.ref.delete().then();
         });
         const toSend = {
+          id: this.state.uid,
           role: this.state.currentRole,
         };
         let config = {
@@ -173,25 +174,25 @@ class SearchForInternshipsScreen extends Component {
           },
         };
         axios
-          .post("http://localhost:" + "4567" + "/searchResults", toSend, config)
+          .post("http://localhost:" + "4567" + "/userJobResults", toSend, config)
           .then((response) => {
             let localInternshipsList = [];
-            Object.entries(response.data["searchResults"]).forEach(
+            Object.entries(response.data["userJobResults"]).forEach(
               ([key, value]) => {
                 let crypto = require("crypto-js");
                 let concat =
-                  value["title"] +
-                  value["company"] +
-                  value["link"] +
-                  value["requiredQualifications"];
+                  value["title"].replace(/"/g,"") +
+                  value["company"].replace(/"/g,"") +
+                  value["link"].replace(/"/g,"") +
+                  value["requiredQualifications"].replace(/"/g,"");
                 let ID = crypto.SHA256(concat).toString();
                 localInternshipsList.push(ID);
                 this.writeToDatabase(
                   ID,
-                  value["title"],
-                  value["company"],
-                  value["requiredQualifications"],
-                  value["link"]
+                  value["title"].replace(/"/g,""),
+                  value["company"].replace(/"/g,""),
+                  value["requiredQualifications"].replace(/"/g,""),
+                  value["link"].replace(/"/g,"")
                 );
               }
             );

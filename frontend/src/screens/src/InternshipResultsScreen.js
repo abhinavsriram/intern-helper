@@ -49,6 +49,10 @@ class InternshipResultsScreen extends Component {
                           apply={doc.data().link}
                           description={doc.data().description}
                           key={Math.random()}
+                          totalScore={47}
+                          skillsScore={90}
+                          experienceScore={80}
+                          courseworkScore={70}
                         />,
                       ],
                     }));

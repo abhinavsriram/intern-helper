@@ -15,7 +15,8 @@ class InternshipsForMeScreen extends Component {
       access: true,
       loading: true,
       currentRole: "",
-      roles: [],
+      roles1: [],
+      roles2: [],
       internships: [],
       internshipsList: [],
       acquiringResults: false,
@@ -85,7 +86,8 @@ class InternshipsForMeScreen extends Component {
             message2: "If that is not the case, then please search for a role:",
           });
         }
-        this.setState({ roles: localRoles.slice(0, 10) });
+        this.setState({ roles1: localRoles.slice(0, 4) });
+        this.setState({ roles2: localRoles.slice(4, 8) });
       });
   };
 
@@ -166,18 +168,18 @@ class InternshipsForMeScreen extends Component {
               ([key, value]) => {
                 let crypto = require("crypto-js");
                 let concat =
-                  value["title"] +
-                  value["company"] +
-                  value["link"] +
-                  value["requiredQualifications"];
+                  value["title"].replace(/"/g,"") +
+                  value["company"].replace(/"/g,"") +
+                  value["link"].replace(/"/g,"") +
+                  value["requiredQualifications"].replace(/"/g,"");
                 let ID = crypto.SHA256(concat).toString();
                 localInternshipsList.push(ID);
                 this.writeToDatabase(
                   ID,
-                  value["title"],
-                  value["company"],
-                  value["requiredQualifications"],
-                  value["link"]
+                  value["title"].replace(/"/g,""),
+                  value["company"].replace(/"/g,""),
+                  value["requiredQualifications"].replace(/"/g,""),
+                  value["link"].replace(/"/g,"")
                 );
               }
             );
@@ -285,7 +287,11 @@ class InternshipsForMeScreen extends Component {
             <div className="header-int-me">Internships For Me</div>
             <div className="subheading-a">{this.state.message1}</div>
             <div className="roles-bt-wrapper">
-              <div className="roles-button-wrapper">{this.state.roles}</div>
+              <div className="roles-button-wrapper">{this.state.roles1}</div>
+            </div>
+            <br />
+            <div className="roles-bt-wrapper">
+              <div className="roles-button-wrapper">{this.state.roles2}</div>
             </div>
             {this.state.message2 !== "" ? (
               <div className="subheading-b">{this.state.message2}</div>
