@@ -16,6 +16,10 @@ public class Job extends Vertex<Job, JobEdge> {
   private List<Double> similarityScores = new ArrayList<>();
   private double compositeSimilarityScore;
   private double resumeSimilarityScore;
+  private double finalScore;
+  private double skillsScore;
+  private double courseworkScore;
+  private double experienceScore;
 
 
   public Job() {
@@ -27,6 +31,10 @@ public class Job extends Vertex<Job, JobEdge> {
     this.link = "";
     this.compositeSimilarityScore = 0.0;
     this.resumeSimilarityScore = 0.0;
+    this.finalScore = 0.0;
+    this.skillsScore = 0.0;
+    this.courseworkScore = 0.0;
+    this.experienceScore = 0.0;
   }
 
   public void setId(int newId) {
@@ -115,6 +123,39 @@ public class Job extends Vertex<Job, JobEdge> {
   public double getResumeSimilarityScore() {
     return this.resumeSimilarityScore;
   }
+
+  public void setFinalScore(double newFinalScore) {
+    this.finalScore = newFinalScore;
+  }
+
+  public double getFinalScore() {
+    return this.finalScore;
+  }
+
+  public void setSkillsScore(double newSkillsScore) {
+    this.skillsScore = newSkillsScore;
+  }
+
+  public double getSkillsScore() {
+    return this.skillsScore;
+  }
+
+  public void setExperienceScore(double newExperienceScore) {
+    this.experienceScore = newExperienceScore;
+  }
+
+  public double getExperienceScore() {
+    return this.experienceScore;
+  }
+
+  public void setCourseworkScore(double newCourseworkScore) {
+    this.courseworkScore = newCourseworkScore;
+  }
+
+  public double getCourseworkScore() {
+    return this.courseworkScore;
+  }
+
 
 
 }

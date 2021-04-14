@@ -247,20 +247,26 @@ public class JobGraphBuilder {
     }
 
     String skills = user.getSkills();
+    skills = skills.replace("\n", "").replace("\r", "");
+    skills = skills.replaceAll("[.^:,•]","");
     String coursework = user.getCoursework();
+    coursework = coursework.replace("\n", "").replace("\r", "");
+    coursework = coursework.replaceAll("[.^:,•]","");
     Resume resume = user.getResume();
     String allResumeDescriptions = "";
     for (Experience experience : resume.getResumeExperiences()) {
       allResumeDescriptions = allResumeDescriptions + " " + experience.getDescription();
     }
     allResumeDescriptions = allResumeDescriptions.replace("\n", "").replace("\r", "");
-    allResumeDescriptions = allResumeDescriptions.replaceAll("[-.^:,•]","");
+    allResumeDescriptions = allResumeDescriptions.replaceAll("[.^:,•]","");
 
 
 
 
     Set<String> skillsSet = similarityCalculator.removeStopWords(skills);
     Set<String> courseworkSet = similarityCalculator.removeStopWords(coursework);
+    //System.out.println(skillsSet);
+    //System.out.println(courseworkSet);
     Set<String> resumeDescriptionsSet = similarityCalculator.removeStopWords(allResumeDescriptions);
 
 
@@ -281,7 +287,7 @@ public class JobGraphBuilder {
 
       String currJobQual = en.getKey().getRequiredQualifications();
       currJobQual = currJobQual.replace("\n", "").replace("\r", "");
-      currJobQual = currJobQual.replaceAll("[-.^:,•]","");
+      currJobQual = currJobQual.replaceAll("[.^:,•]","");
 
 
       Set<String> jobRoleSet = similarityCalculator.removeStopWords(currJobQual);
@@ -289,12 +295,18 @@ public class JobGraphBuilder {
 
       Set<String> skillsCommonWords =  similarityCalculator.commonWords(jobRoleSet, skillsSet);
       double skillsSimilarity = (double) (skillsCommonWords.size()) / (skillsSet.size());
+      //System.out.println(skillsSimilarity);
 
       Set<String> courseworkCommonWords =  similarityCalculator.commonWords(jobRoleSet, courseworkSet);
       double courseworkSimilarity = (double) (courseworkCommonWords.size()) / (courseworkSet.size());
+      //System.out.println(courseworkSimilarity);
+
 
       Set<String> resumeDescriptionsCommonWords =  similarityCalculator.commonWords(jobRoleSet, resumeDescriptionsSet);
       double resumeDescriptionsSimilarity = (double) (resumeDescriptionsCommonWords.size()) / (resumeDescriptionsSet.size());
+
+      //System.out.println(resumeDescriptionsSimilarity);
+
 
       double totalSimilarityScore = 0.4 * skillsSimilarity + 0.35 * courseworkSimilarity +
           0.25 * resumeDescriptionsSimilarity;
@@ -302,6 +314,9 @@ public class JobGraphBuilder {
 //      System.out.println("SKILLS SIMILARITY: " + skillsSimilarity + "COURSE SIMILARITY: "
 //          + courseworkSimilarity + "RESUME SIMILARITY: " + resumeDescriptionsSimilarity);
       //System.out.println("JOB TITLE " + en.getKey().getTitle() + "," + totalSimilarityScore);
+      en.getKey().setSkillsScore(0.4 * skillsSimilarity);
+      en.getKey().setCourseworkScore(0.35 * courseworkSimilarity);
+      en.getKey().setExperienceScore(0.25 * resumeDescriptionsSimilarity);
       en.getKey().setResumeSimilarityScore(totalSimilarityScore);
     }
 
@@ -323,6 +338,7 @@ public class JobGraphBuilder {
       Double resumeSimilarityVal = key.getResumeSimilarityScore();
      // System.out.println(resumeSimilarityVal);
       double combined = pageRankVal + resumeSimilarityVal;
+      key.setFinalScore(combined);
       userResults.put(key, combined);
       // do whatever with value1 and value2
     }
