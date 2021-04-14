@@ -88,8 +88,6 @@ public class JobGraphBuilder {
         if (i != j) {
           String currJob = allJobs.get(i).getRequiredQualifications();
 
-
-
           String otherJob = allJobs.get(j).getRequiredQualifications();
 
 
@@ -111,21 +109,27 @@ public class JobGraphBuilder {
             otherJob = otherJob.replaceAll("[-.^:,•]","");
             Set<String> otherJobSet = similarityCalculator.removeStopWords(otherJob);
 
-            Set<String> commonWords =  similarityCalculator.commonWords(currJobSet, otherJobSet);
+            Set<String> commonWords =  similarityCalculator.commonWords(otherJobSet, currJobSet);
 
             double dist = (double) (commonWords.size()) / (currJobSet.size());
 
+
+
             scores.add(dist);
             totalScore+=dist;
+//            System.out.println("COMMON WORDS SIZE " + commonWords.size() + " JOB SET SIZE " +
+//                currJobSet.size() + " TOTAL DISTANCE " + dist);
           }
         }
         // compare list.get(i) and list.get(j)
       }
 
+      //System.out.println(scores);
       allJobs.get(i).setJobSimilarityScores(scores);
       double compositeScore = (totalScore) / (scores.size());
       allJobs.get(i).setCompositeSimilarityScore(compositeScore);
-      System.out.println("JOB TITLE " + allJobs.get(i).getTitle() + ", COMPOSITE SCORE" + compositeScore);
+//      System.out.println("JOB TITLE " + allJobs.get(i).getTitle() + ", COMPOSITE SCORE" + compositeScore);
+//      System.out.println("=======================");
 
 
     }

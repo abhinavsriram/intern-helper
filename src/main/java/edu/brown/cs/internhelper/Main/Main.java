@@ -89,14 +89,9 @@ public final class Main {
     parser.accepts("port").withRequiredArg().ofType(Integer.class)
             .defaultsTo(DEFAULT_PORT);
     OptionSet options = parser.parse(args);
-//    JobGraphBuilder graphBuilder = new JobGraphBuilder();
-//    graphBuilder.readData();
-//    graphBuilder.calculateJobScores();
-//    graphBuilder.calculateJobCompositeScore();
-//    graphBuilder.buildJobGraph();
-//    graphBuilder.runPageRank();
-    CachePageRanks cachePageRanks = new CachePageRanks();
-    cachePageRanks.cacheResults();
+
+//    CachePageRanks cachePageRanks = new CachePageRanks();
+//    cachePageRanks.cacheResults();
 
     runSparkServer((int) options.valueOf("port"));
   }

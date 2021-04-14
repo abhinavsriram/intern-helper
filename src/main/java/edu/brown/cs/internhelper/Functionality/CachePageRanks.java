@@ -29,7 +29,7 @@ public class CachePageRanks {
         graphBuilder.calculateJobScores();
         graphBuilder.buildJobGraph();
         Map<Job, Double> pageRanks =  graphBuilder.runPageRank();
-        String csvName = "data/page_rank_results/" + rs.getString(3) + "pr.csv";
+        String csvName = "data/page_rank_results2/" + rs.getString(3) + "pr.csv";
         CSVWriter csvWriter = new CSVWriter(pageRanks, csvName);
         csvWriter.mapToCsv();
         System.out.println("DONE WITH " + rs.getString(3));
