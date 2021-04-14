@@ -239,6 +239,7 @@ public class JobGraphBuilder {
 
   public Map<Job, Double> calculateJobResumeSimilarity(Map<Job, Double> jobRanks, User user) {
     //LevenshteinDistance distance = new LevenshteinDistance();
+    Map<Job, Double> jobRanksCopy = jobRanks;
     TextSimilarity similarityCalculator = new TextSimilarity();
     try {
       similarityCalculator.loadStopWords("data/stopwords/stopwords.txt");
@@ -254,6 +255,7 @@ public class JobGraphBuilder {
     coursework = coursework.replaceAll("[.^:,•]","");
     Resume resume = user.getResume();
     String allResumeDescriptions = "";
+    System.out.println(resume.getResumeExperiences().size());
     for (Experience experience : resume.getResumeExperiences()) {
       allResumeDescriptions = allResumeDescriptions + " " + experience.getDescription();
     }
@@ -269,15 +271,17 @@ public class JobGraphBuilder {
     //System.out.println(courseworkSet);
     Set<String> resumeDescriptionsSet = similarityCalculator.removeStopWords(allResumeDescriptions);
 
-
-
+    System.out.println("SETS ARE: ");
+    System.out.println(skillsSet);
+    System.out.println(courseworkSet);
+    System.out.println(resumeDescriptionsSet);
 
 
     //skills similarity to current Job qual is 0.4
     //coursework similarity to current Job qual is 0.35
     //all resume  descriptions to current Job qual is 0.25
 
-    for (Map.Entry<Job, Double> en : jobRanks.entrySet()) {
+    for (Map.Entry<Job, Double> en : jobRanksCopy.entrySet()) {
 //      String currJobQual = en.getKey().getRequiredQualifications();
 //      double skillsSimilarity = distance.similarity(skills, currJobQual);
 //      double courseworkSimilarity = distance.similarity(coursework, currJobQual);
@@ -292,20 +296,27 @@ public class JobGraphBuilder {
 
       Set<String> jobRoleSet = similarityCalculator.removeStopWords(currJobQual);
 
+      System.out.println("JOB ROLES ARE: ");
+      System.out.println(jobRoleSet);
 
       Set<String> skillsCommonWords =  similarityCalculator.commonWords(jobRoleSet, skillsSet);
+      System.out.println("SKILLS: ");
+      System.out.println(skillsCommonWords.size());
       double skillsSimilarity = (double) (skillsCommonWords.size()) / (skillsSet.size());
-      //System.out.println(skillsSimilarity);
+      System.out.println(skillsSimilarity);
 
       Set<String> courseworkCommonWords =  similarityCalculator.commonWords(jobRoleSet, courseworkSet);
+      System.out.println("Coursework: ");
+      System.out.println(courseworkCommonWords.size());
       double courseworkSimilarity = (double) (courseworkCommonWords.size()) / (courseworkSet.size());
-      //System.out.println(courseworkSimilarity);
+      System.out.println(courseworkSimilarity);
 
 
       Set<String> resumeDescriptionsCommonWords =  similarityCalculator.commonWords(jobRoleSet, resumeDescriptionsSet);
+      System.out.println("EXPERIENCES: ");
+      System.out.println(resumeDescriptionsCommonWords.size());
       double resumeDescriptionsSimilarity = (double) (resumeDescriptionsCommonWords.size()) / (resumeDescriptionsSet.size());
-
-      //System.out.println(resumeDescriptionsSimilarity);
+      System.out.println(resumeDescriptionsSimilarity);
 
 
       double totalSimilarityScore = 0.4 * skillsSimilarity + 0.35 * courseworkSimilarity +
@@ -320,7 +331,7 @@ public class JobGraphBuilder {
       en.getKey().setResumeSimilarityScore(totalSimilarityScore);
     }
 
-    return jobRanks;
+    return jobRanksCopy;
 
   }
 
@@ -332,7 +343,7 @@ public class JobGraphBuilder {
 
     Map<Job, Double> userResults = new HashMap<>();
 
-    for (Map.Entry<Job, Double> entry : pageRankResults.entrySet()) {
+    for (Map.Entry<Job, Double> entry : resumeSimilarityResults.entrySet()) {
       Job key = entry.getKey();
       Double pageRankVal = entry.getValue();
       Double resumeSimilarityVal = key.getResumeSimilarityScore();

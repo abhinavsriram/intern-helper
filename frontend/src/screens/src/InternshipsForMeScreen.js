@@ -1,10 +1,10 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import "../styles/InternshipsForMeScreen.css";
 import firebase from "../../firebase";
 import BigCustomButton from "../../components/src/BigCustomButton";
 import image from "../../media/accessdenied.jpeg";
 import CustomButton from "../../components/src/CustomButton";
-import { SolarSystemLoading, WaveLoading } from "react-loadingg";
+import {SolarSystemLoading, WaveLoading} from "react-loadingg";
 import axios from "axios";
 
 class InternshipsForMeScreen extends Component {
@@ -86,8 +86,8 @@ class InternshipsForMeScreen extends Component {
             message2: "If that is not the case, then please search for a role:",
           });
         }
-        this.setState({ roles1: localRoles.slice(0, 4) });
-        this.setState({ roles2: localRoles.slice(4, 8) });
+        this.setState({roles1: localRoles.slice(0, 4)});
+        this.setState({roles2: localRoles.slice(4, 8)});
       });
   };
 
@@ -97,12 +97,12 @@ class InternshipsForMeScreen extends Component {
       if (authFlag) {
         authFlag = false;
         if (user) {
-          this.setState({ uid: user.uid }, () => {
+          this.setState({uid: user.uid}, () => {
             this.readPortNumber();
           });
-          this.setState({ access: true });
+          this.setState({access: true});
         } else {
-          this.setState({ access: false });
+          this.setState({access: false});
         }
       }
     });
@@ -110,14 +110,14 @@ class InternshipsForMeScreen extends Component {
 
   componentDidMount() {
     this.getUserID();
-    this.id = setTimeout(() => this.setState({ loading: false }), 3000);
+    this.id = setTimeout(() => this.setState({loading: false}), 3000);
   }
 
   componentWillUnmount() {
     clearTimeout(this.id);
   }
 
-  writeToDatabase = (id, title, company, description, link) => {
+  writeToDatabase = (id, title, company, description, link, totalScore, skillsScore, courseworkScore, experienceScore) => {
     firebase
       .firestore()
       .collection("user-data")
@@ -129,8 +129,13 @@ class InternshipsForMeScreen extends Component {
         company: company,
         description: description,
         link: link,
+        totalScore: totalScore,
+        skillsScore: skillsScore,
+        courseworkScore: courseworkScore,
+        experienceScore: experienceScore
       })
-      .then(() => {})
+      .then(() => {
+      })
       .catch((error) => {
         this.setState({
           errorMessage:
@@ -151,7 +156,7 @@ class InternshipsForMeScreen extends Component {
           element.ref.delete().then();
         });
         const toSend = {
-            id: this.state.uid,
+          id: this.state.uid,
           role: this.state.currentRole,
         };
         let config = {
@@ -168,18 +173,22 @@ class InternshipsForMeScreen extends Component {
               ([key, value]) => {
                 let crypto = require("crypto-js");
                 let concat =
-                  value["title"].replace(/"/g,"") +
-                  value["company"].replace(/"/g,"") +
-                  value["link"].replace(/"/g,"") +
-                  value["requiredQualifications"].replace(/"/g,"");
+                  value["title"].replace(/"/g, "") +
+                  value["company"].replace(/"/g, "") +
+                  value["link"].replace(/"/g, "") +
+                  value["requiredQualifications"].replace(/"/g, "");
                 let ID = crypto.SHA256(concat).toString();
                 localInternshipsList.push(ID);
                 this.writeToDatabase(
                   ID,
-                  value["title"].replace(/"/g,""),
-                  value["company"].replace(/"/g,""),
-                  value["requiredQualifications"].replace(/"/g,""),
-                  value["link"].replace(/"/g,"")
+                  value["title"].replace(/"/g, ""),
+                  value["company"].replace(/"/g, ""),
+                  value["requiredQualifications"].replace(/"/g, ""),
+                  value["link"].replace(/"/g, ""),
+                  value["finalScore"] * 100,
+                  value["skillsScore"] * 100,
+                  value["courseworkScore"] * 100,
+                  value["experienceScore"] * 100
                 );
               }
             );
@@ -201,7 +210,7 @@ class InternshipsForMeScreen extends Component {
                     recent_query: this.state.currentRole,
                   })
                   .then(() => {
-                    this.setState({ acquiringResults: false });
+                    this.setState({acquiringResults: false});
                     window.open("/internshipresults", "_blank");
                   })
                   .catch((error) => {
@@ -231,9 +240,9 @@ class InternshipsForMeScreen extends Component {
   };
 
   handleSelection = (role) => {
-    this.setState({ internshipsList: [] }, () => {
-      this.setState({ currentRole: role }, () => {
-        this.setState({ acquiringResults: true });
+    this.setState({internshipsList: []}, () => {
+      this.setState({currentRole: role}, () => {
+        this.setState({acquiringResults: true});
         this.getResultsFromBackend();
       });
     });
@@ -274,7 +283,7 @@ class InternshipsForMeScreen extends Component {
     };
     return this.state.access ? (
       this.state.loading ? (
-        <WaveLoading />
+        <WaveLoading/>
       ) : (
         <div>
           <div
@@ -282,14 +291,14 @@ class InternshipsForMeScreen extends Component {
             style={this.state.acquiringResults ? blurDiv : normalDiv}
           >
             <div className="back-button">
-              <CustomButton value={"Go Back"} onClick={this.goBack} />
+              <CustomButton value={"Go Back"} onClick={this.goBack}/>
             </div>
             <div className="header-int-me">Internships For Me</div>
             <div className="subheading-a">{this.state.message1}</div>
             <div className="roles-bt-wrapper">
               <div className="roles-button-wrapper">{this.state.roles1}</div>
             </div>
-            <br />
+            <br/>
             <div className="roles-bt-wrapper">
               <div className="roles-button-wrapper">{this.state.roles2}</div>
             </div>
@@ -300,7 +309,7 @@ class InternshipsForMeScreen extends Component {
               value={"Search For Internships"}
               onClick={() => this.searchForInternships()}
             />
-            <br /> <br /> <br /> <br />
+            <br/> <br/> <br/> <br/>
           </div>
           <div className="results-modal">
             <div
@@ -309,15 +318,15 @@ class InternshipsForMeScreen extends Component {
               }
             >
               The Algorithm is at Work
-              <SolarSystemLoading size={"large"} color={"#ff219b"} />
+              <SolarSystemLoading size={"large"} color={"#ff219b"}/>
             </div>
           </div>
         </div>
       )
     ) : (
       <div className={"denied-wrapper"}>
-        <img src={image} alt={"access denied"} style={{ height: "330px" }} />
-        <br /> <br /> <br /> <br />
+        <img src={image} alt={"access denied"} style={{height: "330px"}}/>
+        <br/> <br/> <br/> <br/>
         <BigCustomButton
           value={"Click Here To Log In"}
           onClick={() => {

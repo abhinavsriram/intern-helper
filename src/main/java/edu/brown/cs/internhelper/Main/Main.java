@@ -274,10 +274,10 @@ public final class Main {
 //          break;
 //        }
         tempJobResults.put(en.getValue(), en.getKey());
-        System.out.println(en.getKey().getTitle()+ "," + en.getValue());
-        System.out.println("FINAL SCORE " + en.getKey().getFinalScore()+ "," + " COURSEWORK SCORE " +  en.getKey().getCourseworkScore() +
-            "," + " SKILLS SCORE " +   + en.getKey().getSkillsScore() + "," + " EXPERIENCE SCORE " + + en.getKey().getExperienceScore());
-        System.out.println("==============================================");
+//        System.out.println(en.getKey().getTitle()+ "," + en.getValue());
+//        System.out.println("FINAL SCORE " + en.getKey().getFinalScore()+ "," + " COURSEWORK SCORE " +  en.getKey().getCourseworkScore() +
+//            "," + " SKILLS SCORE " +   + en.getKey().getSkillsScore() + "," + " EXPERIENCE SCORE " + + en.getKey().getExperienceScore());
+//        System.out.println("==============================================");
       }
 
 
