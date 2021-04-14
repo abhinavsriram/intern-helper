@@ -194,7 +194,7 @@ public final class Main {
 //        System.out.println(experience.getTitle() + "," + experience.getCompany());
         String experienceTitle = experience.getTitle().replaceAll("Intern", "");
         experienceTitle = experienceTitle.replaceAll("intern", "");
-        System.out.println(experienceTitle + "," + experience.getCompany());
+        //System.out.println(experienceTitle + "," + experience.getCompany());
         Map<String, Double> unSortedMap = new HashMap<>();
         for (String databaseRole : databaseRoles) {
           TextSimilarity similarityCalculator = new TextSimilarity();
@@ -252,7 +252,6 @@ public final class Main {
 
       String fileName = "data/page_rank_results/" + role + "pr.csv";
       String line = null;
-      int counter = 0;
       Map<Job, Double> pageRanks = new HashMap<>();
       try {
         Path pathName = Path.of(fileName);
@@ -293,9 +292,15 @@ public final class Main {
 
       Map<Double, Job> tempJobResults = new LinkedHashMap<>();
       for (Map.Entry<Job, Double> en : jobResults.entrySet()) {
-        System.out.println(en.getKey().getTitle() + " " + en.getValue());
+        //System.out.println(en.getKey().getTitle() + " " + en.getValue());
+//        if (counter == 20) {
+//          break;
+//        }
         tempJobResults.put(en.getValue(), en.getKey());
+        System.out.println(en.getKey().getTitle()+ "," + en.getValue());
       }
+
+
 
       Map<String, Object> variables = ImmutableMap.of("userJobResults", tempJobResults);
       return GSON.toJson(variables);

@@ -203,7 +203,13 @@ public class JobGraphBuilder {
   }
 
   public Map<Job, Double> calculateJobResumeSimilarity(Map<Job, Double> jobRanks, User user) {
-    LevenshteinDistance distance = new LevenshteinDistance();
+    //LevenshteinDistance distance = new LevenshteinDistance();
+    TextSimilarity similarityCalculator = new TextSimilarity();
+    try {
+      similarityCalculator.loadStopWords("data/stopwords/stopwords.txt");
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
 
     String skills = user.getSkills();
     String coursework = user.getCoursework();
@@ -212,20 +218,56 @@ public class JobGraphBuilder {
     for (Experience experience : resume.getResumeExperiences()) {
       allResumeDescriptions = allResumeDescriptions + " " + experience.getDescription();
     }
+    allResumeDescriptions = allResumeDescriptions.replace("\n", "").replace("\r", "");
+    allResumeDescriptions = allResumeDescriptions.replaceAll("[-.^:,•]","");
+
+
+
+
+    Set<String> skillsSet = similarityCalculator.removeStopWords(skills);
+    Set<String> courseworkSet = similarityCalculator.removeStopWords(coursework);
+    Set<String> resumeDescriptionsSet = similarityCalculator.removeStopWords(allResumeDescriptions);
+
+
+
+
 
     //skills similarity to current Job qual is 0.4
     //coursework similarity to current Job qual is 0.35
     //all resume  descriptions to current Job qual is 0.25
 
     for (Map.Entry<Job, Double> en : jobRanks.entrySet()) {
+//      String currJobQual = en.getKey().getRequiredQualifications();
+//      double skillsSimilarity = distance.similarity(skills, currJobQual);
+//      double courseworkSimilarity = distance.similarity(coursework, currJobQual);
+//      double descriptionsSimilarity = distance.similarity(allResumeDescriptions, currJobQual);
+//      double totalSimilarityScore = 0.4 * skillsSimilarity + 0.35 * courseworkSimilarity +
+//          0.25 * descriptionsSimilarity;
+
       String currJobQual = en.getKey().getRequiredQualifications();
-      double skillsSimilarity = distance.similarity(skills, currJobQual);
-      double courseworkSimilarity = distance.similarity(coursework, currJobQual);
-      double descriptionsSimilarity = distance.similarity(allResumeDescriptions, currJobQual);
+      currJobQual = currJobQual.replace("\n", "").replace("\r", "");
+      currJobQual = currJobQual.replaceAll("[-.^:,•]","");
+
+
+      Set<String> jobRoleSet = similarityCalculator.removeStopWords(currJobQual);
+
+
+      Set<String> skillsCommonWords =  similarityCalculator.commonWords(jobRoleSet, skillsSet);
+      double skillsSimilarity = (double) (skillsCommonWords.size()) / (skillsSet.size());
+
+      Set<String> courseworkCommonWords =  similarityCalculator.commonWords(jobRoleSet, courseworkSet);
+      double courseworkSimilarity = (double) (courseworkCommonWords.size()) / (courseworkSet.size());
+
+      Set<String> resumeDescriptionsCommonWords =  similarityCalculator.commonWords(jobRoleSet, resumeDescriptionsSet);
+      double resumeDescriptionsSimilarity = (double) (resumeDescriptionsCommonWords.size()) / (resumeDescriptionsSet.size());
+
       double totalSimilarityScore = 0.4 * skillsSimilarity + 0.35 * courseworkSimilarity +
-          0.25 * descriptionsSimilarity;
+          0.25 * resumeDescriptionsSimilarity;
+
+//      System.out.println("SKILLS SIMILARITY: " + skillsSimilarity + "COURSE SIMILARITY: "
+//          + courseworkSimilarity + "RESUME SIMILARITY: " + resumeDescriptionsSimilarity);
+      //System.out.println("JOB TITLE " + en.getKey().getTitle() + "," + totalSimilarityScore);
       en.getKey().setResumeSimilarityScore(totalSimilarityScore);
-      System.out.println("JOB TITLE " + en.getKey().getTitle() + "," + totalSimilarityScore);
     }
 
     return jobRanks;
@@ -244,6 +286,7 @@ public class JobGraphBuilder {
       Job key = entry.getKey();
       Double pageRankVal = entry.getValue();
       Double resumeSimilarityVal = key.getResumeSimilarityScore();
+     // System.out.println(resumeSimilarityVal);
       double combined = pageRankVal + resumeSimilarityVal;
       userResults.put(key, combined);
       // do whatever with value1 and value2
