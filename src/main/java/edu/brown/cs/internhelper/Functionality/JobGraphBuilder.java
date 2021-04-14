@@ -70,7 +70,16 @@ public class JobGraphBuilder {
   }
 
   public void calculateJobScores() {
-    LevenshteinDistance distance = new LevenshteinDistance();
+    //LevenshteinDistance distance = new LevenshteinDistance();
+
+    TextSimilarity similarityCalculator = new TextSimilarity();
+    try {
+      similarityCalculator.loadStopWords("data/stopwords/stopwords.txt");
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+
+
 
     for (int i = 0; i < allJobs.size(); i++) {
       List scores = new ArrayList();
@@ -78,12 +87,34 @@ public class JobGraphBuilder {
       for (int j = 0; j < allJobs.size(); j++) {
         if (i != j) {
           String currJob = allJobs.get(i).getRequiredQualifications();
+
+
+
           String otherJob = allJobs.get(j).getRequiredQualifications();
+
+
+
+
+
+
           if (currJob == null || otherJob == null ) {
             scores.add(0.0);
           }
           else {
-            double dist = distance.similarity(currJob, otherJob);
+            //double dist = distance.similarity(currJob, otherJob);
+
+            currJob = currJob.replace("\n", "").replace("\r", "");
+            currJob = currJob.replaceAll("[-.^:,•]","");
+            Set<String> currJobSet = similarityCalculator.removeStopWords(currJob);
+
+            otherJob = otherJob.replace("\n", "").replace("\r", "");
+            otherJob = otherJob.replaceAll("[-.^:,•]","");
+            Set<String> otherJobSet = similarityCalculator.removeStopWords(otherJob);
+
+            Set<String> commonWords =  similarityCalculator.commonWords(currJobSet, otherJobSet);
+
+            double dist = (double) (commonWords.size()) / (currJobSet.size());
+
             scores.add(dist);
             totalScore+=dist;
           }
@@ -94,7 +125,7 @@ public class JobGraphBuilder {
       allJobs.get(i).setJobSimilarityScores(scores);
       double compositeScore = (totalScore) / (scores.size());
       allJobs.get(i).setCompositeSimilarityScore(compositeScore);
-      //System.out.println(compositeScore);
+      System.out.println("JOB TITLE " + allJobs.get(i).getTitle() + ", COMPOSITE SCORE" + compositeScore);
 
 
     }

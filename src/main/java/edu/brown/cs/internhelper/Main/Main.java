@@ -7,6 +7,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.firebase.cloud.FirestoreClient;
 import edu.brown.cs.internhelper.CSV.CSVParser;
 import edu.brown.cs.internhelper.Database.SQLDatabase;
+import edu.brown.cs.internhelper.Functionality.CachePageRanks;
 import edu.brown.cs.internhelper.Functionality.Experience;
 import edu.brown.cs.internhelper.Functionality.Job;
 import edu.brown.cs.internhelper.Functionality.JobGraphBuilder;
@@ -94,28 +95,9 @@ public final class Main {
 //    graphBuilder.calculateJobCompositeScore();
 //    graphBuilder.buildJobGraph();
 //    graphBuilder.runPageRank();
-//    CachePageRanks cachePageRanks = new CachePageRanks();
-//    cachePageRanks.cacheResults();
-    /**
-    TextSimilarity textSimilarity = new TextSimilarity();
-    try {
-      textSimilarity.loadStopWords("data/stopwords/stopwords.txt");
-      String word = "Product Manager and Software Engineer Intern";
-      Set<String> set1 = textSimilarity.removeStopWords(word);
+    CachePageRanks cachePageRanks = new CachePageRanks();
+    cachePageRanks.cacheResults();
 
-      String word2 = "Software Engineer";
-      Set<String> set2 = textSimilarity.removeStopWords(word2);
-
-      Set<String> set3 =  textSimilarity.commonWords(set2, set1);
-
-      System.out.println(set3.size());
-      System.out.println(set1.size());
-      double percentage = (double) (set3.size()) / (set1.size());
-      System.out.println(percentage);
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-     **/
     runSparkServer((int) options.valueOf("port"));
   }
 
