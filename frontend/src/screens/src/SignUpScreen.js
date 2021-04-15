@@ -20,7 +20,11 @@ class SignUpScreen extends Component {
       errorMessage: "",
       errorMessageBoolean: false,
       uid: "",
+      checked: false,
+
     };
+
+    this.handleInputChange = this.handleInputChange.bind(this);
   }
 
   checkEmailValidity = () => {
@@ -241,6 +245,16 @@ class SignUpScreen extends Component {
     }
   };
 
+  handleInputChange(event) {
+    const target = event.target;
+    const value = target.type === 'checkbox' ? target.checked : target.value;
+    const name = target.name;
+
+    this.setState({
+      [name]: value
+    });
+  }
+
   goBack = () => {
     window.location.href = "/landing";
   };
@@ -270,6 +284,14 @@ class SignUpScreen extends Component {
           value={this.state.password}
           change={this.changePasswordTwo}
         />
+        <input
+            name="checked"
+            type="checkbox"
+            checked={this.state.checked}
+            onChange={this.handleInputChange} 
+        />
+        <div className="message"> Please check to accept</div>
+        <a href="/TermsOfUsePrivacy.pdf" target="blank">Terms and Uses and Privacy Note</a>
         <div
           style={
             this.state.emailValidityBoolean

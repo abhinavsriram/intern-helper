@@ -1,35 +1,15 @@
-import React, { useState } from "react";
+import React from "react";
 import "../styles/InternshipResult.css";
 import CustomButton from "./CustomButton";
-import { Line } from "rc-progress";
+import ProgressBar from 'react-bootstrap/ProgressBar'
 
 function InternshipResult(props) {
-  const [score, setScore] = useState(false);
-
   function truncate(str, num) {
     return str.split(" ").splice(0, num).join(" ");
   }
 
   function sendToLink(link) {
-    window.open(link, "_blank");
-  }
-
-  function expandScore() {
-    setScore(true);
-  }
-
-  function collapseScore() {
-    setScore(false);
-  }
-
-  function scoreColor(score) {
-    if (score >= 75) {
-      return "#34eb80";
-    } else if (score < 75 && score >= 50) {
-      return "#f5b642";
-    } else if (score < 50 && score >= 0) {
-      return "#f54842";
-    }
+    window.open(link, '_blank');
   }
 
   return (
@@ -42,25 +22,7 @@ function InternshipResult(props) {
       <div className={"apply-button"}>
         <CustomButton value={"Apply"} onClick={() => sendToLink(props.apply)} />
       </div>
-      <div className={"int-score"}>Similarity Score: {props.totalScore}%</div>
-      <Line percent={props.totalScore} strokeWidth="1" strokeColor={scoreColor(props.totalScore)} />
-      {score ? (
-        <React.Fragment>
-          <div className={"int-sub-score"}>Your Skills Matched With {props.skillsScore}%</div>
-          <Line percent={props.skillsScore} strokeWidth="1" strokeColor={scoreColor(props.skillsScore)} />
-          <div className={"int-sub-score"}>Your Experiences Matched With {props.experienceScore}%</div>
-          <Line percent={props.experienceScore} strokeWidth="1" strokeColor={scoreColor(props.experienceScore)} />
-          <div className={"int-sub-score"}>Your Coursework Matched With {props.courseworkScore}%</div>
-          <Line percent={props.courseworkScore} strokeWidth="1" strokeColor={scoreColor(props.courseworkScore)} />
-          <div className={"int-sub-breakdown"} onClick={collapseScore}>
-            Collapse Score Breakdown
-          </div>
-        </React.Fragment>
-      ) : (
-        <div className={"int-breakdown"} onClick={expandScore}>
-          Click Here To View Full Score Breakdown
-        </div>
-      )}
+      <ProgressBar striped variant="success" now={40} />
     </div>
   );
 }
