@@ -1,0 +1,18 @@
+.filter-wrapper {
+    --gap: 70px;
+    display: inline-flex;
+    flex-wrap: wrap;
+    margin: calc(-1 * var(--gap)) 0 0 calc(-1 * var(--gap));
+    width: calc(100% + var(--gap));
+}
+
+.filter-wrapper > * {
+    margin: var(--gap) 0 0 var(--gap);
+}
+
+.filter-by {
+    margin-bottom: 30px;
+    font-size: 42px;
+    font-family: Montserrat, sans-serif;
+    color: #9cdcff;
+}

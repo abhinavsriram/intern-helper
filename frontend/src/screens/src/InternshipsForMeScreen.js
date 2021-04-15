@@ -149,7 +149,7 @@ class InternshipsForMeScreen extends Component {
       .firestore()
       .collection("user-data")
       .doc(this.state.uid)
-      .collection("internships")
+      .collection(this.state.currentRole)
       .get()
       .then((doc) => {
         doc.forEach((element) => {
@@ -168,7 +168,10 @@ class InternshipsForMeScreen extends Component {
         axios
           .post("http://localhost:" + "4567" + "/userJobResults", toSend, config)
           .then((response) => {
-            let localInternshipsList = [];
+            let totalScoreMap = new Map();
+            let skillsScoreMap = new Map();
+            let courseworkScoreMap = new Map();
+            let experienceScoreMap = new Map();
             Object.entries(response.data["userJobResults"]).forEach(
               ([key, value]) => {
                 let crypto = require("crypto-js");
@@ -178,20 +181,31 @@ class InternshipsForMeScreen extends Component {
                   value["link"].replace(/"/g, "") +
                   value["requiredQualifications"].replace(/"/g, "");
                 let ID = crypto.SHA256(concat).toString();
-                localInternshipsList.push(ID);
+                totalScoreMap.set(ID, parseFloat(value["finalScore"]) * 100);
+                skillsScoreMap.set(ID, parseFloat(value["skillsScore"]) * 100);
+                courseworkScoreMap.set(ID, parseFloat(value["courseworkScore"]) * 100);
+                experienceScoreMap.set(ID, parseFloat(value["experienceScoreMap"]) * 100);
                 this.writeToDatabase(
                   ID,
                   value["title"].replace(/"/g, ""),
                   value["company"].replace(/"/g, ""),
                   value["requiredQualifications"].replace(/"/g, ""),
                   value["link"].replace(/"/g, ""),
-                  value["finalScore"] * 100,
-                  value["skillsScore"] * 100,
-                  value["courseworkScore"] * 100,
-                  value["experienceScore"] * 100
+                  parseFloat(value["finalScore"]) * 100,
+                  parseFloat(value["skillsScore"]) * 100,
+                  parseFloat(value["courseworkScore"]) * 100,
+                  parseFloat(value["experienceScore"]) * 100
                 );
               }
             );
+            let totalScoreMapSorted = new Map([...totalScoreMap.entries()].sort(function(a, b){return b - a}));
+            let skillsScoreMapSorted = new Map([...skillsScoreMap.entries()].sort(function(a, b){return b - a}));
+            let courseworkScoreMapSorted = new Map([...courseworkScoreMap.entries()].sort(function(a, b){return b - a}));
+            let experienceScoreMapSorted = new Map([...experienceScoreMap.entries()].sort(function(a, b){return b - a}));
+            let totalScoreArray = [...totalScoreMapSorted.keys()];
+            let skillsScoreArray = [...skillsScoreMapSorted.keys()];
+            let courseworkScoreArray = [...courseworkScoreMapSorted.keys()];
+            let experienceScoreArray = [...experienceScoreMapSorted.keys()];
             firebase
               .firestore()
               .collection("user-data")
@@ -199,7 +213,10 @@ class InternshipsForMeScreen extends Component {
               .collection(this.state.currentRole)
               .doc(this.state.currentRole + " List")
               .set({
-                rolesList: localInternshipsList,
+                totalScoreArray: totalScoreArray,
+                skillsScoreArray: skillsScoreArray,
+                courseworkScoreArray: courseworkScoreArray,
+                experienceScoreArray: experienceScoreArray
               })
               .then(() => {
                 firebase

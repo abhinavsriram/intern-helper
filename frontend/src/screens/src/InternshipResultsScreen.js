@@ -1,10 +1,12 @@
 import React, { Component } from "react";
 import "../styles/InternshipsForMeScreen.css";
+import "../styles/InternshipResultsScreen.css";
 import firebase from "../../firebase";
 import BigCustomButton from "../../components/src/BigCustomButton";
 import image from "../../media/accessdenied.jpeg";
 import { WaveLoading } from "react-loadingg";
 import InternshipResult from "../../components/src/InternshipResult";
+import CustomButton from "../../components/src/CustomButton";
 
 class InternshipResultsScreen extends Component {
   constructor(props) {
@@ -19,22 +21,193 @@ class InternshipResultsScreen extends Component {
     };
   }
 
-  getInternships = (user) => {
+  getInternships = () => {
     firebase
       .firestore()
       .collection("user-data")
-      .doc(user.uid)
+      .doc(this.state.uid)
       .collection(this.state.currentRole)
       .doc(this.state.currentRole + " List")
       .get()
       .then((doc) => {
         if (doc.exists) {
-          this.setState({ internshipsList: doc.data().rolesList }, () => {
+          this.setState({ internshipsList: doc.data().totalScoreArray }, () => {
             for (let i = 0; i < this.state.internshipsList.length; i++) {
               firebase
                 .firestore()
                 .collection("user-data")
-                .doc(user.uid)
+                .doc(this.state.uid)
+                .collection(this.state.currentRole)
+                .doc(this.state.internshipsList[i])
+                .get()
+                .then((doc) => {
+                  if (doc.exists) {
+                    this.setState((prevState) => ({
+                      internships: [
+                        ...prevState.internships,
+                        <InternshipResult
+                          title={doc.data().title}
+                          company={doc.data().company}
+                          apply={doc.data().link}
+                          description={doc.data().description}
+                          key={Math.random()}
+                          totalScore={doc.data().totalScore}
+                          skillsScore={doc.data().skillsScore}
+                          experienceScore={doc.data().experienceScore}
+                          courseworkScore={doc.data().courseworkScore}
+                        />,
+                      ],
+                    }));
+                  }
+                })
+                .catch((error) => {
+                  this.setState({
+                    errorMessage:
+                      "Oops! It looks like something went wrong. Please try again.",
+                  });
+                });
+            }
+          });
+        }
+      })
+      .catch((error) => {
+        this.setState({
+          errorMessage:
+            "Oops! It looks like something went wrong. Please try again.",
+        });
+      });
+  };
+
+  getInternshipsBySkills = () => {
+    firebase
+      .firestore()
+      .collection("user-data")
+      .doc(this.state.uid)
+      .collection(this.state.currentRole)
+      .doc(this.state.currentRole + " List")
+      .get()
+      .then((doc) => {
+        if (doc.exists) {
+          this.setState({ internshipsList: doc.data().skillsScoreArray }, () => {
+            for (let i = 0; i < this.state.internshipsList.length; i++) {
+              firebase
+                .firestore()
+                .collection("user-data")
+                .doc(this.state.uid)
+                .collection(this.state.currentRole)
+                .doc(this.state.internshipsList[i])
+                .get()
+                .then((doc) => {
+                  if (doc.exists) {
+                    this.setState((prevState) => ({
+                      internships: [
+                        ...prevState.internships,
+                        <InternshipResult
+                          title={doc.data().title}
+                          company={doc.data().company}
+                          apply={doc.data().link}
+                          description={doc.data().description}
+                          key={Math.random()}
+                          totalScore={doc.data().totalScore}
+                          skillsScore={doc.data().skillsScore}
+                          experienceScore={doc.data().experienceScore}
+                          courseworkScore={doc.data().courseworkScore}
+                        />,
+                      ],
+                    }));
+                  }
+                })
+                .catch((error) => {
+                  this.setState({
+                    errorMessage:
+                      "Oops! It looks like something went wrong. Please try again.",
+                  });
+                });
+            }
+          });
+        }
+      })
+      .catch((error) => {
+        this.setState({
+          errorMessage:
+            "Oops! It looks like something went wrong. Please try again.",
+        });
+      });
+  };
+
+  getInternshipsByCoursework = () => {
+    firebase
+      .firestore()
+      .collection("user-data")
+      .doc(this.state.uid)
+      .collection(this.state.currentRole)
+      .doc(this.state.currentRole + " List")
+      .get()
+      .then((doc) => {
+        if (doc.exists) {
+          this.setState({ internshipsList: doc.data().courseworkScoreArray }, () => {
+            for (let i = 0; i < this.state.internshipsList.length; i++) {
+              firebase
+                .firestore()
+                .collection("user-data")
+                .doc(this.state.uid)
+                .collection(this.state.currentRole)
+                .doc(this.state.internshipsList[i])
+                .get()
+                .then((doc) => {
+                  if (doc.exists) {
+                    this.setState((prevState) => ({
+                      internships: [
+                        ...prevState.internships,
+                        <InternshipResult
+                          title={doc.data().title}
+                          company={doc.data().company}
+                          apply={doc.data().link}
+                          description={doc.data().description}
+                          key={Math.random()}
+                          totalScore={doc.data().totalScore}
+                          skillsScore={doc.data().skillsScore}
+                          experienceScore={doc.data().experienceScore}
+                          courseworkScore={doc.data().courseworkScore}
+                        />,
+                      ],
+                    }));
+                  }
+                })
+                .catch((error) => {
+                  this.setState({
+                    errorMessage:
+                      "Oops! It looks like something went wrong. Please try again.",
+                  });
+                });
+            }
+          });
+        }
+      })
+      .catch((error) => {
+        this.setState({
+          errorMessage:
+            "Oops! It looks like something went wrong. Please try again.",
+        });
+      });
+  };
+
+  getInternshipsByExperiences = () => {
+    firebase
+      .firestore()
+      .collection("user-data")
+      .doc(this.state.uid)
+      .collection(this.state.currentRole)
+      .doc(this.state.currentRole + " List")
+      .get()
+      .then((doc) => {
+        if (doc.exists) {
+          this.setState({ internshipsList: doc.data().experienceScoreArray }, () => {
+            for (let i = 0; i < this.state.internshipsList.length; i++) {
+              firebase
+                .firestore()
+                .collection("user-data")
+                .doc(this.state.uid)
                 .collection(this.state.currentRole)
                 .doc(this.state.internshipsList[i])
                 .get()
@@ -89,15 +262,15 @@ class InternshipResultsScreen extends Component {
             .get()
             .then((doc) => {
               if (doc.exists) {
-                this.setState({currentRole: doc.data().recent_query}, () => {
-                  this.getInternships(user);
-                })
+                this.setState({currentRole: doc.data().recent_query});
               }
             })
             .catch((error) => {
               console.log(error.message);
             });
-          this.setState({ uid: user.uid });
+          this.setState({ uid: user.uid }, () => {
+            this.getInternships();
+          });
           this.setState({ access: true });
         } else {
           this.setState({ access: false });
@@ -122,6 +295,16 @@ class InternshipResultsScreen extends Component {
       ) : (
         <div className="main-div">
           <div className="header-int-results">{this.state.currentRole} Positions For You</div>
+          <div className="filter-by">Filter By: </div>
+          <div>
+            <div className="filter-wrapper">
+              <CustomButton value={"Overall Similarity"} onClick={this.getInternships}/>
+              <CustomButton value={"Skills"} onClick={this.getInternshipsBySkills}/>
+              <CustomButton value={"Coursework"} onClick={this.getInternshipsByCoursework}/>
+              <CustomButton value={"Experiences"} onClick={this.getInternshipsByExperiences()}/>
+            </div>
+          </div>
+          <br /> <br />
           {this.state.internships}
           <br /> <br /> <br /> <br />
         </div>
