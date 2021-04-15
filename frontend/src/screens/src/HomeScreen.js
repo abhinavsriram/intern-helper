@@ -82,7 +82,7 @@ class HomeScreen extends Component {
 
   viewSearchForInternships = () => {
     window.location.href = "/searchforinternships";
-  }
+  };
 
   render() {
     return this.state.access ? (

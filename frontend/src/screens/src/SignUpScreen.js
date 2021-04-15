@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import "../styles/SignUpScreen.css";
 import firebase from "../../firebase";
 import TextBox from "../../components/src/TextBox";
@@ -30,33 +30,33 @@ class SignUpScreen extends Component {
     if (
       this.state.email.match(
         "(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:" +
-        '[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9]' +
-        "(?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|" +
-        "[1-9]?[0-9]))\\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b" +
-        "\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\\])"
+          '[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9]' +
+          "(?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|" +
+          "[1-9]?[0-9]))\\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b" +
+          "\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\\])"
       )
     ) {
-      this.setState({emailValidityMessage: "Your email looks valid!"});
-      this.setState({emailValidityBoolean: true});
-      this.setState({passwordMatchMessage: ""});
-      this.setState({passwordValidityMessage: ""});
-      this.setState({errorMessage: ""});
+      this.setState({ emailValidityMessage: "Your email looks valid!" });
+      this.setState({ emailValidityBoolean: true });
+      this.setState({ passwordMatchMessage: "" });
+      this.setState({ passwordValidityMessage: "" });
+      this.setState({ errorMessage: "" });
       return true;
     } else {
       this.setState({
         emailValidityMessage: "Oops! Your email looks like it is invalid!",
       });
-      this.setState({emailValidityBoolean: false});
-      this.setState({passwordMatchMessage: ""});
-      this.setState({passwordValidityMessage: ""});
-      this.setState({errorMessage: ""});
+      this.setState({ emailValidityBoolean: false });
+      this.setState({ passwordMatchMessage: "" });
+      this.setState({ passwordValidityMessage: "" });
+      this.setState({ errorMessage: "" });
       return false;
     }
   };
 
   changeEmail = (newEmail) => {
     this.checkEmailValidity();
-    this.setState({email: newEmail});
+    this.setState({ email: newEmail });
   };
 
   checkPasswordValidity = () => {
@@ -65,28 +65,28 @@ class SignUpScreen extends Component {
         /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%* #+=()^?&])[A-Za-z\d$@$!%* #+=()^?&]{3,}$/
       )
     ) {
-      this.setState({passwordValidityBoolean: true});
-      this.setState({passwordValidityMessage: "Your password looks secure!"});
-      this.setState({passwordMatchMessage: ""});
-      this.setState({emailValidityMessage: ""});
-      this.setState({errorMessage: ""});
+      this.setState({ passwordValidityBoolean: true });
+      this.setState({ passwordValidityMessage: "Your password looks secure!" });
+      this.setState({ passwordMatchMessage: "" });
+      this.setState({ emailValidityMessage: "" });
+      this.setState({ errorMessage: "" });
       return true;
     } else {
-      this.setState({passwordValidityBoolean: false});
+      this.setState({ passwordValidityBoolean: false });
       this.setState({
         passwordValidityMessage:
           "Oops! Password must contain at least one uppercase, one lowercase, one special character & one number!",
       });
-      this.setState({passwordMatchMessage: ""});
-      this.setState({emailValidityMessage: ""});
-      this.setState({errorMessage: ""});
+      this.setState({ passwordMatchMessage: "" });
+      this.setState({ emailValidityMessage: "" });
+      this.setState({ errorMessage: "" });
       return false;
     }
   };
 
   changePasswordOne = (newPassword) => {
     this.checkPasswordValidity();
-    this.setState({passwordOne: newPassword}, () => {
+    this.setState({ passwordOne: newPassword }, () => {
       this.checkPasswordValidity();
     });
   };
@@ -94,36 +94,36 @@ class SignUpScreen extends Component {
   checkPasswordMatch = () => {
     if (this.state.passwordOne === this.state.passwordTwo) {
       if (this.checkPasswordValidity()) {
-        this.setState({passwordMatchBoolean: true});
-        this.setState({passwordMatchMessage: "Passwords match!"});
-        this.setState({passwordValidityMessage: ""});
-        this.setState({emailValidityMessage: ""});
-        this.setState({errorMessage: ""});
+        this.setState({ passwordMatchBoolean: true });
+        this.setState({ passwordMatchMessage: "Passwords match!" });
+        this.setState({ passwordValidityMessage: "" });
+        this.setState({ emailValidityMessage: "" });
+        this.setState({ errorMessage: "" });
         return true;
       } else {
-        this.setState({passwordValidityBoolean: false});
+        this.setState({ passwordValidityBoolean: false });
         this.setState({
           passwordValidityMessage:
             "Oops! Password must contain at least one uppercase, one lowercase, one special character & one number!",
         });
-        this.setState({passwordMatchMessage: ""});
-        this.setState({emailValidityMessage: ""});
-        this.setState({errorMessage: ""});
+        this.setState({ passwordMatchMessage: "" });
+        this.setState({ emailValidityMessage: "" });
+        this.setState({ errorMessage: "" });
         return false;
       }
     } else {
-      this.setState({passwordMatchBoolean: false});
-      this.setState({passwordMatchMessage: "Oops! Passwords don't match!"});
-      this.setState({passwordValidityMessage: ""});
-      this.setState({emailValidityMessage: ""});
-      this.setState({errorMessage: ""});
+      this.setState({ passwordMatchBoolean: false });
+      this.setState({ passwordMatchMessage: "Oops! Passwords don't match!" });
+      this.setState({ passwordValidityMessage: "" });
+      this.setState({ emailValidityMessage: "" });
+      this.setState({ errorMessage: "" });
       return false;
     }
   };
 
   changePasswordTwo = (newPassword) => {
     this.checkPasswordMatch();
-    this.setState({passwordTwo: newPassword}, () => {
+    this.setState({ passwordTwo: newPassword }, () => {
       this.checkPasswordMatch();
     });
   };
@@ -173,7 +173,7 @@ class SignUpScreen extends Component {
       .createUserWithEmailAndPassword(email, password)
       .then((userCredential) => {
         const user = userCredential.user;
-        this.setState({uid: user.uid}, () => {
+        this.setState({ uid: user.uid }, () => {
           this.writeToDatabase();
         });
       })
@@ -193,14 +193,14 @@ class SignUpScreen extends Component {
       .get()
       .then((doc) => {
         if (doc.exists) {
-          this.setState({passwordMatchMessage: ""});
-          this.setState({passwordValidityMessage: ""});
-          this.setState({emailValidityMessage: ""});
+          this.setState({ passwordMatchMessage: "" });
+          this.setState({ passwordValidityMessage: "" });
+          this.setState({ emailValidityMessage: "" });
           this.setState({
             errorMessage:
               "Oops! It looks like this email address is already in use.",
           });
-          this.setState({errorMessageBoolean: true});
+          this.setState({ errorMessageBoolean: true });
         } else {
           this.createUser();
         }
@@ -220,10 +220,10 @@ class SignUpScreen extends Component {
         this.state.passwordOne === "" ||
         this.state.passwordTwo === ""
       ) {
-        this.setState({errorMessageBoolean: true});
-        this.setState({passwordMatchMessage: ""});
-        this.setState({passwordValidityMessage: ""});
-        this.setState({emailValidityMessage: ""});
+        this.setState({ errorMessageBoolean: true });
+        this.setState({ passwordMatchMessage: "" });
+        this.setState({ passwordValidityMessage: "" });
+        this.setState({ emailValidityMessage: "" });
         this.setState({
           errorMessage: "Oops! Please make sure all fields are filled.",
         });
@@ -234,20 +234,20 @@ class SignUpScreen extends Component {
       ) {
         this.checkUserExists();
       } else {
-        this.setState({errorMessageBoolean: true});
-        this.setState({passwordMatchMessage: ""});
-        this.setState({passwordValidityMessage: ""});
-        this.setState({emailValidityMessage: ""});
+        this.setState({ errorMessageBoolean: true });
+        this.setState({ passwordMatchMessage: "" });
+        this.setState({ passwordValidityMessage: "" });
+        this.setState({ emailValidityMessage: "" });
         this.setState({
           errorMessage:
             "Oops! Please make sure all fields are filled in correctly.",
         });
       }
     } else {
-      this.setState({errorMessageBoolean: true});
-      this.setState({passwordMatchMessage: ""});
-      this.setState({passwordValidityMessage: ""});
-      this.setState({emailValidityMessage: ""});
+      this.setState({ errorMessageBoolean: true });
+      this.setState({ passwordMatchMessage: "" });
+      this.setState({ passwordValidityMessage: "" });
+      this.setState({ emailValidityMessage: "" });
       this.setState({
         errorMessage:
           "Please read and accept our terms of use and privacy policy.",
@@ -257,13 +257,13 @@ class SignUpScreen extends Component {
 
   handleInputChange = (event) => {
     const target = event.target;
-    const value = target.type === 'checkbox' ? target.checked : target.value;
+    const value = target.type === "checkbox" ? target.checked : target.value;
     const name = target.name;
     this.setState({
-      [name]: value
+      [name]: value,
     });
-    this.setState({checked: target.checked});
-  }
+    this.setState({ checked: target.checked });
+  };
 
   goBack = () => {
     window.location.href = "/landing";
@@ -273,7 +273,7 @@ class SignUpScreen extends Component {
     return (
       <div className="main-div">
         <div className="back-button">
-          <CustomButton value={"Go Back"} onClick={this.goBack}/>
+          <CustomButton value={"Go Back"} onClick={this.goBack} />
         </div>
         <div className="message">Sign Up Below</div>
         <TextBox
@@ -302,15 +302,21 @@ class SignUpScreen extends Component {
             onChange={this.handleInputChange}
           />
           <div className="check-message"> Please Check To Accept</div>
-          <br/>
+          <br />
         </div>
-        <a className={"custom-link"} rel="noreferrer" href={TermsOfUsePrivacy} target="_blank">Terms of Use and Privacy
-          Policy</a>
+        <a
+          className={"custom-link"}
+          rel="noreferrer"
+          href={TermsOfUsePrivacy}
+          target="_blank"
+        >
+          Terms of Use and Privacy Policy
+        </a>
         <div
           style={
             this.state.emailValidityBoolean
-              ? {color: "green"}
-              : {color: "red"}
+              ? { color: "green" }
+              : { color: "red" }
           }
           className="error-messages"
         >
@@ -319,8 +325,8 @@ class SignUpScreen extends Component {
         <div
           style={
             this.state.passwordValidityBoolean
-              ? {color: "green"}
-              : {color: "red"}
+              ? { color: "green" }
+              : { color: "red" }
           }
           className="error-messages"
         >
@@ -329,8 +335,8 @@ class SignUpScreen extends Component {
         <div
           style={
             this.state.passwordMatchBoolean
-              ? {color: "green"}
-              : {color: "red"}
+              ? { color: "green" }
+              : { color: "red" }
           }
           className="error-messages"
         >
@@ -339,15 +345,15 @@ class SignUpScreen extends Component {
         <div
           style={
             this.state.errorMessageBoolean
-              ? {color: "red"}
-              : {color: "green"}
+              ? { color: "red" }
+              : { color: "green" }
           }
           className="error-messages"
         >
           {this.state.errorMessage}
         </div>
-        <br/>
-        <CustomButton value={"Sign Up"} onClick={this.signUpClick}/>
+        <br />
+        <CustomButton value={"Sign Up"} onClick={this.signUpClick} />
       </div>
     );
   }
