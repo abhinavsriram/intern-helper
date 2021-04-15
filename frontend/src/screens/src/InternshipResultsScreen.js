@@ -289,6 +289,38 @@ class InternshipResultsScreen extends Component {
     clearTimeout(this.id);
   }
 
+  overallFilter = () => {
+    this.setState({internships: []}, () => {
+      this.setState({internshipsList: []}, () => {
+        this.getInternships();
+      })
+    })
+  }
+
+  skillsFilter = () => {
+    this.setState({internships: []}, () => {
+      this.setState({internshipsList: []}, () => {
+        this.getInternshipsBySkills();
+      })
+    })
+  }
+
+  courseworkFilter = () => {
+    this.setState({internships: []}, () => {
+      this.setState({internshipsList: []}, () => {
+        this.getInternshipsByCoursework();
+      })
+    })
+  }
+
+  experiencesFilter = () => {
+    this.setState({internships: []}, () => {
+      this.setState({internshipsList: []}, () => {
+        this.getInternshipsByExperiences();
+      })
+    })
+  }
+
   render() {
     return this.state.access ? (
       this.state.loading ? (
@@ -299,10 +331,10 @@ class InternshipResultsScreen extends Component {
           <div className="filter-by">Filter By: </div>
           <div>
             <div className="filter-wrapper">
-              <CustomButton value={"Overall Similarity"} onClick={this.getInternships}/>
-              <CustomButton value={"Skills"} onClick={this.getInternshipsBySkills}/>
-              <CustomButton value={"Coursework"} onClick={this.getInternshipsByCoursework}/>
-              <CustomButton value={"Experiences"} onClick={this.getInternshipsByExperiences()}/>
+              <CustomButton value={"Overall Similarity"} onClick={this.overallFilter}/>
+              <CustomButton value={"Skills"} onClick={this.skillsFilter}/>
+              <CustomButton value={"Coursework"} onClick={this.courseworkFilter}/>
+              <CustomButton value={"Experiences"} onClick={this.experiencesFilter}/>
             </div>
           </div>
           <br /> <br />

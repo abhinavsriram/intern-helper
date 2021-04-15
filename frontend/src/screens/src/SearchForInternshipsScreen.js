@@ -197,7 +197,7 @@ class SearchForInternshipsScreen extends Component {
                 totalScoreMap.set(ID, parseFloat(value["finalScore"]) * 100);
                 skillsScoreMap.set(ID, parseFloat(value["skillsScore"]) * 100);
                 courseworkScoreMap.set(ID, parseFloat(value["courseworkScore"]) * 100);
-                experienceScoreMap.set(ID, parseFloat(value["experienceScoreMap"]) * 100);
+                experienceScoreMap.set(ID, parseFloat(value["experienceScore"]) * 100);
                 this.writeToDatabase(
                   ID,
                   value["title"].replace(/"/g, ""),
@@ -211,10 +211,10 @@ class SearchForInternshipsScreen extends Component {
                 );
               }
             );
-            let totalScoreMapSorted = new Map([...totalScoreMap.entries()].sort(function(a, b){return b - a}));
-            let skillsScoreMapSorted = new Map([...skillsScoreMap.entries()].sort(function(a, b){return b - a}));
-            let courseworkScoreMapSorted = new Map([...courseworkScoreMap.entries()].sort(function(a, b){return b - a}));
-            let experienceScoreMapSorted = new Map([...experienceScoreMap.entries()].sort(function(a, b){return b - a}));
+            let totalScoreMapSorted = new Map([...totalScoreMap.entries()].sort(function(a, b){return b[1] - a[1]}));
+            let skillsScoreMapSorted = new Map([...skillsScoreMap.entries()].sort(function(a, b){return b[1] - a[1]}));
+            let courseworkScoreMapSorted = new Map([...courseworkScoreMap.entries()].sort(function(a, b){return b[1] - a[1]}));
+            let experienceScoreMapSorted = new Map([...experienceScoreMap.entries()].sort(function(a, b){return b[1] - a[1]}));
             let totalScoreArray = [...totalScoreMapSorted.keys()];
             let skillsScoreArray = [...skillsScoreMapSorted.keys()];
             let courseworkScoreArray = [...courseworkScoreMapSorted.keys()];
