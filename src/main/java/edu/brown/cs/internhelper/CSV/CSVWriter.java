@@ -23,25 +23,34 @@ public class CSVWriter {
     try {
       File file = new File(csvName);
       boolean fileExists = isFileExists(file);
-      FileWriter writer = new FileWriter(csvName, true);
 
-      if (!fileExists) {
-        List<String> csvHeaders = new ArrayList<>();
-        csvHeaders.add("Id");
-        csvHeaders.add("Title");
-        csvHeaders.add("Company");
-        csvHeaders.add("Location");
-        csvHeaders.add("Required Qualifications");
-        csvHeaders.add("Link");
-        csvHeaders.add("Page Rank");
 
-        StringBuilder headersStr = new StringBuilder("");
-        for (String eachstring : csvHeaders) {
-          headersStr.append(eachstring).append(",");
-        }
+      //FileWriter writer = new FileWriter(csvName, true);
+      FileWriter writer;
 
-        writer.append(headersStr);
+      if (fileExists) {
+        file.delete();
+        writer = new FileWriter(csvName, true);
       }
+      else {
+        writer = new FileWriter(csvName, true);
+      }
+
+      List<String> csvHeaders = new ArrayList<>();
+      csvHeaders.add("Id");
+      csvHeaders.add("Title");
+      csvHeaders.add("Company");
+      csvHeaders.add("Location");
+      csvHeaders.add("Required Qualifications");
+      csvHeaders.add("Link");
+      csvHeaders.add("Page Rank");
+
+      StringBuilder headersStr = new StringBuilder("");
+      for (String eachstring : csvHeaders) {
+        headersStr.append(eachstring).append(",");
+      }
+
+      writer.append(headersStr);
 
       for (Map.Entry<Job, Double> en : hmap.entrySet()) {
         List<String> rowData = new ArrayList<>();
