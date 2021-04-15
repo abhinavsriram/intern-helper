@@ -2,6 +2,7 @@ package edu.brown.cs.internhelper.CSV;
 
 import edu.brown.cs.internhelper.Functionality.Job;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,23 +21,27 @@ public class CSVWriter {
 
   public void mapToCsv() {
     try {
+      File file = new File(csvName);
+      boolean fileExists = isFileExists(file);
       FileWriter writer = new FileWriter(csvName, true);
 
-      List<String> csvHeaders = new ArrayList<>();
-      csvHeaders.add("Id");
-      csvHeaders.add("Title");
-      csvHeaders.add("Company");
-      csvHeaders.add("Location");
-      csvHeaders.add("Required Qualifications");
-      csvHeaders.add("Link");
-      csvHeaders.add("Page Rank");
+      if (!fileExists) {
+        List<String> csvHeaders = new ArrayList<>();
+        csvHeaders.add("Id");
+        csvHeaders.add("Title");
+        csvHeaders.add("Company");
+        csvHeaders.add("Location");
+        csvHeaders.add("Required Qualifications");
+        csvHeaders.add("Link");
+        csvHeaders.add("Page Rank");
 
-      StringBuilder headersStr = new StringBuilder("");
-      for (String eachstring : csvHeaders) {
-        headersStr.append(eachstring).append(",");
+        StringBuilder headersStr = new StringBuilder("");
+        for (String eachstring : csvHeaders) {
+          headersStr.append(eachstring).append(",");
+        }
+
+        writer.append(headersStr);
       }
-
-      writer.append(headersStr);
 
       for (Map.Entry<Job, Double> en : hmap.entrySet()) {
         List<String> rowData = new ArrayList<>();
@@ -74,5 +79,10 @@ public class CSVWriter {
       e.printStackTrace();
     }
   }
+
+  public static boolean isFileExists(File file) {
+    return file.exists() && !file.isDirectory();
+  }
+
 
 }
