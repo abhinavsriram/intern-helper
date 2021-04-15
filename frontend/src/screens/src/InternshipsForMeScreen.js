@@ -1,10 +1,10 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import "../styles/InternshipsForMeScreen.css";
 import firebase from "../../firebase";
 import BigCustomButton from "../../components/src/BigCustomButton";
 import image from "../../media/accessdenied.jpeg";
 import CustomButton from "../../components/src/CustomButton";
-import {SolarSystemLoading, WaveLoading} from "react-loadingg";
+import { SolarSystemLoading, WaveLoading } from "react-loadingg";
 import axios from "axios";
 
 class InternshipsForMeScreen extends Component {
@@ -22,7 +22,7 @@ class InternshipsForMeScreen extends Component {
       acquiringResults: false,
       message1: "",
       message2: "",
-      port: ""
+      port: "",
     };
   }
 
@@ -34,7 +34,7 @@ class InternshipsForMeScreen extends Component {
       .get()
       .then((doc) => {
         if (doc.exists) {
-          this.setState({port: doc.data().port}, () => {
+          this.setState({ port: doc.data().port }, () => {
             this.findRelevantJobs();
           });
         }
@@ -86,8 +86,8 @@ class InternshipsForMeScreen extends Component {
             message2: "If that is not the case, then please search for a role:",
           });
         }
-        this.setState({roles1: localRoles.slice(0, 4)});
-        this.setState({roles2: localRoles.slice(4, 8)});
+        this.setState({ roles1: localRoles.slice(0, 4) });
+        this.setState({ roles2: localRoles.slice(4, 8) });
       });
   };
 
@@ -97,12 +97,12 @@ class InternshipsForMeScreen extends Component {
       if (authFlag) {
         authFlag = false;
         if (user) {
-          this.setState({uid: user.uid}, () => {
+          this.setState({ uid: user.uid }, () => {
             this.readPortNumber();
           });
-          this.setState({access: true});
+          this.setState({ access: true });
         } else {
-          this.setState({access: false});
+          this.setState({ access: false });
         }
       }
     });
@@ -110,14 +110,24 @@ class InternshipsForMeScreen extends Component {
 
   componentDidMount() {
     this.getUserID();
-    this.id = setTimeout(() => this.setState({loading: false}), 3000);
+    this.id = setTimeout(() => this.setState({ loading: false }), 3000);
   }
 
   componentWillUnmount() {
     clearTimeout(this.id);
   }
 
-  writeToDatabase = (id, title, company, description, link, totalScore, skillsScore, courseworkScore, experienceScore) => {
+  writeToDatabase = (
+    id,
+    title,
+    company,
+    description,
+    link,
+    totalScore,
+    skillsScore,
+    courseworkScore,
+    experienceScore
+  ) => {
     firebase
       .firestore()
       .collection("user-data")
@@ -132,10 +142,9 @@ class InternshipsForMeScreen extends Component {
         totalScore: totalScore,
         skillsScore: skillsScore,
         courseworkScore: courseworkScore,
-        experienceScore: experienceScore
+        experienceScore: experienceScore,
       })
-      .then(() => {
-      })
+      .then(() => {})
       .catch((error) => {
         this.setState({
           errorMessage:
@@ -183,8 +192,14 @@ class InternshipsForMeScreen extends Component {
                 let ID = crypto.SHA256(concat).toString();
                 totalScoreMap.set(ID, parseFloat(value["finalScore"]) * 100);
                 skillsScoreMap.set(ID, parseFloat(value["skillsScore"]) * 100);
-                courseworkScoreMap.set(ID, parseFloat(value["courseworkScore"]) * 100);
-                experienceScoreMap.set(ID, parseFloat(value["experienceScore"]) * 100);
+                courseworkScoreMap.set(
+                  ID,
+                  parseFloat(value["courseworkScore"]) * 100
+                );
+                experienceScoreMap.set(
+                  ID,
+                  parseFloat(value["experienceScore"]) * 100
+                );
                 this.writeToDatabase(
                   ID,
                   value["title"].replace(/"/g, ""),
@@ -198,10 +213,26 @@ class InternshipsForMeScreen extends Component {
                 );
               }
             );
-            let totalScoreMapSorted = new Map([...totalScoreMap.entries()].sort(function(a, b){return b[1] - a[1]}));
-            let skillsScoreMapSorted = new Map([...skillsScoreMap.entries()].sort(function(a, b){return b[1] - a[1]}));
-            let courseworkScoreMapSorted = new Map([...courseworkScoreMap.entries()].sort(function(a, b){return b[1] - a[1]}));
-            let experienceScoreMapSorted = new Map([...experienceScoreMap.entries()].sort(function(a, b){return b[1] - a[1]}));
+            let totalScoreMapSorted = new Map(
+              [...totalScoreMap.entries()].sort(function (a, b) {
+                return b[1] - a[1];
+              })
+            );
+            let skillsScoreMapSorted = new Map(
+              [...skillsScoreMap.entries()].sort(function (a, b) {
+                return b[1] - a[1];
+              })
+            );
+            let courseworkScoreMapSorted = new Map(
+              [...courseworkScoreMap.entries()].sort(function (a, b) {
+                return b[1] - a[1];
+              })
+            );
+            let experienceScoreMapSorted = new Map(
+              [...experienceScoreMap.entries()].sort(function (a, b) {
+                return b[1] - a[1];
+              })
+            );
             let totalScoreArray = [...totalScoreMapSorted.keys()];
             let skillsScoreArray = [...skillsScoreMapSorted.keys()];
             let courseworkScoreArray = [...courseworkScoreMapSorted.keys()];
@@ -216,7 +247,7 @@ class InternshipsForMeScreen extends Component {
                 totalScoreArray: totalScoreArray,
                 skillsScoreArray: skillsScoreArray,
                 courseworkScoreArray: courseworkScoreArray,
-                experienceScoreArray: experienceScoreArray
+                experienceScoreArray: experienceScoreArray,
               })
               .then(() => {
                 firebase
@@ -227,7 +258,7 @@ class InternshipsForMeScreen extends Component {
                     recent_query: this.state.currentRole,
                   })
                   .then(() => {
-                    this.setState({acquiringResults: false});
+                    this.setState({ acquiringResults: false });
                     window.open("/internshipresults", "_blank");
                   })
                   .catch((error) => {
@@ -257,9 +288,9 @@ class InternshipsForMeScreen extends Component {
   };
 
   handleSelection = (role) => {
-    this.setState({internshipsList: []}, () => {
-      this.setState({currentRole: role}, () => {
-        this.setState({acquiringResults: true});
+    this.setState({ internshipsList: [] }, () => {
+      this.setState({ currentRole: role }, () => {
+        this.setState({ acquiringResults: true });
         this.getResultsFromBackend();
       });
     });
@@ -300,7 +331,7 @@ class InternshipsForMeScreen extends Component {
     };
     return this.state.access ? (
       this.state.loading ? (
-        <WaveLoading/>
+        <WaveLoading />
       ) : (
         <div>
           <div
@@ -308,14 +339,14 @@ class InternshipsForMeScreen extends Component {
             style={this.state.acquiringResults ? blurDiv : normalDiv}
           >
             <div className="back-button">
-              <CustomButton value={"Go Back"} onClick={this.goBack}/>
+              <CustomButton value={"Go Back"} onClick={this.goBack} />
             </div>
             <div className="header-int-me">Internships For Me</div>
             <div className="subheading-a">{this.state.message1}</div>
             <div className="roles-bt-wrapper">
               <div className="roles-button-wrapper">{this.state.roles1}</div>
             </div>
-            <br/>
+            <br />
             <div className="roles-bt-wrapper">
               <div className="roles-button-wrapper">{this.state.roles2}</div>
             </div>
@@ -326,7 +357,7 @@ class InternshipsForMeScreen extends Component {
               value={"Search For Internships"}
               onClick={() => this.searchForInternships()}
             />
-            <br/> <br/> <br/> <br/>
+            <br /> <br /> <br /> <br />
           </div>
           <div className="results-modal">
             <div
@@ -335,15 +366,15 @@ class InternshipsForMeScreen extends Component {
               }
             >
               The Algorithm is at Work
-              <SolarSystemLoading size={"large"} color={"#ff219b"}/>
+              <SolarSystemLoading size={"large"} color={"#ff219b"} />
             </div>
           </div>
         </div>
       )
     ) : (
       <div className={"denied-wrapper"}>
-        <img src={image} alt={"access denied"} style={{height: "330px"}}/>
-        <br/> <br/> <br/> <br/>
+        <img src={image} alt={"access denied"} style={{ height: "330px" }} />
+        <br /> <br /> <br /> <br />
         <BigCustomButton
           value={"Click Here To Log In"}
           onClick={() => {
