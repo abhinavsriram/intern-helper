@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import "../styles/CreateProfileScreen2.css";
 
-import CollapsedExperience from "../../components/src/CollapsedExperience";
 import CustomButton from "../../components/src/CustomButton";
 import AddExperience from "../../components/src/AddExperience";
 import firebase from "../../firebase";
@@ -10,6 +9,7 @@ import BigCustomButton from "../../components/src/BigCustomButton";
 import MediumTextBox from "../../components/src/MediumTextBox";
 import TextBox from "../../components/src/TextBox";
 import { WaveLoading } from "react-loadingg";
+import CollapsedExperienceCreatingProfile from "../../components/src/CollapsedExperienceCreatingProfile";
 
 class CreateProfileScreen2 extends Component {
   constructor(props) {
@@ -159,6 +159,7 @@ class CreateProfileScreen2 extends Component {
   };
 
   doneExperienceButton = () => {
+    this.setState({ changedBoolean: true });
     if (
       this.state.company !== "" &&
       this.state.title !== "" &&
@@ -166,25 +167,32 @@ class CreateProfileScreen2 extends Component {
       this.state.endDate !== "" &&
       this.state.description !== ""
     ) {
+      let crypto = require("crypto-js");
+      let concat =
+        this.state.company +
+        this.state.title +
+        this.state.startDate +
+        " - " +
+        this.state.endDate +
+        this.state.description;
+      let ID = crypto.SHA256(concat).toString();
       this.setState({ modalVisible: false });
       this.setState((prevState) => ({
         experiences: [
           ...prevState.experiences,
-          <CollapsedExperience
+          <CollapsedExperienceCreatingProfile
             company={this.state.company}
             title={this.state.title}
             dates={this.state.startDate + " - " + this.state.endDate}
             description={this.state.description}
-            key={Math.random()}
+            key={ID}
           />,
         ],
       }));
-      let crypto = require("crypto");
-      let id = crypto.randomBytes(28).toString("hex");
       this.setState((prevState) => ({
-        experiencesList: [...prevState.experiencesList, id],
+        experiencesList: [...prevState.experiencesList, ID],
       }));
-      this.writeToDatabase(id);
+      this.writeToDatabase(ID);
     } else {
       this.setState({
         errorMessage: "Oops! Please make sure all fields are filled.",
@@ -223,9 +231,7 @@ class CreateProfileScreen2 extends Component {
               experiencesList: this.state.experiencesList,
             })
             .then(() => {
-              if (this.state.errorMessageMainDiv === "") {
-                window.location.href = "/home";
-              }
+              window.location.href = "/home";
             })
             .catch((error) => {
               this.setState({
