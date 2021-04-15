@@ -93,8 +93,6 @@ public final class Main {
     OptionSet options = parser.parse(args);
 
 
-
-
 //    CachePageRanks cachePageRanks = new CachePageRanks();
 //    cachePageRanks.cacheResults();
 
@@ -131,7 +129,8 @@ public final class Main {
   static int getHerokuAssignedPort() {
     ProcessBuilder processBuilder = new ProcessBuilder();
     if (processBuilder.environment().get("PORT") != null) {
-      System.out.println("HEROKU ASSIGNED PORT FOR BACKEND IS: " + Integer.parseInt(processBuilder.environment().get("PORT")));
+      System.out.println("HEROKU ASSIGNED PORT FOR BACKEND IS: " + Integer.parseInt(processBuilder.environment().get(
+              "PORT")));
       Map<String, Object> docData = new HashMap<>();
       docData.put("port", String.valueOf(Integer.parseInt(processBuilder.environment().get("PORT"))));
       Firestore db = FirestoreClient.getFirestore();
@@ -189,17 +188,17 @@ public final class Main {
           modifiedDatabaseRoleTitle = modifiedDatabaseRoleTitle.replaceAll("intern", "");
           Set<String> resumeSet = similarityCalculator.removeStopWords(experienceTitle);
           Set<String> databaseRoleSet = similarityCalculator.removeStopWords(modifiedDatabaseRoleTitle);
-          Set<String> commonWords =  similarityCalculator.commonWords(databaseRoleSet, resumeSet);
+          Set<String> commonWords = similarityCalculator.commonWords(databaseRoleSet, resumeSet);
           double similarity = (double) (commonWords.size()) / (resumeSet.size());
           unSortedMap.put(databaseRole, similarity);
         }
         Map<String, Double> result = unSortedMap.entrySet()
-            .stream()
-            .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
-            .collect(Collectors.toMap(
-                Map.Entry::getKey,
-                Map.Entry::getValue,
-                (oldValue, newValue) -> oldValue, LinkedHashMap::new));
+                .stream()
+                .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        Map.Entry::getValue,
+                        (oldValue, newValue) -> oldValue, LinkedHashMap::new));
 
 
         Map.Entry<String, Double> entWithMaxVal = result.entrySet().iterator().next();
@@ -222,9 +221,9 @@ public final class Main {
 
     @Override
     public String handle(Request req, Response res) throws JSONException, ExecutionException,
-        InterruptedException {
+            InterruptedException {
 
-      System.out.println("HERE IN USER JOB RESULTS HANDLER");
+//      System.out.println("HERE IN USER JOB RESULTS HANDLER");
 
       JSONObject data = new JSONObject(req.body());
       String role = data.getString("role");
@@ -249,19 +248,19 @@ public final class Main {
 
         int numberJobEntries = splitLines.length / 7;
 
-        System.out.println("NUMBER OF JOB ENTRIES " + numberJobEntries);
+//        System.out.println("NUMBER OF JOB ENTRIES " + numberJobEntries);
 
         if (numberJobEntries > 1) {
           for (int i = 7; i < splitLines.length; i = i + 7) {
             Job job = new Job();
             job.setId(Integer.parseInt(splitLines[i]));
-            job.setTitle(splitLines[i+1]);
-            job.setCompany(splitLines[i+2]);
+            job.setTitle(splitLines[i + 1]);
+            job.setCompany(splitLines[i + 2]);
             //System.out.println(job.getCompany());
-            job.setLocation(splitLines[i+3]);
-            job.setRequiredQualifications(splitLines[i+4]);
-            job.setLink(splitLines[i+5]);
-            double pageRank = Double.valueOf(splitLines[i+6]);
+            job.setLocation(splitLines[i + 3]);
+            job.setRequiredQualifications(splitLines[i + 4]);
+            job.setLink(splitLines[i + 5]);
+            double pageRank = Double.valueOf(splitLines[i + 6]);
             pageRanks.put(job, pageRank);
           }
         }
@@ -277,7 +276,7 @@ public final class Main {
 
       Map<Double, Job> tempJobResults = new LinkedHashMap<>();
       for (Map.Entry<Job, Double> en : jobResults.entrySet()) {
-        System.out.println(en.getKey().getTitle()+ "," + en.getKey().getCompany() + "," + en.getValue());
+//        System.out.println(en.getKey().getTitle() + "," + en.getKey().getCompany() + "," + en.getValue());
 
 
         double oldSkillsScore = en.getKey().getSkillsScore();
@@ -288,49 +287,50 @@ public final class Main {
         double resumeTotalRatio = oldTotalResumeScore / oldTotalSimilarityScore;
 
 
-        double newSkillsScore = 0.0;
-        double newCourseScore = 0.0;
-        double newExperienceScore = 0.0;
-        double newTotalResumeScore = 0.0;
-        double newTotalSimilarityScore = 0.0;
+        double newSkillsScore = 0;
+        double newCourseScore = 0;
+        double newExperienceScore = 0;
+        double newTotalResumeScore = 0;
+        double newTotalSimilarityScore = 0;
 
         if (oldTotalSimilarityScore >= 0.8) {
           newTotalSimilarityScore = 0.9999;
-        }
-        else if ( oldTotalSimilarityScore > 0.5 && oldTotalSimilarityScore <= 0.79) {
-          newTotalSimilarityScore = oldTotalSimilarityScore * 1.25;
-        }
-
-        else if ( oldTotalSimilarityScore > 0.25 && oldTotalSimilarityScore <= 0.5) {
+        } else if (oldTotalSimilarityScore > 0.5 && oldTotalSimilarityScore <= 0.79) {
           newTotalSimilarityScore = oldTotalSimilarityScore * 1.5;
-        }
-
-        else {
+        } else if (oldTotalSimilarityScore > 0.25 && oldTotalSimilarityScore <= 0.5) {
+          newTotalSimilarityScore = oldTotalSimilarityScore * 1.75;
+        } else {
           newTotalSimilarityScore = oldTotalSimilarityScore * 2;
         }
 
         newTotalResumeScore = resumeTotalRatio * newTotalSimilarityScore;
-        double scaleFactor = newTotalResumeScore / oldTotalResumeScore ;
+        double scaleFactor;
+        if (oldTotalResumeScore != 0) {
+          scaleFactor = (newTotalResumeScore / oldTotalResumeScore) * 2;
+        } else {
+          scaleFactor = 1;
+        }
         newSkillsScore = oldSkillsScore * scaleFactor;
         newCourseScore = oldCourseScore * scaleFactor;
         newExperienceScore = oldExperienceScore * scaleFactor;
 
-        System.out.println("BEFORE SETTING");
-        System.out.println("FINAL SCORE " + en.getKey().getFinalScore()+ "," + " COURSEWORK SCORE " +  en.getKey().getCourseworkScore() +
-            "," + " SKILLS SCORE " +   + en.getKey().getSkillsScore() + "," + " EXPERIENCE SCORE " + + en.getKey().getExperienceScore());
-
+//        System.out.println("BEFORE SETTING");
+//        System.out.println("FINAL SCORE " + en.getKey().getFinalScore() + "," + " COURSEWORK SCORE " + en.getKey().getCourseworkScore() +
+//                "," + " SKILLS SCORE " + +en.getKey().getSkillsScore() + "," + " EXPERIENCE SCORE " + +en.getKey().getExperienceScore());
 
 
         DecimalFormat df = new DecimalFormat("#.####");
-        newTotalSimilarityScore =  Double.parseDouble(df.format(newTotalSimilarityScore));
-        newTotalResumeScore =   Double.parseDouble(df.format(newTotalResumeScore));
-        newSkillsScore =   Double.parseDouble(df.format(newSkillsScore));
-        newCourseScore =   Double.parseDouble(df.format(newCourseScore));
-        newExperienceScore =   Double.parseDouble(df.format(newExperienceScore));
+        newTotalSimilarityScore = Double.parseDouble(df.format(newTotalSimilarityScore));
+        newTotalResumeScore = Double.parseDouble(df.format(newTotalResumeScore));
+        newSkillsScore = Double.parseDouble(df.format(newSkillsScore));
+        newCourseScore = Double.parseDouble(df.format(newCourseScore));
+        newExperienceScore = Double.parseDouble(df.format(newExperienceScore));
 
-
-
-
+//        newTotalSimilarityScore = Math.floor(newTotalSimilarityScore * 1000) / 1000;
+//        newTotalResumeScore = Math.floor(newTotalResumeScore * 1000) / 1000;
+//        newSkillsScore = Math.floor(newSkillsScore * 1000) / 1000;
+//        newCourseScore = Math.floor(newCourseScore * 1000) / 1000;
+//        newExperienceScore = Math.floor(newExperienceScore * 1000) / 1000;
 
 
         en.getKey().setFinalScore(newTotalSimilarityScore);
@@ -342,17 +342,16 @@ public final class Main {
         tempJobResults.put(en.getValue(), en.getKey());
 
 
-        System.out.println("AFTER SETTING");
-        System.out.println("FINAL SCORE " + en.getKey().getFinalScore()+ "," + " COURSEWORK SCORE " +  en.getKey().getCourseworkScore() +
-            "," + " SKILLS SCORE " +   + en.getKey().getSkillsScore() + "," + " EXPERIENCE SCORE " + + en.getKey().getExperienceScore());
-        System.out.println("==============================================");
+//        System.out.println("AFTER SETTING");
+//        System.out.println("FINAL SCORE " + en.getKey().getFinalScore() + "," + " COURSEWORK SCORE " + en.getKey().getCourseworkScore() +
+//                "," + " SKILLS SCORE " + +en.getKey().getSkillsScore() + "," + " EXPERIENCE SCORE " + +en.getKey().getExperienceScore());
+//        System.out.println("==============================================");
 
 
       }
-
-
-
       Map<String, Object> variables = ImmutableMap.of("userJobResults", tempJobResults);
+//      System.out.println("FINAL JSON SENT IS: ");
+//      System.out.println(GSON.toJson(variables));
       return GSON.toJson(variables);
 
 
@@ -404,6 +403,7 @@ public final class Main {
   private static class ExceptionPrinter implements ExceptionHandler {
     @Override
     public void handle(Exception e, Request req, Response res) {
+      e.printStackTrace();
       res.status(500);
       StringWriter stacktrace = new StringWriter();
       try (PrintWriter pw = new PrintWriter(stacktrace)) {

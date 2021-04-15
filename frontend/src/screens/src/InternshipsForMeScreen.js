@@ -58,7 +58,7 @@ class InternshipsForMeScreen extends Component {
       },
     };
     axios
-      .post("http://localhost:" + "4567" + "/suggestedRoles", toSend, config)
+      .post("http://localhost:4567/suggestedRoles", toSend, config)
       .then((response) => {
         let localRoles = [];
         Object.entries(response.data["suggestedRoles"]).forEach(
@@ -166,7 +166,7 @@ class InternshipsForMeScreen extends Component {
           },
         };
         axios
-          .post("http://localhost:" + "4567" + "/userJobResults", toSend, config)
+          .post("http://localhost:4567/userJobResults", toSend, config)
           .then((response) => {
             let totalScoreMap = new Map();
             let skillsScoreMap = new Map();
