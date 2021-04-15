@@ -89,7 +89,7 @@ public final class Main {
     OptionParser parser = new OptionParser();
     parser.accepts("gui");
     parser.accepts("port").withRequiredArg().ofType(Integer.class)
-        .defaultsTo(DEFAULT_PORT);
+            .defaultsTo(DEFAULT_PORT);
     OptionSet options = parser.parse(args);
 
 
@@ -130,7 +130,7 @@ public final class Main {
     ProcessBuilder processBuilder = new ProcessBuilder();
     if (processBuilder.environment().get("PORT") != null) {
       System.out.println("HEROKU ASSIGNED PORT FOR BACKEND IS: " + Integer.parseInt(processBuilder.environment().get(
-          "PORT")));
+              "PORT")));
       Map<String, Object> docData = new HashMap<>();
       docData.put("port", String.valueOf(Integer.parseInt(processBuilder.environment().get("PORT"))));
       Firestore db = FirestoreClient.getFirestore();
@@ -154,7 +154,7 @@ public final class Main {
 
     @Override
     public String handle(Request req, Response res) throws JSONException,
-        ExecutionException, InterruptedException {
+            ExecutionException, InterruptedException {
 
       JSONObject data = new JSONObject(req.body());
       String id = data.getString("id");
@@ -193,12 +193,12 @@ public final class Main {
           unSortedMap.put(databaseRole, similarity);
         }
         Map<String, Double> result = unSortedMap.entrySet()
-            .stream()
-            .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
-            .collect(Collectors.toMap(
-                Map.Entry::getKey,
-                Map.Entry::getValue,
-                (oldValue, newValue) -> oldValue, LinkedHashMap::new));
+                .stream()
+                .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        Map.Entry::getValue,
+                        (oldValue, newValue) -> oldValue, LinkedHashMap::new));
 
 
         Map.Entry<String, Double> entWithMaxVal = result.entrySet().iterator().next();
@@ -221,14 +221,15 @@ public final class Main {
 
     @Override
     public String handle(Request req, Response res) throws JSONException, ExecutionException,
-        InterruptedException {
+            InterruptedException {
 
-//      System.out.println("HERE IN USER JOB RESULTS HANDLER");
 
-      JSONObject data = new JSONObject(req.body());
+      JSONObject data;
+      data = new JSONObject(req.body());
       String role = data.getString("role");
       String id = data.getString("id");
 //      FB.setUp();
+
       User user = FB.getFirebaseResumeData(id);
 
       String fileName = "data/page_rank_results2/" + role + "pr.csv";
@@ -266,7 +267,8 @@ public final class Main {
         }
 
       } catch (Exception e) {
-        e.printStackTrace();
+       // System.out.println("COMING TO THIS STACK TRACE");
+        //e.printStackTrace();
       }
 
 
@@ -277,6 +279,7 @@ public final class Main {
       Map<Double, Job> tempJobResults = new LinkedHashMap<>();
       for (Map.Entry<Job, Double> en : jobResults.entrySet()) {
 //        System.out.println(en.getKey().getTitle() + "," + en.getKey().getCompany() + "," + en.getValue());
+
 
 
         double oldSkillsScore = en.getKey().getSkillsScore();
@@ -296,20 +299,30 @@ public final class Main {
         if (oldTotalSimilarityScore >= 0.8) {
           newTotalSimilarityScore = 0.9999;
         } else if (oldTotalSimilarityScore > 0.5 && oldTotalSimilarityScore <= 0.79) {
-          newTotalSimilarityScore = oldTotalSimilarityScore * 1.5;
+          newTotalSimilarityScore = oldTotalSimilarityScore * 1.25;
         } else if (oldTotalSimilarityScore > 0.25 && oldTotalSimilarityScore <= 0.5) {
-          newTotalSimilarityScore = oldTotalSimilarityScore * 1.75;
+          newTotalSimilarityScore = oldTotalSimilarityScore * 1.5;
         } else {
           newTotalSimilarityScore = oldTotalSimilarityScore * 2;
         }
 
         newTotalResumeScore = resumeTotalRatio * newTotalSimilarityScore;
         double scaleFactor;
-        if (oldTotalResumeScore != 0) {
+        if (oldTotalResumeScore != 0 && resumeTotalRatio <= 0.3) {
+          scaleFactor = (newTotalResumeScore / oldTotalResumeScore) * 2;
+          newTotalSimilarityScore = newTotalSimilarityScore * 0.7;
+
+        } else if (oldTotalResumeScore != 0 && resumeTotalRatio > 0.3 && resumeTotalRatio <= 0.7) {
           scaleFactor = (newTotalResumeScore / oldTotalResumeScore) * 1.5;
+          newTotalSimilarityScore = newTotalSimilarityScore * 0.8;
+
+        } else if (oldTotalResumeScore != 0 && resumeTotalRatio > 0.7) {
+          scaleFactor = (newTotalResumeScore / oldTotalResumeScore);
+
         } else {
           scaleFactor = 1;
         }
+
         newSkillsScore = oldSkillsScore * scaleFactor;
         newCourseScore = oldCourseScore * scaleFactor;
         newExperienceScore = oldExperienceScore * scaleFactor;
@@ -339,6 +352,7 @@ public final class Main {
         en.getKey().setCourseworkScore(newCourseScore);
         en.getKey().setExperienceScore(newExperienceScore);
 
+
         tempJobResults.put(en.getValue(), en.getKey());
 
 
@@ -364,7 +378,7 @@ public final class Main {
 
     @Override
     public String handle(Request req, Response res)
-        throws JSONException, ExecutionException, InterruptedException {
+            throws JSONException, ExecutionException, InterruptedException {
       JSONObject data = new JSONObject(req.body());
       String tableName = data.getString("role");
 
@@ -415,5 +429,4 @@ public final class Main {
     }
   }
 }
-
 
