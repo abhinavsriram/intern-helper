@@ -179,7 +179,7 @@ class SearchForInternshipsScreen extends Component {
           },
         };
         axios
-          .post("http://localhost:" + "4567" + "/userJobResults", toSend, config)
+          .post("http://localhost:4567/userJobResults", toSend, config)
           .then((response) => {
             let totalScoreMap = new Map();
             let skillsScoreMap = new Map();

@@ -34,9 +34,11 @@ import java.io.PrintWriter;
 import java.io.Reader;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.math.RoundingMode;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.sql.ResultSet;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -90,96 +92,6 @@ public final class Main {
             .defaultsTo(DEFAULT_PORT);
     OptionSet options = parser.parse(args);
 
-    TextSimilarity similarityCalculator = new TextSimilarity();
-    try {
-      similarityCalculator.loadStopWords("data/stopwords/stopwords.txt");
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-
-    /**
-    String resume = "Get a jump on your future career by taking advantage of some great hands-on engineering experience Sensata is looking for some intelligent proactive independent thinkers for summer internshipsSensata Technologies is the world's leading supplier of sensors and controls across a broad range of markets and applications We are leaders in the global automotive appliance aircraft industrial and HVAC markets with sensing and protection solutions that improve safety and efficiency for millions of people every day Experienced colleagues are always willing to provide needed guidance The decisions and actions of our entry level engineers have a direct and immediate impact on our products and our customers This team will be focused on bringing connectivity to our next gen sensors playing a critical role in larger Industrial systems You will work on low level embedded firmware design and implementation real time operating systems (RTOS) device drivers and in one or more wired/wireless connectivity technologies such as CANOpen IOLink ZigBee Bluetooth LoRa (Note interns are treated as engineers on the team with real responsibility for important projects that contribute to the business)-Most important tasks and responsibilitiesOur engineers are involved in all phases of product development from initial identification of customer needs to high volume production implementation Emphasis is on the use of state-of-the-art concepts materials and assembly technologies This is a hands-on position for an individual who wants to see her/his ideas embodied in successful productsCreativity and innovation essential to meet customer requirements and to improve performance quality and costDesign creativityMust be able to clearly present new exciting and beneficial design concepts to customers managers and peersAbility to collaborate effectively with team members while maintaining strong sense of individual responsibilityStrong interpersonal skills to work effectively with superiors peers subordinates suppliers and customers  Frequent customer interaction with OEMs (original equipment manufacturers) is commonAbility to work in a fast-paced development environment with complex project attributesAbility to develop unique differentiated solutions to complex problemsAbility to meet demands of customers on schedule and within budgetStrong team leadership and team membership skillsStrong sense of individual responsibilityAbility to work with other business orgs (Quality Marketing Purchasing etc)Ability to influence othersEvidence of participation in team-based project work and ability to fill multiple rolesAbility to understand higher-level aspect of projectAbility to take responsibility for things outside your direct controlAbility and desire to work with global teams-Educational requirements Pursuing a BS or MS in Computer Science Electrical Engineering Computer Engineering or similar degreeUS citizen or US permanent resident is NOT required for this position however proper work authorizations will be required-SmarterTogetherCollaborating at Sensata means working with some of the world’s most talented people in an enriching environment that is constantly pushing towards the next best thingEmployees work across functions countries and cultures gaining new perspectives through mutual respect and open communication As OneSensata we are working together to make things work together   Led cross functional teams of software engineering UI/UX game design and marketing to redesign MVP from scratch Wrote proprietary recommendations and scoring algorithm in JavaScript (the central algorithm driving game logic) Worked closely with UI/UX team and CEO to prototype iterate and develop hi-ﬁdelity wire-frames of redesigned MVP Focused on improving user engagement using gamiﬁcation while transitioning to subscription model (from free model)  Performed market sizing & visualized key data points from 1 million+ excel entries for Indian consumer electronics product  Researched and identiﬁed KPI metrics and performed competitive/SWOT analysis of market leaders & then worked closely with marketing engineering and sales teams to develop competing product based on SWOT analysis  Identiﬁed poor customer service as key weakness of competitors & worked with outsourced software ﬁrm to deploy superior automated customer service solution projected to reduce costs by up to 80%";
-    String job = "Get a jump on your future career by taking advantage of some great hands-on " +
-        "engineering experience. Sensata is looking for some intelligent, proactive independent " +
-        "thinkers for summer internships.\n" +
-        "\n" +
-        "Sensata Technologies is the world's leading supplier of sensors and controls across a " +
-        "broad range of markets and applications. We are leaders in the global automotive, " +
-        "appliance, aircraft, industrial and HVAC markets with sensing and protection solutions " +
-        "that improve safety and efficiency for millions of people every day. \n" +
-        "\n" +
-        "Experienced colleagues are always willing to provide needed guidance. The decisions and " +
-        "actions of our entry level engineers have a direct and immediate impact on our products " +
-        "and our customers. \n" +
-        "This team will be focused on bringing connectivity to our next gen sensors playing a " +
-        "critical role in larger Industrial systems. You will work on low level embedded firmware" +
-        " design and implementation, real time operating systems (RTOS), device drivers, and in " +
-        "one or more wired/wireless connectivity technologies such as CANOpen, IOLink, ZigBee, " +
-        "Bluetooth, LoRa. \n" +
-        "\n" +
-        "(Note: interns are treated as engineers on the team, with real responsibility for " +
-        "important projects that contribute to the business.)\n" +
-        "-\n" +
-        "\n" +
-        "Most important tasks and responsibilities:\n" +
-        "\n" +
-        "Our engineers are involved in all phases of product development from initial " +
-        "identification of customer needs to high volume production implementation. Emphasis is " +
-        "on the use of state-of-the-art concepts, materials, and assembly technologies. This is a" +
-        " hands-on position for an individual who wants to see her/his ideas embodied in " +
-        "successful products.\n" +
-        "Creativity and innovation essential to meet customer requirements and to improve " +
-        "performance, quality and cost.\n" +
-        "Design creativity.\n" +
-        "Must be able to clearly present new, exciting, and beneficial design concepts to " +
-        "customers, managers, and peers.\n" +
-        "Ability to collaborate effectively with team members while maintaining strong sense of " +
-        "individual responsibility.\n" +
-        "Strong interpersonal skills to work effectively with superiors, peers, subordinates, " +
-        "suppliers, and customers.  Frequent customer interaction with OEMs (original equipment " +
-        "manufacturers) is common.\n" +
-        "Ability to work in a fast-paced development environment with complex project attributes" +
-        ".\n" +
-        "Ability to develop unique, differentiated solutions to complex problems.\n" +
-        "Ability to meet demands of customers on schedule and within budget.\n" +
-        "Strong team leadership and team membership skills.\n" +
-        "Strong sense of individual responsibility.\n" +
-        "Ability to work with other business orgs. (Quality, Marketing, Purchasing, etc.)\n" +
-        "Ability to influence others.\n" +
-        "Evidence of participation in team-based project work and ability to fill multiple roles" +
-        ".\n" +
-        "Ability to understand higher-level aspect of project.\n" +
-        "Ability to take responsibility for things outside your direct control.\n" +
-        "Ability and desire to work with global teams.\n" +
-        "-\n" +
-        "\n" +
-        "Educational requirements: \n" +
-        "\n" +
-        "Pursuing a BS or MS in Computer Science, Electrical Engineering, Computer Engineering or" +
-        " similar degree\n" +
-        "U.S. citizen or U.S. permanent resident is NOT required for this position, however " +
-        "proper work authorizations will be required.\n" +
-        "-\n" +
-        "\n" +
-        "SmarterTogether\n" +
-        "Collaborating at Sensata means working with some of the world’s most talented people in " +
-        "an enriching environment that is constantly pushing towards the next best thing.\n" +
-        "\n" +
-        "Employees work across functions, countries and cultures gaining new perspectives through" +
-        " mutual respect and open communication.\n" +
-        "\n" +
-        " As OneSensata, we are working together to make things work together ";
-
-    Set<String> resumeSet = similarityCalculator.removeStopWords(resume);
-    Set<String> jobSet = similarityCalculator.removeStopWords(job);
-    Set<String> commonWords =  similarityCalculator.commonWords(jobSet, resumeSet);
-
-    double commonSimilarity = (double) (commonWords.size()) / (resumeSet.size());
-    //System.out.println(commonSimilarity);
-     **/
-
-
-
 
 //    CachePageRanks cachePageRanks = new CachePageRanks();
 //    cachePageRanks.cacheResults();
@@ -217,7 +129,8 @@ public final class Main {
   static int getHerokuAssignedPort() {
     ProcessBuilder processBuilder = new ProcessBuilder();
     if (processBuilder.environment().get("PORT") != null) {
-      System.out.println("HEROKU ASSIGNED PORT FOR BACKEND IS: " + Integer.parseInt(processBuilder.environment().get("PORT")));
+      System.out.println("HEROKU ASSIGNED PORT FOR BACKEND IS: " + Integer.parseInt(processBuilder.environment().get(
+              "PORT")));
       Map<String, Object> docData = new HashMap<>();
       docData.put("port", String.valueOf(Integer.parseInt(processBuilder.environment().get("PORT"))));
       Firestore db = FirestoreClient.getFirestore();
@@ -275,17 +188,17 @@ public final class Main {
           modifiedDatabaseRoleTitle = modifiedDatabaseRoleTitle.replaceAll("intern", "");
           Set<String> resumeSet = similarityCalculator.removeStopWords(experienceTitle);
           Set<String> databaseRoleSet = similarityCalculator.removeStopWords(modifiedDatabaseRoleTitle);
-          Set<String> commonWords =  similarityCalculator.commonWords(databaseRoleSet, resumeSet);
+          Set<String> commonWords = similarityCalculator.commonWords(databaseRoleSet, resumeSet);
           double similarity = (double) (commonWords.size()) / (resumeSet.size());
           unSortedMap.put(databaseRole, similarity);
         }
         Map<String, Double> result = unSortedMap.entrySet()
-            .stream()
-            .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
-            .collect(Collectors.toMap(
-                Map.Entry::getKey,
-                Map.Entry::getValue,
-                (oldValue, newValue) -> oldValue, LinkedHashMap::new));
+                .stream()
+                .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        Map.Entry::getValue,
+                        (oldValue, newValue) -> oldValue, LinkedHashMap::new));
 
 
         Map.Entry<String, Double> entWithMaxVal = result.entrySet().iterator().next();
@@ -308,9 +221,9 @@ public final class Main {
 
     @Override
     public String handle(Request req, Response res) throws JSONException, ExecutionException,
-        InterruptedException {
+            InterruptedException {
 
-      System.out.println("HERE IN USER JOB RESULTS HANDLER");
+//      System.out.println("HERE IN USER JOB RESULTS HANDLER");
 
       JSONObject data = new JSONObject(req.body());
       String role = data.getString("role");
@@ -335,17 +248,19 @@ public final class Main {
 
         int numberJobEntries = splitLines.length / 7;
 
+//        System.out.println("NUMBER OF JOB ENTRIES " + numberJobEntries);
+
         if (numberJobEntries > 1) {
           for (int i = 7; i < splitLines.length; i = i + 7) {
             Job job = new Job();
-            job.setId(Integer.valueOf(splitLines[i]));
-            job.setTitle(splitLines[i+1]);
-            job.setCompany(splitLines[i+2]);
+            job.setId(Integer.parseInt(splitLines[i]));
+            job.setTitle(splitLines[i + 1]);
+            job.setCompany(splitLines[i + 2]);
             //System.out.println(job.getCompany());
-            job.setLocation(splitLines[i+3]);
-            job.setRequiredQualifications(splitLines[i+4]);
-            job.setLink(splitLines[i+5]);
-            double pageRank = Double.valueOf(splitLines[i+6]);
+            job.setLocation(splitLines[i + 3]);
+            job.setRequiredQualifications(splitLines[i + 4]);
+            job.setLink(splitLines[i + 5]);
+            double pageRank = Double.valueOf(splitLines[i + 6]);
             pageRanks.put(job, pageRank);
           }
         }
@@ -361,22 +276,82 @@ public final class Main {
 
       Map<Double, Job> tempJobResults = new LinkedHashMap<>();
       for (Map.Entry<Job, Double> en : jobResults.entrySet()) {
-        //System.out.println(en.getKey().getTitle() + " " + en.getValue());
-//        if (counter == 20) {
-//          break;
-//        }
+//        System.out.println(en.getKey().getTitle() + "," + en.getKey().getCompany() + "," + en.getValue());
+
+
+        double oldSkillsScore = en.getKey().getSkillsScore();
+        double oldCourseScore = en.getKey().getCourseworkScore();
+        double oldExperienceScore = en.getKey().getExperienceScore();
+        double oldTotalResumeScore = en.getKey().getResumeSimilarityScore();
+        double oldTotalSimilarityScore = en.getValue();
+        double resumeTotalRatio = oldTotalResumeScore / oldTotalSimilarityScore;
+
+
+        double newSkillsScore = 0;
+        double newCourseScore = 0;
+        double newExperienceScore = 0;
+        double newTotalResumeScore = 0;
+        double newTotalSimilarityScore = 0;
+
+        if (oldTotalSimilarityScore >= 0.8) {
+          newTotalSimilarityScore = 0.9999;
+        } else if (oldTotalSimilarityScore > 0.5 && oldTotalSimilarityScore <= 0.79) {
+          newTotalSimilarityScore = oldTotalSimilarityScore * 1.5;
+        } else if (oldTotalSimilarityScore > 0.25 && oldTotalSimilarityScore <= 0.5) {
+          newTotalSimilarityScore = oldTotalSimilarityScore * 1.75;
+        } else {
+          newTotalSimilarityScore = oldTotalSimilarityScore * 2;
+        }
+
+        newTotalResumeScore = resumeTotalRatio * newTotalSimilarityScore;
+        double scaleFactor;
+        if (oldTotalResumeScore != 0) {
+          scaleFactor = (newTotalResumeScore / oldTotalResumeScore) * 2;
+        } else {
+          scaleFactor = 1;
+        }
+        newSkillsScore = oldSkillsScore * scaleFactor;
+        newCourseScore = oldCourseScore * scaleFactor;
+        newExperienceScore = oldExperienceScore * scaleFactor;
+
+//        System.out.println("BEFORE SETTING");
+//        System.out.println("FINAL SCORE " + en.getKey().getFinalScore() + "," + " COURSEWORK SCORE " + en.getKey().getCourseworkScore() +
+//                "," + " SKILLS SCORE " + +en.getKey().getSkillsScore() + "," + " EXPERIENCE SCORE " + +en.getKey().getExperienceScore());
+
+
+        DecimalFormat df = new DecimalFormat("#.####");
+        newTotalSimilarityScore = Double.parseDouble(df.format(newTotalSimilarityScore));
+        newTotalResumeScore = Double.parseDouble(df.format(newTotalResumeScore));
+        newSkillsScore = Double.parseDouble(df.format(newSkillsScore));
+        newCourseScore = Double.parseDouble(df.format(newCourseScore));
+        newExperienceScore = Double.parseDouble(df.format(newExperienceScore));
+
+//        newTotalSimilarityScore = Math.floor(newTotalSimilarityScore * 1000) / 1000;
+//        newTotalResumeScore = Math.floor(newTotalResumeScore * 1000) / 1000;
+//        newSkillsScore = Math.floor(newSkillsScore * 1000) / 1000;
+//        newCourseScore = Math.floor(newCourseScore * 1000) / 1000;
+//        newExperienceScore = Math.floor(newExperienceScore * 1000) / 1000;
+
+
+        en.getKey().setFinalScore(newTotalSimilarityScore);
+        en.getKey().setResumeSimilarityScore(newTotalResumeScore);
+        en.getKey().setSkillsScore(newSkillsScore);
+        en.getKey().setCourseworkScore(newCourseScore);
+        en.getKey().setExperienceScore(newExperienceScore);
+
         tempJobResults.put(en.getValue(), en.getKey());
 
-        System.out.println(en.getKey().getTitle()+ "," + en.getKey().getCompany() + "," + en.getValue());
-        System.out.println("FINAL SCORE " + en.getKey().getFinalScore()+ "," + " COURSEWORK SCORE " +  en.getKey().getCourseworkScore() +
-            "," + " SKILLS SCORE " +   + en.getKey().getSkillsScore() + "," + " EXPERIENCE SCORE " + + en.getKey().getExperienceScore());
-        System.out.println("==============================================");
+
+//        System.out.println("AFTER SETTING");
+//        System.out.println("FINAL SCORE " + en.getKey().getFinalScore() + "," + " COURSEWORK SCORE " + en.getKey().getCourseworkScore() +
+//                "," + " SKILLS SCORE " + +en.getKey().getSkillsScore() + "," + " EXPERIENCE SCORE " + +en.getKey().getExperienceScore());
+//        System.out.println("==============================================");
+
 
       }
-
-
-
       Map<String, Object> variables = ImmutableMap.of("userJobResults", tempJobResults);
+//      System.out.println("FINAL JSON SENT IS: ");
+//      System.out.println(GSON.toJson(variables));
       return GSON.toJson(variables);
 
 
@@ -428,6 +403,7 @@ public final class Main {
   private static class ExceptionPrinter implements ExceptionHandler {
     @Override
     public void handle(Exception e, Request req, Response res) {
+      e.printStackTrace();
       res.status(500);
       StringWriter stacktrace = new StringWriter();
       try (PrintWriter pw = new PrintWriter(stacktrace)) {
