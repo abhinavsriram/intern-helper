@@ -125,7 +125,7 @@ class CreateProfileScreen1 extends Component {
   };
 
   /**
-   * called when use hits the "Next" button, error checks to make sure
+   * called when user hits the "Next" button, error checks to make sure
    * all user input is valid, and if so, directs them to the next stage
    * of the account creation process.
    */

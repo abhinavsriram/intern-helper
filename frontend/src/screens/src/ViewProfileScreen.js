@@ -105,7 +105,7 @@ class ViewProfileScreen extends Component {
     this.setState({ currDeleteID: concat });
   };
 
-  // closes the pop up modal
+  // closes the delete confirmation modal pop up
   deleteHelperNo = () => {
     this.setState({ deleteVisible: false });
   };
@@ -124,9 +124,9 @@ class ViewProfileScreen extends Component {
       if (currID === IDToDelete) {
         // once we find it, we exclude it from our list of experiences
         localList.splice(currIndex, 1);
-        // set state to update locally
+        // update list of experiences locally
         this.setState({ experiencesList: localList }, () => {
-          // updates on firebase
+          // update list of experiences on firebase
           firebase
             .firestore()
             .collection("user-data")
@@ -162,15 +162,15 @@ class ViewProfileScreen extends Component {
                         () => this.setState({ modalVisible: false }),
                         1000
                       );
-                      // add locally to state var
+                      // add new hash locally to state var
                       this.setState(
                         (prevState) => ({
                           experiencesList: [...prevState.experiencesList, ID],
                         }),
                         () => {
-                          // write to firebase
+                          // write newly edited experience to firebase
                           this.writeToDatabase(ID);
-                          // update list on firebase with edited experience
+                          // update list on firebase with edited experience hash ID
                           firebase
                             .firestore()
                             .collection("user-data")
@@ -221,10 +221,10 @@ class ViewProfileScreen extends Component {
     }
   };
 
-  // pull up modal with ability to edit experience
+  // makes modal with ability to edit experience visible
   editExperience = (values) => {
     // fills in all state variables after acquiring values using e.target
-    // refer to CollapsedExperience to see what the values param is
+    // refer to CollapsedExperience to see what the 'values' param is
     this.setState({ title: values[0] });
     this.setState({ company: values[1] });
     this.setState({ startDate: values[2].split(" - ")[0] });
@@ -236,7 +236,7 @@ class ViewProfileScreen extends Component {
     });
   };
 
-  // gets list of all experiences a user has entered from firebase
+  // gets list of all experiences from a user's profile from firebase
   getExperiencesList = () => {
     firebase
       .firestore()
@@ -380,7 +380,7 @@ class ViewProfileScreen extends Component {
 
   /**
    * uses a firebase API call to write user data to firestore securely, and is
-   * called everytime a new experience is added by the user
+   * called everytime a new experience is added by the user.
    */
   writeToDatabase = (id) => {
     firebase
@@ -467,7 +467,7 @@ class ViewProfileScreen extends Component {
 
   /**
    * called when user is done updating their profile, writes all the latest
-   * updates to firebase
+   * updates to firebase.
    */
   saveChangesButton = () => {
     firebase
@@ -516,7 +516,7 @@ class ViewProfileScreen extends Component {
       });
   };
 
-  // called when user hits Yes/Ok on the pop-up if they have unsaved changes
+  // called when user hits Yes/Ok on the error message modal if they have unsaved changes
   okErrorButton = () => {
     window.location.href = "/home";
     this.setState({ errorVisible: false });
@@ -524,7 +524,7 @@ class ViewProfileScreen extends Component {
     this.setState({ changedBoolean: false });
   };
 
-  // called when user hits No/Cancel on the pop-up if they have unsaved changes
+  // called when user hits No/Cancel on the error message modal if they have unsaved changes
   cancelErrorButton = () => {
     this.setState({ errorCancel: false });
     this.setState({ errorVisible: false });
@@ -535,7 +535,7 @@ class ViewProfileScreen extends Component {
     if (!this.state.changedBoolean) {
       window.location.href = "/home";
     } else {
-      // if they have unsaved changes, it pulls up the error message pop up
+      // if they have unsaved changes, it pulls up the error message modal pop up
       this.setState({ errorVisible: true });
     }
   };

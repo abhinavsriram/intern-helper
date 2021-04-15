@@ -6,7 +6,7 @@ import CustomButton from "../../components/src/CustomButton";
 import TermsOfUsePrivacy from "../../media/TermsOfUsePrivacy.pdf";
 
 /**
- * SignUpScreen allows the user to sign up and create an account
+ * SignUpScreen allows the user to sign up and create an account.
  */
 class SignUpScreen extends Component {
   constructor(props) {

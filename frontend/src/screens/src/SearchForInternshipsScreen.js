@@ -180,8 +180,9 @@ class SearchForInternshipsScreen extends Component {
 
   /**
    * this function is called to get the most relevant jobs when the user clicks
-   * on a button representing a job, since the function is long and has several
-   * nested function calls, inline comments will explain further functionality
+   * on a button representing a particular position, since the function is long
+   * and has several nested function calls, inline comments will explain further
+   * functionality.
    */
   getResultsFromBackend = () => {
     firebase
@@ -209,6 +210,7 @@ class SearchForInternshipsScreen extends Component {
           .post("http://localhost:4567/userJobResults", toSend, config)
           .then((response) => {
             // create 4 maps, each of which will be ordered based on 1 of 4 attributes
+            // this is used to filter results based on these 4 different attributes
             let totalScoreMap = new Map();
             let skillsScoreMap = new Map();
             let courseworkScoreMap = new Map();
@@ -222,6 +224,7 @@ class SearchForInternshipsScreen extends Component {
                   value["link"].replace(/"/g, "") +
                   value["requiredQualifications"].replace(/"/g, "");
                 // create hashed ID representing a job
+                // this is done for every job to ensure user privacy and security
                 let ID = crypto.SHA256(concat).toString();
                 // add hashed ID and corresponding score to the 4 maps
                 totalScoreMap.set(ID, parseFloat(value["finalScore"]) * 100);
@@ -269,7 +272,7 @@ class SearchForInternshipsScreen extends Component {
                 return b[1] - a[1];
               })
             );
-            // create 4 arrays consisting of the keys of the sorted maps
+            // create 4 arrays consisting of the keys (hashed IDs) of the sorted maps
             let totalScoreArray = [...totalScoreMapSorted.keys()];
             let skillsScoreArray = [...skillsScoreMapSorted.keys()];
             let courseworkScoreArray = [...courseworkScoreMapSorted.keys()];

@@ -25,9 +25,7 @@ class LandingScreen extends Component {
     this.setState({ password: newPassword });
   };
 
-  /**
-   * makes firebase API call to log in a user who already has an account.
-   */
+  // makes firebase API call to log in a user who already has an account
   handleLogin = () => {
     const email = this.state.email;
     const password = this.state.password;

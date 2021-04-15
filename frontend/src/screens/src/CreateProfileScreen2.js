@@ -278,7 +278,7 @@ class CreateProfileScreen2 extends Component {
     }
   };
 
-  // makes the main div un-blurred after the pop-up modal disappears
+  // makes the main div un-blurred if clicked when blurred
   triggerMainDivVisibility = () => {
     if (this.state.modalVisible) {
       this.setState({ modalVisible: false });
@@ -296,7 +296,7 @@ class CreateProfileScreen2 extends Component {
     const normalDiv = {
       backgroundColor: "white",
     };
-    // absolute positioning of modal
+    // absolute positioning of add experience modal
     const addExperienceModal = {
       position: "absolute",
       top: "6%",
