@@ -378,6 +378,10 @@ class ViewProfileScreen extends Component {
     this.setState({ modalVisible: true });
   };
 
+  /**
+   * uses a firebase API call to write user data to firestore securely, and is
+   * called everytime a new experience is added by the user
+   */
   writeToDatabase = (id) => {
     firebase
       .firestore()
