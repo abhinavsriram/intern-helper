@@ -50,10 +50,18 @@ public class TextSimilarity {
 //    System.out.println(biggerset);
 //    System.out.println(subset);
 
-    biggerset.retainAll(subset);
-    Set<String> commonSet = biggerset;
+    Set<String> biggerSetCopy = new HashSet<>();
+    Set<String> subSetCopy = new HashSet<>();
 
-//    System.out.println(commonSet);
+    biggerSetCopy.addAll(biggerset);
+    subSetCopy.addAll(subset);
+
+//    System.out.println("BIGGER SET " + biggerset.size());
+//    System.out.println("SUBSET " + subset.size());
+    biggerSetCopy.retainAll(subSetCopy);
+    Set<String> commonSet = biggerSetCopy;
+
+//    System.out.println("COMMON SET " + commonSet.size());
    return commonSet;
 
   }

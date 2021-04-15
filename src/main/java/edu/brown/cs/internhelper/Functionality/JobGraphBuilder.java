@@ -255,12 +255,14 @@ public class JobGraphBuilder {
     coursework = coursework.replaceAll("[.^:,•]","");
     Resume resume = user.getResume();
     String allResumeDescriptions = "";
-    System.out.println(resume.getResumeExperiences().size());
+//    System.out.println(resume.getResumeExperiences().size());
     for (Experience experience : resume.getResumeExperiences()) {
       allResumeDescriptions = allResumeDescriptions + " " + experience.getDescription();
     }
     allResumeDescriptions = allResumeDescriptions.replace("\n", "").replace("\r", "");
     allResumeDescriptions = allResumeDescriptions.replaceAll("[.^:,•]","");
+
+    //System.out.println(allResumeDescriptions);
 
 
 
@@ -271,10 +273,10 @@ public class JobGraphBuilder {
     //System.out.println(courseworkSet);
     Set<String> resumeDescriptionsSet = similarityCalculator.removeStopWords(allResumeDescriptions);
 
-    System.out.println("SETS ARE: ");
-    System.out.println(skillsSet);
-    System.out.println(courseworkSet);
-    System.out.println(resumeDescriptionsSet);
+//    System.out.println("SETS ARE: ");
+//    System.out.println(skillsSet);
+//    System.out.println(courseworkSet);
+//     System.out.println(resumeDescriptionsSet.size());
 
 
     //skills similarity to current Job qual is 0.4
@@ -296,27 +298,37 @@ public class JobGraphBuilder {
 
       Set<String> jobRoleSet = similarityCalculator.removeStopWords(currJobQual);
 
-      System.out.println("JOB ROLES ARE: ");
-      System.out.println(jobRoleSet);
+//      System.out.println("JOB ROLE SIZE INITIALLY " + jobRoleSet.size());
+      //System.out.println("JOB ROLES ARE: ");
+//      System.out.println(jobRoleSet);
 
+//      System.out.println("JOB ROLE SIZE BEFORE SKILLS " + jobRoleSet.size());
       Set<String> skillsCommonWords =  similarityCalculator.commonWords(jobRoleSet, skillsSet);
-      System.out.println("SKILLS: ");
-      System.out.println(skillsCommonWords.size());
+      //System.out.println("SKILLS: ");
+//      System.out.println(skillsCommonWords.size());
       double skillsSimilarity = (double) (skillsCommonWords.size()) / (skillsSet.size());
-      System.out.println(skillsSimilarity);
+      //System.out.println(skillsSimilarity);
+//      System.out.println("JOB ROLE SIZE AFTER SKILLS " + jobRoleSet.size());
 
+
+//      System.out.println("JOB ROLE SIZE BEFORE COURSE " + jobRoleSet.size());
       Set<String> courseworkCommonWords =  similarityCalculator.commonWords(jobRoleSet, courseworkSet);
-      System.out.println("Coursework: ");
-      System.out.println(courseworkCommonWords.size());
+      //System.out.println("Coursework: ");
+//      System.out.println(courseworkCommonWords.size());
       double courseworkSimilarity = (double) (courseworkCommonWords.size()) / (courseworkSet.size());
-      System.out.println(courseworkSimilarity);
+//      System.out.println(courseworkSimilarity);
+//      System.out.println("JOB ROLE SIZE AFTER COURSE " + jobRoleSet.size());
+
+
+//      System.out.println("JOB ROLE SIZE AFTER " + jobRoleSet.size() + " RESUME DESCRIPTION " + resumeDescriptionsSet.size());
 
 
       Set<String> resumeDescriptionsCommonWords =  similarityCalculator.commonWords(jobRoleSet, resumeDescriptionsSet);
-      System.out.println("EXPERIENCES: ");
-      System.out.println(resumeDescriptionsCommonWords.size());
+      //System.out.println("EXPERIENCES: ");
+
+//      System.out.println("RESUME DESCRIPTION SIZE " + resumeDescriptionsCommonWords.size());
       double resumeDescriptionsSimilarity = (double) (resumeDescriptionsCommonWords.size()) / (resumeDescriptionsSet.size());
-      System.out.println(resumeDescriptionsSimilarity);
+//      System.out.println(en.getKey().getTitle() + "," + en.getKey().getCompany() + "," + resumeDescriptionsSimilarity);
 
 
       double totalSimilarityScore = 0.4 * skillsSimilarity + 0.35 * courseworkSimilarity +
