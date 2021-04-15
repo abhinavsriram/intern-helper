@@ -306,7 +306,7 @@ public final class Main {
         newTotalResumeScore = resumeTotalRatio * newTotalSimilarityScore;
         double scaleFactor;
         if (oldTotalResumeScore != 0) {
-          scaleFactor = (newTotalResumeScore / oldTotalResumeScore) * 2;
+          scaleFactor = (newTotalResumeScore / oldTotalResumeScore) * 1.5;
         } else {
           scaleFactor = 1;
         }
