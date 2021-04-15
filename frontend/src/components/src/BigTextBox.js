@@ -1,5 +1,9 @@
 import "../styles/BigTextBox.css";
 
+/**
+ * BigTextBox is a custom textbox when larger text needs to be typed-in by the user.
+ * It has dimensions 800px by 325px.
+ */
 function BigTextBox(props) {
   return (
     <div>

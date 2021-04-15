@@ -1,7 +1,11 @@
 import React from "react";
 import "../styles/CollapsedExperience.css";
 
-function CollapsedExperienceCreateProfile(props) {
+/**
+ * CollapsedExperienceCreatingProfile is identical to CollapsedExperience but does
+ * not have delete and edit functionality.
+ */
+function CollapsedExperienceCreatingProfile(props) {
   return (
     <div className={"exp-wrapper"}>
       <div className={"row-wrapper"}>
@@ -15,4 +19,4 @@ function CollapsedExperienceCreateProfile(props) {
   );
 }
 
-export default CollapsedExperienceCreateProfile;
+export default CollapsedExperienceCreatingProfile;

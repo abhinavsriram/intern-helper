@@ -1,5 +1,9 @@
 import "../styles/CustomButton.css";
 
+/**
+ * CustomButton is a custom button used throughout the app.
+ * It has dimensions 215px by 55px.
+ */
 function CustomButton(props) {
   return (
     <a className="custom-link-bt" href={props.click}>

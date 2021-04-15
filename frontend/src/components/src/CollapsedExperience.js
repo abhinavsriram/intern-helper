@@ -3,6 +3,10 @@ import "../styles/CollapsedExperience.css";
 import { DeleteSharp } from "@material-ui/icons";
 import CreateIcon from "@material-ui/icons/Create";
 
+/**
+ * CollapsedExperience displays an experience in a compact manner after the user
+ * has added an experience to their profile.
+ */
 function CollapsedExperience(props) {
   return (
     <div className={"exp-wrapper"}>

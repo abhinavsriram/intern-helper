@@ -3,25 +3,34 @@ import "../styles/InternshipResult.css";
 import CustomButton from "./CustomButton";
 import { Line } from "rc-progress";
 
+/**
+ * InternshipResult is used to display the results when a user searches for an
+ * internship, it is dynamically sized and is expandable and collapsable.
+ */
 function InternshipResult(props) {
   const [score, setScore] = useState(false);
 
+  // truncates a provided string to a specific number of characters
   function truncate(str, num) {
     return str.split(" ").splice(0, num).join(" ");
   }
 
+  // opens the provided link in a new tab
   function sendToLink(link) {
     window.open(link, "_blank");
   }
 
+  // expands the div to show score breakdown
   function expandScore() {
     setScore(true);
   }
 
+  // collapses the div to hide score breakdown
   function collapseScore() {
     setScore(false);
   }
 
+  // assigns a color on a linear gradient from red to green (0 to 100)
   function scoreColor(percent) {
     let r =
       percent < 50 ? 255 : Math.floor(255 - ((percent * 2 - 100) * 255) / 100);
@@ -29,6 +38,7 @@ function InternshipResult(props) {
     return "rgb(" + r + "," + g + ",0)";
   }
 
+  // all numbers are truncated to decimal places
   return (
     <div className={"int-wrapper"}>
       <div className={"int-title"}>{truncate(props.title, 5)}</div>

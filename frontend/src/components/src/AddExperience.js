@@ -3,6 +3,10 @@ import BigTextBox from "./BigTextBox";
 import React from "react";
 import CustomButton from "./CustomButton";
 
+/**
+ * AddExperience component shows up when users click the "Add Experience" button.
+ * It is a custom designed modal with positive z-index to overlay on an existing div.
+ */
 function AddExperience(props) {
   const invisibleStyles = {
     display: "none",

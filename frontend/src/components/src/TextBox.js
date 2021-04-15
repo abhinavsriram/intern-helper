@@ -1,5 +1,9 @@
 import "../styles/TextBox.css";
 
+/**
+ * Textbox is a custom textbox when username, password etc. needs to
+ * be typed-in by a user.
+ */
 function TextBox(props) {
   return (
     <div>

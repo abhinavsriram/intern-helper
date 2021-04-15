@@ -2,6 +2,10 @@ import React from "react";
 import CustomButton from "./CustomButton";
 import "../styles/ErrorMessage.css";
 
+/**
+ * ErrorMessage is a custom modal that displays an error message along
+ * with 2 options for the user to proceed with.
+ */
 function ErrorMessage(props) {
   const invisibleStyles = {
     display: "none",
