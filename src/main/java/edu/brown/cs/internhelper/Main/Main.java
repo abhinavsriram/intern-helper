@@ -93,8 +93,8 @@ public final class Main {
     OptionSet options = parser.parse(args);
 
 
-//    CachePageRanks cachePageRanks = new CachePageRanks();
-//    cachePageRanks.cacheResults();
+    CachePageRanks cachePageRanks = new CachePageRanks();
+    cachePageRanks.cacheResults();
 
     runSparkServer((int) options.valueOf("port"));
   }

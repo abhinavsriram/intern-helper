@@ -169,6 +169,7 @@ public class JobGraphBuilder {
 
   }
 
+  /**
   public static void printMap() {
     Iterator it = graph.getVertexConnections().entrySet().iterator();
     while (it.hasNext()) {
@@ -197,10 +198,11 @@ public class JobGraphBuilder {
     }
 
   }
+   **/
 
   public Map<Job, Double> runPageRank() {
-    PageRank pageRank = new PageRank();
-    Map<Job, Double> jobPageRanks = pageRank.calcPageRank(graph);
+    PageRank pageRank = new PageRank(graph);
+    Map<Job, Double> jobPageRanks = pageRank.calcPageRank();
 
 //    Map<Job, Double> temp = sortByValue(jobPageRanks);
 //    System.out.println("THIS IS WHAT THE PAGE RANK RESULTS WOULD BE");
