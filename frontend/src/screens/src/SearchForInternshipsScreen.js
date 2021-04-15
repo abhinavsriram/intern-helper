@@ -7,6 +7,10 @@ import CustomButton from "../../components/src/CustomButton";
 import { WaveLoading, SolarSystemLoading } from "react-loadingg";
 import axios from "axios";
 
+/**
+ * SearchForInternshipsScreen allows users to search for an internship
+ * by industry -> role.
+ */
 class SearchForInternshipsScreen extends Component {
   constructor(props) {
     super(props);
@@ -107,10 +111,14 @@ class SearchForInternshipsScreen extends Component {
       internships: [],
       internshipsList: [],
       acquiringResults: false,
-      port: ""
+      port: "",
     };
   }
 
+  /**
+   * function is called when hosting on heroku - makes a firebase API call
+   * to find the port at which backend server is hosted.
+   */
   readPortNumber = () => {
     firebase
       .firestore()
@@ -119,7 +127,7 @@ class SearchForInternshipsScreen extends Component {
       .get()
       .then((doc) => {
         if (doc.exists) {
-          this.setState({port: doc.data().port});
+          this.setState({ port: doc.data().port });
         }
       })
       .catch((error) => {
@@ -130,7 +138,21 @@ class SearchForInternshipsScreen extends Component {
       });
   };
 
-  writeToDatabase = (id, title, company, description, link, totalScore, skillsScore, courseworkScore, experienceScore) => {
+  /**
+   * this function takes in a number of arguments and writes those values
+   * to firebase securely.
+   */
+  writeToDatabase = (
+    id,
+    title,
+    company,
+    description,
+    link,
+    totalScore,
+    skillsScore,
+    courseworkScore,
+    experienceScore
+  ) => {
     firebase
       .firestore()
       .collection("user-data")
@@ -145,10 +167,9 @@ class SearchForInternshipsScreen extends Component {
         totalScore: totalScore,
         skillsScore: skillsScore,
         courseworkScore: courseworkScore,
-        experienceScore: experienceScore
+        experienceScore: experienceScore,
       })
-      .then(() => {
-      })
+      .then(() => {})
       .catch((error) => {
         this.setState({
           errorMessage:
@@ -157,6 +178,11 @@ class SearchForInternshipsScreen extends Component {
       });
   };
 
+  /**
+   * this function is called to get the most relevant jobs when the user clicks
+   * on a button representing a job, since the function is long and has several
+   * nested function calls, inline comments will explain further functionality
+   */
   getResultsFromBackend = () => {
     firebase
       .firestore()
@@ -168,6 +194,7 @@ class SearchForInternshipsScreen extends Component {
         doc.forEach((element) => {
           element.ref.delete().then();
         });
+        // making the post request
         const toSend = {
           id: this.state.uid,
           role: this.state.currentRole,
@@ -181,6 +208,7 @@ class SearchForInternshipsScreen extends Component {
         axios
           .post("http://localhost:4567/userJobResults", toSend, config)
           .then((response) => {
+            // create 4 maps, each of which will be ordered based on 1 of 4 attributes
             let totalScoreMap = new Map();
             let skillsScoreMap = new Map();
             let courseworkScoreMap = new Map();
@@ -193,11 +221,20 @@ class SearchForInternshipsScreen extends Component {
                   value["company"].replace(/"/g, "") +
                   value["link"].replace(/"/g, "") +
                   value["requiredQualifications"].replace(/"/g, "");
+                // create hashed ID representing a job
                 let ID = crypto.SHA256(concat).toString();
+                // add hashed ID and corresponding score to the 4 maps
                 totalScoreMap.set(ID, parseFloat(value["finalScore"]) * 100);
                 skillsScoreMap.set(ID, parseFloat(value["skillsScore"]) * 100);
-                courseworkScoreMap.set(ID, parseFloat(value["courseworkScore"]) * 100);
-                experienceScoreMap.set(ID, parseFloat(value["experienceScore"]) * 100);
+                courseworkScoreMap.set(
+                  ID,
+                  parseFloat(value["courseworkScore"]) * 100
+                );
+                experienceScoreMap.set(
+                  ID,
+                  parseFloat(value["experienceScore"]) * 100
+                );
+                // store the job in firebase
                 this.writeToDatabase(
                   ID,
                   value["title"].replace(/"/g, ""),
@@ -211,14 +248,33 @@ class SearchForInternshipsScreen extends Component {
                 );
               }
             );
-            let totalScoreMapSorted = new Map([...totalScoreMap.entries()].sort(function(a, b){return b[1] - a[1]}));
-            let skillsScoreMapSorted = new Map([...skillsScoreMap.entries()].sort(function(a, b){return b[1] - a[1]}));
-            let courseworkScoreMapSorted = new Map([...courseworkScoreMap.entries()].sort(function(a, b){return b[1] - a[1]}));
-            let experienceScoreMapSorted = new Map([...experienceScoreMap.entries()].sort(function(a, b){return b[1] - a[1]}));
+            // sort the 4 maps
+            let totalScoreMapSorted = new Map(
+              [...totalScoreMap.entries()].sort(function (a, b) {
+                return b[1] - a[1];
+              })
+            );
+            let skillsScoreMapSorted = new Map(
+              [...skillsScoreMap.entries()].sort(function (a, b) {
+                return b[1] - a[1];
+              })
+            );
+            let courseworkScoreMapSorted = new Map(
+              [...courseworkScoreMap.entries()].sort(function (a, b) {
+                return b[1] - a[1];
+              })
+            );
+            let experienceScoreMapSorted = new Map(
+              [...experienceScoreMap.entries()].sort(function (a, b) {
+                return b[1] - a[1];
+              })
+            );
+            // create 4 arrays consisting of the keys of the sorted maps
             let totalScoreArray = [...totalScoreMapSorted.keys()];
             let skillsScoreArray = [...skillsScoreMapSorted.keys()];
             let courseworkScoreArray = [...courseworkScoreMapSorted.keys()];
             let experienceScoreArray = [...experienceScoreMapSorted.keys()];
+            // store those arrays in firebase
             firebase
               .firestore()
               .collection("user-data")
@@ -229,7 +285,7 @@ class SearchForInternshipsScreen extends Component {
                 totalScoreArray: totalScoreArray,
                 skillsScoreArray: skillsScoreArray,
                 courseworkScoreArray: courseworkScoreArray,
-                experienceScoreArray: experienceScoreArray
+                experienceScoreArray: experienceScoreArray,
               })
               .then(() => {
                 firebase
@@ -240,7 +296,8 @@ class SearchForInternshipsScreen extends Component {
                     recent_query: this.state.currentRole,
                   })
                   .then(() => {
-                    this.setState({acquiringResults: false});
+                    // send user to new tab with results
+                    this.setState({ acquiringResults: false });
                     window.open("/internshipresults", "_blank");
                   })
                   .catch((error) => {
@@ -269,6 +326,12 @@ class SearchForInternshipsScreen extends Component {
       });
   };
 
+  /**
+   * uses a firebase API call to check if user is logged-in (client-side cached),
+   * and if the user is not, it denies them access to the page, if they are logged-in,
+   * then it checks if they should have access to the page, if so, it grants them access
+   * and if not, it denied access.
+   */
   getUserID = () => {
     let authFlag = true;
     firebase.auth().onAuthStateChanged((user) => {
@@ -284,6 +347,7 @@ class SearchForInternshipsScreen extends Component {
     });
   };
 
+  // helper function that creates the buttons for each of the sectors
   populateSectors = () => {
     let localSectors1 = [];
     let localSectors2 = [];
@@ -316,6 +380,7 @@ class SearchForInternshipsScreen extends Component {
     this.getUserID();
     this.readPortNumber();
     this.populateSectors();
+    // by default we display healthcare roles
     this.populateRoles("Healthcare");
     this.id = setTimeout(() => this.setState({ loading: false }), 100);
   }
@@ -324,6 +389,7 @@ class SearchForInternshipsScreen extends Component {
     clearTimeout(this.id);
   }
 
+  // helper function that creates the buttons for each of the roles
   populateRoles = (sector) => {
     let localRoles1 = [];
     let localRoles2 = [];
@@ -368,6 +434,7 @@ class SearchForInternshipsScreen extends Component {
     this.setState({ roles3: localRoles3 });
   };
 
+  // makes appropriate function calls to display results to a user
   handleSelection = (role) => {
     this.setState({ internshipsList: [] }, () => {
       this.setState({ currentRole: role }, () => {
@@ -377,6 +444,7 @@ class SearchForInternshipsScreen extends Component {
     });
   };
 
+  // sends the user to the homepage
   goBack = () => {
     window.location.href = "/home";
   };

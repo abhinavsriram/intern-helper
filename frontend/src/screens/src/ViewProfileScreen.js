@@ -11,6 +11,9 @@ import CollapsedExperience from "../../components/src/CollapsedExperience";
 import MediumTextBox from "../../components/src/MediumTextBox";
 import { WaveLoading } from "react-loadingg";
 
+/**
+ * ViewProfileScreen lets a user view and edit their profile.
+ */
 class ViewProfileScreen extends Component {
   constructor(props) {
     super(props);
@@ -46,6 +49,12 @@ class ViewProfileScreen extends Component {
     };
   }
 
+  /**
+   * uses a firebase API call to check if user is logged-in (client-side cached),
+   * and if the user is not, it denies them access to the page, if they are logged-in,
+   * then it checks if they should have access to the page, if so, it grants them access
+   * and if not, it denied access.
+   */
   getUserID = () => {
     let authFlag = true;
     firebase.auth().onAuthStateChanged((user) => {
@@ -63,6 +72,7 @@ class ViewProfileScreen extends Component {
     });
   };
 
+  // gets all data about a user using firebase API call
   getUserData = () => {
     firebase
       .firestore()
@@ -89,24 +99,34 @@ class ViewProfileScreen extends Component {
       });
   };
 
+  // make the delete confirmation modal pop up
   deleteExperience = (concat) => {
     this.setState({ deleteVisible: true });
     this.setState({ currDeleteID: concat });
   };
 
+  // closes the pop up modal
   deleteHelperNo = () => {
     this.setState({ deleteVisible: false });
   };
 
+  // deletes a particular experience both locally and on firebase
+  // also helps edit an experience
   deleteHelperYes = (concat) => {
     let crypto = require("crypto-js");
+    // find hashed ID of experience we want to delete
     let IDToDelete = crypto.SHA256(concat).toString();
+    // create copy of state variable since state vars should not be mutated directly
     let localList = [...this.state.experiencesList];
+    // iterate over all internships to find the one we want to delete
     for (const currID of localList) {
       let currIndex = localList.indexOf(currID);
       if (currID === IDToDelete) {
+        // once we find it, we exclude it from our list of experiences
         localList.splice(currIndex, 1);
+        // set state to update locally
         this.setState({ experiencesList: localList }, () => {
+          // updates on firebase
           firebase
             .firestore()
             .collection("user-data")
@@ -126,7 +146,7 @@ class ViewProfileScreen extends Component {
                 .delete()
                 .then(() => {
                   if (this.state.tempConcat !== "") {
-                    // editing an experience
+                    // if editing an experience
                     this.setState({ experiences: [] }, () => {
                       let crypto = require("crypto-js");
                       let concat =
@@ -136,17 +156,21 @@ class ViewProfileScreen extends Component {
                         " - " +
                         this.state.endDate +
                         this.state.description;
+                      // create new hash of edited experience
                       let ID = crypto.SHA256(concat).toString();
                       setTimeout(
                         () => this.setState({ modalVisible: false }),
                         1000
                       );
+                      // add locally to state var
                       this.setState(
                         (prevState) => ({
                           experiencesList: [...prevState.experiencesList, ID],
                         }),
                         () => {
+                          // write to firebase
                           this.writeToDatabase(ID);
+                          // update list on firebase with edited experience
                           firebase
                             .firestore()
                             .collection("user-data")
@@ -171,6 +195,7 @@ class ViewProfileScreen extends Component {
                       );
                     });
                   } else {
+                    // done deleting an experience
                     this.setState({ experiences: [] }, () => {
                       this.getExperiencesList();
                       this.setState({ deleteVisible: false });
@@ -196,7 +221,10 @@ class ViewProfileScreen extends Component {
     }
   };
 
+  // pull up modal with ability to edit experience
   editExperience = (values) => {
+    // fills in all state variables after acquiring values using e.target
+    // refer to CollapsedExperience to see what the values param is
     this.setState({ title: values[0] });
     this.setState({ company: values[1] });
     this.setState({ startDate: values[2].split(" - ")[0] });
@@ -208,6 +236,7 @@ class ViewProfileScreen extends Component {
     });
   };
 
+  // gets list of all experiences a user has entered from firebase
   getExperiencesList = () => {
     firebase
       .firestore()
@@ -228,6 +257,7 @@ class ViewProfileScreen extends Component {
                 .doc(this.state.experiencesList[i])
                 .get()
                 .then((doc) => {
+                  // updates DOM with all experiences
                   if (doc.exists) {
                     this.setState((prevState) => ({
                       experiences: [
@@ -377,6 +407,12 @@ class ViewProfileScreen extends Component {
       });
   };
 
+  /**
+   * when user is done typing up an experience this function is called,
+   * it ensures that the user has entered all required data, and writes
+   * this data to firebase and updates the DOM with a collapsed view of
+   * that experience.
+   */
   doneExperienceButton = () => {
     this.setState({ changedBoolean: true });
     if (
@@ -425,6 +461,10 @@ class ViewProfileScreen extends Component {
     }
   };
 
+  /**
+   * called when user is done updating their profile, writes all the latest
+   * updates to firebase
+   */
   saveChangesButton = () => {
     firebase
       .firestore()
@@ -472,6 +512,7 @@ class ViewProfileScreen extends Component {
       });
   };
 
+  // called when user hits Yes/Ok on the pop-up if they have unsaved changes
   okErrorButton = () => {
     window.location.href = "/home";
     this.setState({ errorVisible: false });
@@ -479,19 +520,23 @@ class ViewProfileScreen extends Component {
     this.setState({ changedBoolean: false });
   };
 
+  // called when user hits No/Cancel on the pop-up if they have unsaved changes
   cancelErrorButton = () => {
     this.setState({ errorCancel: false });
     this.setState({ errorVisible: false });
   };
 
+  // sends the user back home if they have no unsaved changed
   goBackButton = () => {
     if (!this.state.changedBoolean) {
       window.location.href = "/home";
     } else {
+      // if they have unsaved changes, it pulls up the error message pop up
       this.setState({ errorVisible: true });
     }
   };
 
+  // blurs the main div when the error message pop up appears
   triggerMainDivVisibility = () => {
     if (this.state.modalVisible) {
       if (this.state.changedBoolean) {

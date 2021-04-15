@@ -7,6 +7,10 @@ import image from "../../media/accessdenied.jpeg";
 import BigCustomButton from "../../components/src/BigCustomButton";
 import { WaveLoading } from "react-loadingg";
 
+/**
+ * CreateProfileScreen1 is the first of two pages involved in creating a
+ * user's profile.
+ */
 class CreateProfileScreen1 extends Component {
   constructor(props) {
     super(props);
@@ -24,6 +28,12 @@ class CreateProfileScreen1 extends Component {
     };
   }
 
+  /**
+   * uses a firebase API call to check if user is logged-in (client-side cached),
+   * and if the user is not, it denies them access to the page, if they are logged-in,
+   * then it checks if they should have access to the page, if so, it grants them access
+   * and if not, it denies access.
+   */
   getUserID = () => {
     let authFlag = true;
     firebase.auth().onAuthStateChanged((user) => {
@@ -84,6 +94,10 @@ class CreateProfileScreen1 extends Component {
     this.setState({ university: newUniversity });
   };
 
+  /**
+   * uses a firebase API call to write user data to firestore securely, and if
+   * successful, the user is re-directed to the next page of the account set up process.
+   */
   writeToDatabase = () => {
     firebase
       .firestore()
@@ -110,6 +124,11 @@ class CreateProfileScreen1 extends Component {
       });
   };
 
+  /**
+   * called when use hits the "Next" button, error checks to make sure
+   * all user input is valid, and if so, directs them to the next stage
+   * of the account creation process.
+   */
   next = () => {
     if (
       this.state.firstName !== "" &&

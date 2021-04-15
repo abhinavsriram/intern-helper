@@ -5,6 +5,9 @@ import TextBox from "../../components/src/TextBox";
 import CustomButton from "../../components/src/CustomButton";
 import TermsOfUsePrivacy from "../../media/TermsOfUsePrivacy.pdf";
 
+/**
+ * SignUpScreen allows the user to sign up and create an account
+ */
 class SignUpScreen extends Component {
   constructor(props) {
     super(props);
@@ -26,8 +29,10 @@ class SignUpScreen extends Component {
     this.handleInputChange = this.handleInputChange.bind(this);
   }
 
+  // checks if the email the user has entered is valid
   checkEmailValidity = () => {
     if (
+      // found this regex online
       this.state.email.match(
         "(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:" +
           '[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9]' +
@@ -59,6 +64,7 @@ class SignUpScreen extends Component {
     this.setState({ email: newEmail });
   };
 
+  // checks if the password is valid
   checkPasswordValidity = () => {
     if (
       !!this.state.passwordOne.match(
@@ -91,6 +97,7 @@ class SignUpScreen extends Component {
     });
   };
 
+  // checks if the passwords match
   checkPasswordMatch = () => {
     if (this.state.passwordOne === this.state.passwordTwo) {
       if (this.checkPasswordValidity()) {
@@ -128,6 +135,7 @@ class SignUpScreen extends Component {
     });
   };
 
+  // adds user's email to a collection of emails of all existing users
   writeToDatabase = () => {
     firebase
       .firestore()
@@ -165,6 +173,7 @@ class SignUpScreen extends Component {
       });
   };
 
+  // makes firebase API call to create a new user's account
   createUser = () => {
     const email = this.state.email;
     const password = this.state.passwordTwo;
@@ -185,6 +194,7 @@ class SignUpScreen extends Component {
       });
   };
 
+  // checks if the user already exists
   checkUserExists = () => {
     firebase
       .firestore()
@@ -213,6 +223,10 @@ class SignUpScreen extends Component {
       });
   };
 
+  /**
+   * checks that the user has entered all valid input and that they have accepted
+   * the terms and conditions.
+   */
   signUpClick = () => {
     if (this.state.checked) {
       if (
@@ -255,6 +269,7 @@ class SignUpScreen extends Component {
     }
   };
 
+  // handler for the checkbox
   handleInputChange = (event) => {
     const target = event.target;
     const value = target.type === "checkbox" ? target.checked : target.value;

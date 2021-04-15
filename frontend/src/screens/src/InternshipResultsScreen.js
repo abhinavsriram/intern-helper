@@ -8,6 +8,10 @@ import { WaveLoading } from "react-loadingg";
 import InternshipResult from "../../components/src/InternshipResult";
 import CustomButton from "../../components/src/CustomButton";
 
+/**
+ * InternshipResultsScreen displays all the results after the user has clicked on
+ * a particular kind of internship.
+ */
 class InternshipResultsScreen extends Component {
   constructor(props) {
     super(props);
@@ -21,6 +25,11 @@ class InternshipResultsScreen extends Component {
     };
   }
 
+  /**
+   * uses a firebase API call to get the correct order of internships when
+   * ordered by their overall similarity score, and then updates the DOM with
+   * those results.
+   */
   getInternships = () => {
     firebase
       .firestore()
@@ -79,6 +88,11 @@ class InternshipResultsScreen extends Component {
       });
   };
 
+  /**
+   * uses a firebase API call to get the correct order of internships when
+   * ordered by their skills similarity score, and then updates the DOM with
+   * those results.
+   */
   getInternshipsBySkills = () => {
     firebase
       .firestore()
@@ -140,6 +154,11 @@ class InternshipResultsScreen extends Component {
       });
   };
 
+  /**
+   * uses a firebase API call to get the correct order of internships when
+   * ordered by their coursework similarity score, and then updates the DOM with
+   * those results.
+   */
   getInternshipsByCoursework = () => {
     firebase
       .firestore()
@@ -201,6 +220,11 @@ class InternshipResultsScreen extends Component {
       });
   };
 
+  /**
+   * uses a firebase API call to get the correct order of internships when
+   * ordered by their experience similarity score, and then updates the DOM with
+   * those results.
+   */
   getInternshipsByExperiences = () => {
     firebase
       .firestore()
@@ -262,6 +286,12 @@ class InternshipResultsScreen extends Component {
       });
   };
 
+  /**
+   * uses a firebase API call to check if user is logged-in (client-side cached),
+   * and if the user is not, it denies them access to the page, if they are logged-in,
+   * then it checks if they should have access to the page, if so, it grants them access
+   * and if not, it denied access.
+   */
   getUserID = () => {
     let authFlag = true;
     firebase.auth().onAuthStateChanged((user) => {
@@ -302,6 +332,7 @@ class InternshipResultsScreen extends Component {
     clearTimeout(this.id);
   }
 
+  // triggers appropriate function calls when user wants to filter by overall similarity
   overallFilter = () => {
     this.setState({ internships: [] }, () => {
       this.setState({ internshipsList: [] }, () => {
@@ -312,6 +343,7 @@ class InternshipResultsScreen extends Component {
     });
   };
 
+  // triggers appropriate function calls when user wants to filter by skills similarity
   skillsFilter = () => {
     this.setState({ internships: [] }, () => {
       this.setState({ internshipsList: [] }, () => {
@@ -322,6 +354,7 @@ class InternshipResultsScreen extends Component {
     });
   };
 
+  // triggers appropriate function calls when user wants to filter by coursework similarity
   courseworkFilter = () => {
     this.setState({ internships: [] }, () => {
       this.setState({ internshipsList: [] }, () => {
@@ -332,6 +365,7 @@ class InternshipResultsScreen extends Component {
     });
   };
 
+  // triggers appropriate function calls when user wants to filter by experiences similarity
   experiencesFilter = () => {
     this.setState({ internships: [] }, () => {
       this.setState({ internshipsList: [] }, () => {

@@ -4,6 +4,9 @@ import firebase from "../../firebase.js";
 import TextBox from "../../components/src/TextBox";
 import CustomButton from "../../components/src/CustomButton";
 
+/**
+ * LandingScreen lets the user log in, sign up, or reset their password.
+ */
 class LandingScreen extends Component {
   constructor(props) {
     super(props);
@@ -22,6 +25,9 @@ class LandingScreen extends Component {
     this.setState({ password: newPassword });
   };
 
+  /**
+   * makes firebase API call to log in a user who already has an account.
+   */
   handleLogin = () => {
     const email = this.state.email;
     const password = this.state.password;
@@ -42,6 +48,7 @@ class LandingScreen extends Component {
     }
   };
 
+  // sends user to sign up screen
   handleSignUp = () => {
     window.location.href = "/signup";
   };

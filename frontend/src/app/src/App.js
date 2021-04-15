@@ -14,6 +14,9 @@ import InternshipsForMeScreen from "../../screens/src/InternshipsForMeScreen";
 import SearchForInternshipsScreen from "../../screens/src/SearchForInternshipsScreen";
 import InternshipResultsScreen from "../../screens/src/InternshipResultsScreen";
 
+/**
+ * The App class consists of a React Router that routes to all the different pages.
+ */
 class App extends Component {
   render() {
     return (

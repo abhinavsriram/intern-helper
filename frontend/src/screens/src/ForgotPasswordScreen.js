@@ -5,6 +5,9 @@ import firebase from "../../firebase.js";
 import TextBox from "../../components/src/TextBox";
 import CustomButton from "../../components/src/CustomButton";
 
+/**
+ * ForgotPasswordScreen is a page on which the user can reset their password.
+ */
 class ForgotPasswordScreen extends Component {
   constructor(props) {
     super(props);
@@ -19,6 +22,10 @@ class ForgotPasswordScreen extends Component {
     this.setState({ email: newEmail });
   };
 
+  /**
+   * makes the appropriate firebase API call to send a password reset link
+   * to the user's email.
+   */
   handleForgotPassword = () => {
     const email = this.state.email;
     firebase

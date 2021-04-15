@@ -6,6 +6,11 @@ import image from "../../media/accessdenied.jpeg";
 import CustomButton from "../../components/src/CustomButton";
 import { WaveLoading } from "react-loadingg";
 
+/**
+ * HomeScreen represents the home screen of the entire web app, it
+ * has 3 buttons redirecting the user to view and edit their profile,
+ * search for internships, or view algorithmically chosen internships.
+ */
 class HomeScreen extends Component {
   constructor(props) {
     super(props);
@@ -17,6 +22,12 @@ class HomeScreen extends Component {
     };
   }
 
+  /**
+   * uses a firebase API call to check if user is logged-in (client-side cached),
+   * and if the user is not, it denies them access to the page, if they are logged-in,
+   * then it checks if they should have access to the page, if so, it grants them access
+   * and if not, it denied access.
+   */
   getUserID = () => {
     let authFlag = true;
     firebase.auth().onAuthStateChanged((user) => {
@@ -33,6 +44,7 @@ class HomeScreen extends Component {
     });
   };
 
+  // gets the user's name from firebase
   getUserName = () => {
     firebase
       .firestore()
@@ -60,6 +72,7 @@ class HomeScreen extends Component {
     clearTimeout(this.id);
   }
 
+  // makes firebase API call to log out the user
   logOutUser = () => {
     firebase
       .auth()
@@ -67,19 +80,20 @@ class HomeScreen extends Component {
       .then(() => {
         window.location.href = "/landing";
       })
-      .catch((error) => {
-        // error happened
-      });
+      .catch((error) => {});
   };
 
+  // sends the user to ViewProfileScreen
   viewProfile = () => {
     window.location.href = "/account";
   };
 
+  // sends the user to InternshipsForMeScreen
   viewInternshipsForMe = () => {
     window.location.href = "/internshipsforme";
   };
 
+  // sends the user to SearchForInternshipsScreen
   viewSearchForInternships = () => {
     window.location.href = "/searchforinternships";
   };
@@ -95,7 +109,7 @@ class HomeScreen extends Component {
             <CustomButton value={"Log Out"} onClick={this.logOutUser} />
           </div>
           <BigCustomButton
-            value={"View Your Profile"}
+            value={"View/Edit Your Profile"}
             onClick={this.viewProfile}
           />
           <br /> <br /> <br /> <br />
