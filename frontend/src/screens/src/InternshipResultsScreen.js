@@ -262,16 +262,17 @@ class InternshipResultsScreen extends Component {
             .get()
             .then((doc) => {
               if (doc.exists) {
-                this.setState({currentRole: doc.data().recent_query});
+                this.setState({currentRole: doc.data().recent_query}, () => {
+                  this.setState({ uid: user.uid }, () => {
+                    this.getInternships();
+                  });
+                  this.setState({ access: true });
+                });
               }
             })
             .catch((error) => {
               console.log(error.message);
             });
-          this.setState({ uid: user.uid }, () => {
-            this.getInternships();
-          });
-          this.setState({ access: true });
         } else {
           this.setState({ access: false });
         }
