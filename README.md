@@ -8,6 +8,22 @@
 ### High Level Design
 #### Backend
 
+#### Automated Scripts
+##### run
+standard python script/unix executable provided by cs32 which now accepts an
+additional argument --pagerank to run a Java script that computes the pagerank
+for every job and stores the values in csv files
+
+##### deployment
+unix executable (coded in python) which when run will create a production build of the
+react app, push to github, then push to heroku for deployment
+
+##### scrape_data
+unix executable (coded in python) which when run, will run 132 python web scraper files,
+combine the 132 produced csv files paired by job title to create 66 csv files, and then
+add the data from these 66 csv files into a single sqlite3 database with 66 tables
+each named by the role they represent
+
 #### Frontend
 ##### High Level Overview
 - approx. 4000 lines of code split across 24 files
