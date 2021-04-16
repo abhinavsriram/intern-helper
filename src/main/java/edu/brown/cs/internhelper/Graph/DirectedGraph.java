@@ -15,14 +15,14 @@ import java.util.Set;
  */
 public class DirectedGraph<V extends Vertex<V, E>, E extends Edge<V, E>> {
 
-  private final Map<V, Set<E>> vertexConnections;
+  private final Map<V, Set<E>> outgoingConnections;
   private final Map<V, Set<E>> incomingConnections;
 
   /**
    * In the constructor we initialize the HashMap.
    */
   public DirectedGraph() {
-    vertexConnections = new HashMap<>();
+    outgoingConnections = new HashMap<>();
     incomingConnections = new HashMap<>();
   }
 
@@ -32,7 +32,7 @@ public class DirectedGraph<V extends Vertex<V, E>, E extends Edge<V, E>> {
    * @param vertexToAdd vertex to be added
    */
   public void addVertex(V vertexToAdd) {
-    vertexConnections.put(vertexToAdd, new HashSet<>());
+    outgoingConnections.put(vertexToAdd, new HashSet<>());
     incomingConnections.put(vertexToAdd, new HashSet<>());
   }
 
@@ -43,9 +43,9 @@ public class DirectedGraph<V extends Vertex<V, E>, E extends Edge<V, E>> {
    */
   public void addEdge(E edgeToAdd) {
     V sourceVertex = edgeToAdd.getSourceVertex();
-    Set<E> edgeList = vertexConnections.getOrDefault(sourceVertex, new HashSet<>());
+    Set<E> edgeList = outgoingConnections.getOrDefault(sourceVertex, new HashSet<>());
     edgeList.add(edgeToAdd);
-    vertexConnections.put(sourceVertex, edgeList);
+    outgoingConnections.put(sourceVertex, edgeList);
 
     V destVertex = edgeToAdd.getDestinationVertex();
     Set<E> destEdgeList = incomingConnections.getOrDefault(destVertex, new HashSet<>());
@@ -59,8 +59,8 @@ public class DirectedGraph<V extends Vertex<V, E>, E extends Edge<V, E>> {
    *
    * @return vertexConnections
    */
-  public Map<V, Set<E>> getVertexConnections() {
-    return vertexConnections;
+  public Map<V, Set<E>> getOutgoingConnections() {
+    return outgoingConnections;
   }
 
   public Map<V, Set<E>> getIncomingConnections() {
@@ -68,16 +68,16 @@ public class DirectedGraph<V extends Vertex<V, E>, E extends Edge<V, E>> {
   }
 
 
-  public int numVertexConnections () {
-    return vertexConnections.size();
+  public int numOutgoingConnections () {
+    return outgoingConnections.size();
   }
 
   public int numIncomingConnections () {
     return incomingConnections.size();
   }
 
-  public V opposite(V opp, E e) {
-    if (e.getDestinationVertex() == opp) {
+  public V adjacent(V adj, E e) {
+    if (e.getDestinationVertex() == adj) {
       return e.getSourceVertex();
     }
     else {
