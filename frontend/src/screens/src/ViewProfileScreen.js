@@ -225,8 +225,8 @@ class ViewProfileScreen extends Component {
   editExperience = (values) => {
     // fills in all state variables after acquiring values using e.target
     // refer to CollapsedExperience to see what the 'values' param is
-    this.setState({ title: values[0] });
-    this.setState({ company: values[1] });
+    this.setState({ company: values[0] });
+    this.setState({ title: values[1] });
     this.setState({ startDate: values[2].split(" - ")[0] });
     this.setState({ endDate: values[2].split(" - ")[1] });
     this.setState({ description: values[3] });
