@@ -236,7 +236,7 @@ public final class Main {
 
       User user = FB.getFirebaseResumeData(id);
 
-      String fileName = "data/page_rank_results2/" + role + "pr.csv";
+      String fileName = "data/page_rank_results/" + role + "pr.csv";
       String line = null;
       Map<Job, Double> pageRanks = new HashMap<>();
       try {
