@@ -1,4 +1,4 @@
-All internships positions:
+All internships positions by industry: 
 
 Healthcare
 Healthcare research intern - hcr

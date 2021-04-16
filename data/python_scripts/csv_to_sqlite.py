@@ -3,7 +3,7 @@ import sys
 import sqlite3
 import pandas as pd
 
-
+#for the messages printed in terminal
 class bcolors:
     def __init__(self):
         pass
@@ -19,11 +19,14 @@ class bcolors:
     UNDERLINE = '\033[4m'
 
 
+#script to combine all the csv files into the database as individual tables
 def run_script():
+    #storing all the suffixes
     suffix = ['a', 'bank', 'bd', 'bs', 'c', 'ca', 'camp', 'cc', 'cd', 'cnc', 'cn', 'corstrat', 'cre', 'da', 'de', 'ds',
               'dt', 'e', 'ei', 'eq', 'fi', 'ga', 'gd', 'gr', 'hr', 'hcc', 'hcr', 'hcra', 'ia', 'ib', 'la', 'l', 'lob',
               'm', 'mm', 'md', 'ne', 'o', 'oure', 'p', 'pe', 'ph', 'pm', 'po', 'pr', 'ps', 'qae', 'r', 'ra', 'red',
               'ro', 'repm', 'reo', 's', 'sa', 'sc', 'se', 'sm', 'ss', 'swe', 'sw', 'ta', 'tf', 'ux', 'wd', 'wm'];
+    #expanding the name of each suffix
     suffix_expansion = {
       "a": "Accounting Intern",
       "bank": "Banking Intern",
@@ -93,26 +96,33 @@ def run_script():
       "wm": "Wealth Management Intern"
     }
     missing_counter = 0
+    #loop through each suffix
     for s in suffix:
+        #find csv with suffix and see if exists
         csvname = 'combined_' + s + '.csv'
         if os.path.exists(csvname):
             continue
+        #error check: print if missing a csv file
         else:
             missing_counter += 1
             print(f"{bcolors.WARNING}MISSING FILE: {csvname} does not exist{bcolors.ENDC}")
+    #if missing csv file, exit script
     if missing_counter != 0:
         print(f"{bcolors.FAIL}ERROR: missing {missing_counter} required files{bcolors.ENDC}")
         print(f"{bcolors.FAIL}SCRIPT ABORTED: entire script aborted{bcolors.ENDC}")
         sys.exit(0)
+    #check if sqlite database exists and if so, can remove
     if os.path.exists('internships.sqlite3'):
         text = input(f"{bcolors.OKCYAN}FILE EXISTS: the file internships.sqlite3 already exists, do you wish to delete the file? y/N \n{bcolors.ENDC}")
         if text == "y":
+            #removing database
             os.remove('internships.sqlite3')
             print(f"{bcolors.WARNING}DELETE: deleting internships.sqlite3{bcolors.ENDC}")
             # throws error if file already exists
             try:
+                #creating a new database
                 open('internships.sqlite3', 'x')
-                # load data
+                # load data and loop suffixes
                 for s in suffix:
                     csvname = 'combined_' + s + '.csv'
                     data = pd.read_csv(csvname)
@@ -128,8 +138,10 @@ def run_script():
                 print(f"{bcolors.OKGREEN}SUCCESS: created sqlite3 database named internships.sqlite3{bcolors.ENDC}")
             except:
                 print(f"{bcolors.FAIL}ERROR: something went wrong, please try again{bcolors.ENDC}")
+        #error checking: if select no then do not continue script
         elif text == "N":
             print(f"{bcolors.FAIL}ABORTING PROCESS: script aborted{bcolors.ENDC}")
+        #error checking
         else:
             print(f"{bcolors.FAIL}ERROR: illegal input{bcolors.ENDC}")
             print(f"{bcolors.FAIL}SCRIPT ABORTED: entire script aborted{bcolors.ENDC}")
@@ -152,11 +164,13 @@ def run_script():
                 # close database connection
             conn.close()
             print(f"{bcolors.OKGREEN}SUCCESS: created sqlite3 database named internships.sqlite3{bcolors.ENDC}")
+        #error checking
         except:
             print(f"{bcolors.FAIL}ERROR: something went wrong, please try again{bcolors.ENDC}")
 
 
 if __name__ == '__main__':
+    #running the script
     try:
         run_script()
     except KeyboardInterrupt:
