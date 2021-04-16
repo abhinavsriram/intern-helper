@@ -86,17 +86,21 @@ public final class Main {
   }
 
   private void run() {
+    // Parse command line arguments
     OptionParser parser = new OptionParser();
     parser.accepts("gui");
+    // New accepted argument to run pagerank script
+    parser.accepts("pagerank");
     parser.accepts("port").withRequiredArg().ofType(Integer.class)
             .defaultsTo(DEFAULT_PORT);
     OptionSet options = parser.parse(args);
-
-
-    CachePageRanks cachePageRanks = new CachePageRanks();
-    cachePageRanks.cacheResults();
-
-    runSparkServer((int) options.valueOf("port"));
+    if (options.has("gui")) {
+      runSparkServer((int) options.valueOf("port"));
+    }
+    if (options.has("pagerank")) {
+      CachePageRanks cachePageRanks = new CachePageRanks();
+      cachePageRanks.cacheResults();
+    }
   }
 
   private void runSparkServer(int port) {
@@ -267,7 +271,7 @@ public final class Main {
         }
 
       } catch (Exception e) {
-       // System.out.println("COMING TO THIS STACK TRACE");
+        // System.out.println("COMING TO THIS STACK TRACE");
         //e.printStackTrace();
       }
 
@@ -279,7 +283,6 @@ public final class Main {
       Map<Double, Job> tempJobResults = new LinkedHashMap<>();
       for (Map.Entry<Job, Double> en : jobResults.entrySet()) {
 //        System.out.println(en.getKey().getTitle() + "," + en.getKey().getCompany() + "," + en.getValue());
-
 
 
         double oldSkillsScore = en.getKey().getSkillsScore();
@@ -328,8 +331,10 @@ public final class Main {
         newExperienceScore = oldExperienceScore * scaleFactor;
 
 //        System.out.println("BEFORE SETTING");
-//        System.out.println("FINAL SCORE " + en.getKey().getFinalScore() + "," + " COURSEWORK SCORE " + en.getKey().getCourseworkScore() +
-//                "," + " SKILLS SCORE " + +en.getKey().getSkillsScore() + "," + " EXPERIENCE SCORE " + +en.getKey().getExperienceScore());
+//        System.out.println("FINAL SCORE " + en.getKey().getFinalScore() + "," + " COURSEWORK SCORE " + en.getKey()
+//        .getCourseworkScore() +
+//                "," + " SKILLS SCORE " + +en.getKey().getSkillsScore() + "," + " EXPERIENCE SCORE " + +en.getKey()
+//                .getExperienceScore());
 
 
         DecimalFormat df = new DecimalFormat("#.####");
@@ -357,8 +362,10 @@ public final class Main {
 
 
 //        System.out.println("AFTER SETTING");
-//        System.out.println("FINAL SCORE " + en.getKey().getFinalScore() + "," + " COURSEWORK SCORE " + en.getKey().getCourseworkScore() +
-//                "," + " SKILLS SCORE " + +en.getKey().getSkillsScore() + "," + " EXPERIENCE SCORE " + +en.getKey().getExperienceScore());
+//        System.out.println("FINAL SCORE " + en.getKey().getFinalScore() + "," + " COURSEWORK SCORE " + en.getKey()
+//        .getCourseworkScore() +
+//                "," + " SKILLS SCORE " + +en.getKey().getSkillsScore() + "," + " EXPERIENCE SCORE " + +en.getKey()
+//                .getExperienceScore());
 //        System.out.println("==============================================");
 
 
