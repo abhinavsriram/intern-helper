@@ -169,36 +169,36 @@ public class JobGraphBuilder {
 
   }
 
-  /**
-  public static void printMap() {
-    Iterator it = graph.getVertexConnections().entrySet().iterator();
-    while (it.hasNext()) {
-      Map.Entry<Job, Set<JobEdge>> pair = (Map.Entry) it.next();
-      System.out.println("JOB TITLE " + pair.getKey().getTitle() + " who has a score of " + pair.getKey().getCompositeSimilarityScore());
-      System.out.println("THESE ARE THE OUTGOING EDGES: ");
-      for (JobEdge edge : pair.getValue()) {
-        System.out.println("EDGE IS CONNECTED TO : " + edge.getDestinationVertex().getTitle()
-                + " who has a score of " + edge.getDestinationVertex().getCompositeSimilarityScore());
-      }
-      System.out.println("---------------------------------------------");
-      it.remove(); // avoids a ConcurrentModificationException
-    }
-    System.out.println("===============================================");
-    Iterator it2 = graph.getIncomingConnections().entrySet().iterator();
-    while (it2.hasNext()) {
-      Map.Entry<Job, Set<JobEdge>> pair = (Map.Entry) it2.next();
-      System.out.println("JOB TITLE " + pair.getKey().getTitle() + " who has a score of " + pair.getKey().getCompositeSimilarityScore());
-      System.out.println("THESE ARE THE INCOMING EDGES: ");
-      for (JobEdge edge : pair.getValue()) {
-        System.out.println("EDGE IS CONNECTED TO : " + edge.getSourceVertex().getTitle()
-                + " who has a score of " + edge.getSourceVertex().getCompositeSimilarityScore());
-      }
-      System.out.println("---------------------------------------------");
-      it2.remove(); // avoids a ConcurrentModificationException
-    }
-
-  }
-   **/
+//  /**
+//  public static void printMap() {
+//    Iterator it = graph.getVertexConnections().entrySet().iterator();
+//    while (it.hasNext()) {
+//      Map.Entry<Job, Set<JobEdge>> pair = (Map.Entry) it.next();
+//      System.out.println("JOB TITLE " + pair.getKey().getTitle() + " who has a score of " + pair.getKey().getCompositeSimilarityScore());
+//      System.out.println("THESE ARE THE OUTGOING EDGES: ");
+//      for (JobEdge edge : pair.getValue()) {
+//        System.out.println("EDGE IS CONNECTED TO : " + edge.getDestinationVertex().getTitle()
+//                + " who has a score of " + edge.getDestinationVertex().getCompositeSimilarityScore());
+//      }
+//      System.out.println("---------------------------------------------");
+//      it.remove(); // avoids a ConcurrentModificationException
+//    }
+//    System.out.println("===============================================");
+//    Iterator it2 = graph.getIncomingConnections().entrySet().iterator();
+//    while (it2.hasNext()) {
+//      Map.Entry<Job, Set<JobEdge>> pair = (Map.Entry) it2.next();
+//      System.out.println("JOB TITLE " + pair.getKey().getTitle() + " who has a score of " + pair.getKey().getCompositeSimilarityScore());
+//      System.out.println("THESE ARE THE INCOMING EDGES: ");
+//      for (JobEdge edge : pair.getValue()) {
+//        System.out.println("EDGE IS CONNECTED TO : " + edge.getSourceVertex().getTitle()
+//                + " who has a score of " + edge.getSourceVertex().getCompositeSimilarityScore());
+//      }
+//      System.out.println("---------------------------------------------");
+//      it2.remove(); // avoids a ConcurrentModificationException
+//    }
+//
+//  }
+//   **/
 
   public Map<Job, Double> runPageRank() {
     PageRank pageRank = new PageRank(graph);

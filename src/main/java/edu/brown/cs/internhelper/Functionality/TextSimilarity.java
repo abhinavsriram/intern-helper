@@ -21,6 +21,10 @@ public class TextSimilarity {
 
   }
 
+  public List<String> getStopWords() {
+    return stopWords;
+  }
+
   public Set<String> removeStopWords (String original) {
     String formattedOriginal = original.replace("\n", "").
         replace("\r", "").replaceAll("\\p{Punct}", "");
