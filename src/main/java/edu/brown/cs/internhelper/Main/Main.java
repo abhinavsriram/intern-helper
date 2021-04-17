@@ -11,7 +11,6 @@ import edu.brown.cs.internhelper.Functionality.CachePageRanks;
 import edu.brown.cs.internhelper.Functionality.Experience;
 import edu.brown.cs.internhelper.Functionality.Job;
 import edu.brown.cs.internhelper.Functionality.JobGraphBuilder;
-import edu.brown.cs.internhelper.Functionality.LevenshteinDistance;
 import edu.brown.cs.internhelper.Functionality.TextSimilarity;
 import edu.brown.cs.internhelper.Functionality.User;
 import joptsimple.OptionParser;

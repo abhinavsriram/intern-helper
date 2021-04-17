@@ -70,7 +70,6 @@ public class JobGraphBuilder {
   }
 
   public void calculateJobScores() {
-    //LevenshteinDistance distance = new LevenshteinDistance();
 
     TextSimilarity similarityCalculator = new TextSimilarity();
     try {
@@ -240,7 +239,6 @@ public class JobGraphBuilder {
   }
 
   public Map<Job, Double> calculateJobResumeSimilarity(Map<Job, Double> jobRanks, User user) {
-    //LevenshteinDistance distance = new LevenshteinDistance();
     Map<Job, Double> jobRanksCopy = jobRanks;
     TextSimilarity similarityCalculator = new TextSimilarity();
     try {
