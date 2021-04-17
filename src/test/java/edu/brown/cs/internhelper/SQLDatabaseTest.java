@@ -11,12 +11,11 @@ import java.util.Set;
 import static org.junit.Assert.assertEquals;
 
 public class SQLDatabaseTest {
-
-  // NEED TO FIX
-//  @Test
-//  public void connectDatabaseTest() throws IOException {
-//    SQLDatabase sqlData = new SQLDatabase();
-//    assertEquals(sqlData.connectDatabase("data/sample_intern_data"), true);
-//  }
+  
+  @Test
+  public void connectDatabaseTest() throws IOException {
+    SQLDatabase sqlData = new SQLDatabase();
+    assertEquals(sqlData.connectDatabase("jdbc:sqlite:data/sample_intern_data"), true);
+  }
 
 }
