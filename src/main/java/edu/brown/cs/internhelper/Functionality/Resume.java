@@ -23,5 +23,4 @@ public class Resume {
     return this.resumeExperiences.size();
   }
 
-
 }

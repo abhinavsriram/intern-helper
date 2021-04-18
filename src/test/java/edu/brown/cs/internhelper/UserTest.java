@@ -1,6 +1,5 @@
 package edu.brown.cs.internhelper;
 
-import edu.brown.cs.internhelper.Functionality.Experience;
 import edu.brown.cs.internhelper.Functionality.Resume;
 import edu.brown.cs.internhelper.Functionality.User;
 import org.junit.Test;
@@ -26,8 +25,8 @@ public class UserTest {
   @Test
   public void majorGPATest() {
     User newUser = new User();
-    newUser.setMajorGPA("4.00");
-    assertEquals(newUser.getMajorGPA(), "4.00");
+    newUser.setMajor_GPA("4.00");
+    assertEquals(newUser.getMajor_GPA(), "4.00");
   }
 
   @Test
@@ -40,8 +39,8 @@ public class UserTest {
   @Test
   public void cumulativeGPATest() {
     User newUser = new User();
-    newUser.setCumulativeGPA("3.50");
-    assertEquals(newUser.getCumulativeGPA(), "3.50");
+    newUser.setCumulative_GPA("3.50");
+    assertEquals(newUser.getCumulative_GPA(), "3.50");
   }
 
   @Test
@@ -61,8 +60,8 @@ public class UserTest {
   @Test
   public void lastNameTest() {
     User newUser = new User();
-    newUser.setLastName("Nelson");
-    assertEquals(newUser.getLastName(), "Nelson");
+    newUser.setLast_Name("Nelson");
+    assertEquals(newUser.getLast_Name(), "Nelson");
   }
 
   @Test
@@ -75,8 +74,8 @@ public class UserTest {
   @Test
   public void firstNameTest() {
     User newUser = new User();
-    newUser.setFirstName("Tim");
-    assertEquals(newUser.getFirstName(), "Tim");
+    newUser.setFirst_Name("Tim");
+    assertEquals(newUser.getFirst_Name(), "Tim");
   }
 
   @Test
@@ -84,13 +83,6 @@ public class UserTest {
     User newUser = new User();
     newUser.setEmail("tim_nelson@cs.brown.edu");
     assertEquals(newUser.getEmail(), "tim_nelson@cs.brown.edu");
-  }
-
-  @Test
-  public void initialProfileSetupCompleteTest() {
-    User newUser = new User();
-    newUser.setInitialProfileSetupComplete(false);
-    assertEquals(false, newUser.getInitialProfileSetupComplete());
   }
 
   @Test

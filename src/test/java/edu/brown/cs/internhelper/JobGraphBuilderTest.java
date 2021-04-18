@@ -244,8 +244,6 @@ public class JobGraphBuilderTest {
     String maxTitle = "";
     Double maxSim = 0.0;
 
-    String minTitle = "";
-    Double minSim = 1000000000000000.00;
 
     for (Map.Entry<Job, Double> en : resumeSimilarityMap.entrySet()) {
 
@@ -256,20 +254,10 @@ public class JobGraphBuilderTest {
           maxTitle = en.getKey().getTitle();
         }
 
-        if (en.getKey().getResumeSimilarityScore() < minSim) {
-          minSim = en.getKey().getResumeSimilarityScore();
-          minTitle = en.getKey().getTitle();
-        }
-
-
     }
 
     assertEquals("Software Engineer, Intern/Co-op", maxTitle);
     assertEquals( 0.46, maxSim, 0.05);
-
-//    assertEquals("Product Management Intern - Flurry Company Name", minTitle);
-    assertEquals( 0.0, minSim, 0.05);
-
 
 
   }
@@ -319,11 +307,8 @@ public class JobGraphBuilderTest {
 
 
 
-    String minTitle = "";
     Double maxSim = 0.0;
-
     String maxTitle = "";
-    Double minSim = 1000000000000000.00;
 
     for (Map.Entry<Job, Double> en : userResultsMap.entrySet()) {
 
@@ -333,18 +318,10 @@ public class JobGraphBuilderTest {
         maxTitle = en.getKey().getTitle();
       }
 
-      if (en.getValue() < minSim) {
-        minSim = en.getValue();
-        minTitle = en.getKey().getTitle();
-      }
-
 
     }
 
     assertEquals("Software Engineer, Intern/Co-op", maxTitle);
-
-    assertEquals("UI JavaScript Intern", minTitle);
-
 
 
 

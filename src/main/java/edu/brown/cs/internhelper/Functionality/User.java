@@ -1,3 +1,4 @@
+
 package edu.brown.cs.internhelper.Functionality;
 
 
@@ -5,32 +6,30 @@ public class User {
 
   private String id;
   private String skills;
-  private String majorGPA;
+  private String major_gpa;
   private String major;
-  private String cumulativeGPA;
+  private String cumulative_gpa;
   private String university;
   private String degree;
-  private String lastName;
+  private String last_name;
   private String coursework;
-  private String firstName;
+  private String first_name;
   private String email;
-  private boolean initialProfileSetupComplete;
   private Resume resume;
 
 
   public User() {
     this.id = "";
     this.skills = "";
-    this.majorGPA = "";
+    this.major_gpa = "";
     this.major = "";
-    this.cumulativeGPA = "";
+    this.cumulative_gpa = "";
     this.university = "";
     this.degree = "";
-    this.lastName = "";
+    this.last_name = "";
     this.coursework = "";
-    this.firstName = "";
+    this.first_name = "";
     this.email = "";
-    this.initialProfileSetupComplete = true;
   }
 
   public void setId(String newId) {
@@ -49,12 +48,12 @@ public class User {
     return this.skills;
   }
 
-  public void setMajorGPA(String newMajorGPA) {
-    this.majorGPA = newMajorGPA;
+  public void setMajor_GPA(String newMajorGPA) {
+    this.major_gpa = newMajorGPA;
   }
 
-  public String getMajorGPA() {
-    return this.majorGPA;
+  public String getMajor_GPA() {
+    return this.major_gpa;
   }
 
   public void setMajor(String newMajor) {
@@ -65,12 +64,12 @@ public class User {
     return this.major;
   }
 
-  public void setCumulativeGPA(String newCumulativeGPA) {
-    this.cumulativeGPA = newCumulativeGPA;
+  public void setCumulative_GPA(String newCumulativeGPA) {
+    this.cumulative_gpa = newCumulativeGPA;
   }
 
-  public String getCumulativeGPA() {
-    return this.cumulativeGPA;
+  public String getCumulative_GPA() {
+    return this.cumulative_gpa;
   }
 
   public void setUniversity(String newUniversity) {
@@ -89,12 +88,12 @@ public class User {
     return this.degree;
   }
 
-  public void setLastName(String newLastName) {
-    this.lastName = newLastName;
+  public void setLast_Name(String newLastName) {
+    this.last_name = newLastName;
   }
 
-  public String getLastName() {
-    return this.lastName;
+  public String getLast_Name() {
+    return this.last_name;
   }
 
   public void setCoursework(String newCoursework) {
@@ -105,12 +104,12 @@ public class User {
     return this.coursework;
   }
 
-  public void setFirstName(String newFirstName) {
-    this.firstName = newFirstName;
+  public void setFirst_Name(String newFirstName) {
+    this.first_name = newFirstName;
   }
 
-  public String getFirstName() {
-    return this.firstName;
+  public String getFirst_Name() {
+    return this.first_name;
   }
 
   public void setEmail(String newEmail) {
@@ -119,14 +118,6 @@ public class User {
 
   public String getEmail() {
     return this.email;
-  }
-
-  public void setInitialProfileSetupComplete(boolean bool) {
-    this.initialProfileSetupComplete = bool;
-  }
-
-  public boolean getInitialProfileSetupComplete() {
-    return this.initialProfileSetupComplete;
   }
 
   public void setResume(Resume newResume) {

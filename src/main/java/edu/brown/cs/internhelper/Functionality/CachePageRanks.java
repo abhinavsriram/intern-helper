@@ -15,12 +15,6 @@ public class CachePageRanks {
 
   private static JobGraphBuilder graphBuilder;
 
-  public CachePageRanks() {
-    List<Job> allJobs = new ArrayList<>();
-    DirectedGraph graph = new DirectedGraph();
-    graphBuilder = new JobGraphBuilder(allJobs, graph);
-  }
-
   public void cacheResults() {
     SQLDatabase db = new SQLDatabase();
     db.connectDatabase("jdbc:sqlite:data/python_scripts/internships.sqlite3");
@@ -30,6 +24,9 @@ public class CachePageRanks {
       ResultSet rs = md.getTables(null, null, "%", null);
       while (rs.next()) {
         String tableName = '"' + rs.getString(3) + '"';
+        List<Job> allJobs = new ArrayList<>();
+        DirectedGraph graph = new DirectedGraph();
+        graphBuilder = new JobGraphBuilder(allJobs, graph);
         graphBuilder.readData(db, tableName);
         graphBuilder.calculateJobScores();
         graphBuilder.buildJobGraph();
