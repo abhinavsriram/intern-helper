@@ -48,7 +48,7 @@ public class Job extends Vertex<Job, JobEdge> {
 
   public void setTitle(String newTitle) {
     if (newTitle == null) {
-      newTitle= "";
+      newTitle = "";
     }
     this.title = newTitle;
   }
@@ -59,7 +59,7 @@ public class Job extends Vertex<Job, JobEdge> {
 
   public void setCompany(String newCompany) {
     if (newCompany == null) {
-      newCompany= "";
+      newCompany = "";
     }
     this.company = newCompany;
   }
@@ -70,7 +70,7 @@ public class Job extends Vertex<Job, JobEdge> {
 
   public void setLocation(String newLocation) {
     if (newLocation == null) {
-      newLocation= "";
+      newLocation = "";
     }
     this.location = newLocation;
   }
@@ -81,7 +81,7 @@ public class Job extends Vertex<Job, JobEdge> {
 
   public void setRequiredQualifications(String newReqQual) {
     if (newReqQual == null) {
-      newReqQual= "";
+      newReqQual = "";
     }
     this.requiredQualifications = newReqQual;
   }
@@ -92,7 +92,7 @@ public class Job extends Vertex<Job, JobEdge> {
 
   public void setLink(String newLink) {
     if (newLink == null) {
-      newLink= "";
+      newLink = "";
     }
     this.link = newLink;
   }

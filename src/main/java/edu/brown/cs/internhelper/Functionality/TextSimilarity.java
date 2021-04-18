@@ -3,7 +3,6 @@ package edu.brown.cs.internhelper.Functionality;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -25,7 +24,7 @@ public class TextSimilarity {
     return stopWords;
   }
 
-  public Set<String> removeStopWords (String original) {
+  public Set<String> removeStopWords(String original) {
     String formattedOriginal = original.replace("\n", "").
         replace("\r", "").replaceAll("\\p{Punct}", "");
 
@@ -49,7 +48,7 @@ public class TextSimilarity {
     return noStopWordsSet;
   }
 
-  public Set<String> commonWords (Set<String> biggerset, Set<String> subset) {
+  public Set<String> commonWords(Set<String> biggerset, Set<String> subset) {
 
 //    System.out.println(biggerset);
 //    System.out.println(subset);
@@ -66,7 +65,7 @@ public class TextSimilarity {
     Set<String> commonSet = biggerSetCopy;
 
 //    System.out.println("COMMON SET " + commonSet.size());
-   return commonSet;
+    return commonSet;
 
   }
 

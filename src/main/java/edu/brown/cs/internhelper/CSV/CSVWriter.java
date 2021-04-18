@@ -8,11 +8,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * This class writes to a CSV file.
+ */
 public class CSVWriter {
 
   private static Map<Job, Double> hmap;
   private static String csvName;
 
+  /**
+   * This constructor instantiates the instance variables using the passed arguments.
+   * @param map is a Map of Jobs to Doubles
+   * @param outputCsvName is a String name of the output CSV file.
+   */
   public CSVWriter(Map<Job, Double> map, String outputCsvName) {
     hmap = map;
     csvName = outputCsvName;
@@ -31,8 +39,7 @@ public class CSVWriter {
       if (fileExists) {
         file.delete();
         writer = new FileWriter(csvName, true);
-      }
-      else {
+      } else {
         writer = new FileWriter(csvName, true);
       }
 
@@ -89,6 +96,11 @@ public class CSVWriter {
     }
   }
 
+  /**
+   * This method checks whether the passed file exists.
+   * @param file is the File that is being checked.
+   * @return true if the File exists, else returns false
+   */
   public static boolean isFileExists(File file) {
     return file.exists() && !file.isDirectory();
   }

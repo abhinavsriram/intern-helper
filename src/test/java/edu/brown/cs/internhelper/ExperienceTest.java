@@ -18,8 +18,8 @@ public class ExperienceTest {
   @Test
   public void endDateTest() {
     Experience newExperience = new Experience();
-    newExperience.setEnd_Date("April 2021");
-    assertEquals(newExperience.getEnd_Date(), "April 2021");
+    newExperience.setEndDate("April 2021");
+    assertEquals(newExperience.getEndDate(), "April 2021");
   }
 
   @Test
@@ -46,8 +46,8 @@ public class ExperienceTest {
   @Test
   public void startDateTest() {
     Experience newExperience = new Experience();
-    newExperience.setStart_Date("January 2021");
-    assertEquals(newExperience.getStart_Date(), "January 2021");
+    newExperience.setStartDate("January 2021");
+    assertEquals(newExperience.getStartDate(), "January 2021");
   }
 
 }

@@ -3,19 +3,19 @@ package edu.brown.cs.internhelper.Functionality;
 public class Experience {
 
   private String id;
-  private String end_date;
+  private String endDate;
   private String description;
   private String company;
   private String title;
-  private String start_date;
+  private String startDate;
 
   public Experience() {
     this.id = "";
-    this.end_date = "";
+    this.endDate = "";
     this.description = "";
     this.company = "";
     this.title = "";
-    this.start_date = "";
+    this.startDate = "";
 
   }
 
@@ -27,12 +27,12 @@ public class Experience {
     return this.id;
   }
 
-  public void setEnd_Date(String newEndDate) {
-    this.end_date = newEndDate;
+  public void setEndDate(String newEndDate) {
+    this.endDate = newEndDate;
   }
 
-  public String getEnd_Date() {
-    return this.end_date;
+  public String getEndDate() {
+    return this.endDate;
   }
 
   public void setDescription(String newDescription) {
@@ -59,12 +59,12 @@ public class Experience {
     return this.title;
   }
 
-  public void setStart_Date(String newStartDate) {
-    this.start_date = newStartDate;
+  public void setStartDate(String newStartDate) {
+    this.startDate = newStartDate;
   }
 
-  public String getStart_Date() {
-    return this.start_date;
+  public String getStartDate() {
+    return this.startDate;
   }
 
 }

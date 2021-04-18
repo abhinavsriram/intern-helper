@@ -10,14 +10,14 @@ import java.util.List;
 
 public class SQLDatabase {
 
-  static Connection conn;
+  private static Connection conn;
   private Statement stat;
 
   public boolean connectDatabase(String pathToDatabase) {
     try {
       Class.forName("org.sqlite.JDBC");
-      this.conn = DriverManager.getConnection(pathToDatabase);
-      this.stat = this.conn.createStatement();
+      this.setConn(DriverManager.getConnection(pathToDatabase));
+      this.stat = this.getConn().createStatement();
       return true;
     } catch (Exception e) {
       return false;
@@ -28,7 +28,7 @@ public class SQLDatabase {
   public ResultSet runQuery(String query) {
     ResultSet rs = null;
     try {
-      this.stat = this.conn.createStatement();
+      this.stat = this.getConn().createStatement();
       rs = this.stat.executeQuery(query);
       return rs;
     } catch (Exception e) {
@@ -40,10 +40,14 @@ public class SQLDatabase {
     return conn;
   }
 
-  public List<String> getTableNames () {
+  public static void setConn(Connection conn) {
+    SQLDatabase.conn = conn;
+  }
+
+  public List<String> getTableNames() {
     List<String> tableNames = new ArrayList<>();
     try {
-      DatabaseMetaData md = conn.getMetaData();
+      DatabaseMetaData md = this.getConn().getMetaData();
       ResultSet rs = md.getTables(null, null, "%", null);
       while (rs.next()) {
         String tableName = rs.getString(3);

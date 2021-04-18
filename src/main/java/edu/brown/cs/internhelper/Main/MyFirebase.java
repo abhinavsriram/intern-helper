@@ -2,8 +2,6 @@ package edu.brown.cs.internhelper.Main;
 
 import java.io.FileInputStream;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ExecutionException;
 
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.QueryDocumentSnapshot;
@@ -11,7 +9,6 @@ import com.google.cloud.firestore.QuerySnapshot;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.google.auth.oauth2.GoogleCredentials;
-import com.google.cloud.firestore.CollectionReference;
 import com.google.cloud.firestore.DocumentReference;
 import com.google.cloud.firestore.DocumentSnapshot;
 import com.google.cloud.firestore.Firestore;
@@ -22,7 +19,7 @@ import edu.brown.cs.internhelper.Functionality.User;
 
 public class MyFirebase {
 
-  public void setUp(){
+  public void setUp() {
     try {
 //      InputStream is = new FileInputStream("firebaseCredentials.json");
 //      FirebaseOptions fbOptions = FirebaseOptions.builder()
@@ -49,7 +46,7 @@ public class MyFirebase {
 
   }
 
-  public User getFirebaseResumeData(String userID){
+  public User getFirebaseResumeData(String userID) {
     Firestore db = FirestoreClient.getFirestore();
     DocumentReference userDataRef = db.collection("user-data").document(userID);
 // asynchronously retrieve the document

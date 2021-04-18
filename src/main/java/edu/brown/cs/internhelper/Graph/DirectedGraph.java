@@ -68,19 +68,18 @@ public class DirectedGraph<V extends Vertex<V, E>, E extends Edge<V, E>> {
   }
 
 
-  public int numOutgoingConnections () {
+  public int numOutgoingConnections() {
     return outgoingConnections.size();
   }
 
-  public int numIncomingConnections () {
+  public int numIncomingConnections() {
     return incomingConnections.size();
   }
 
   public V adjacent(V adj, E e) {
     if (e.getDestinationVertex() == adj) {
       return e.getSourceVertex();
-    }
-    else {
+    } else {
       return e.getDestinationVertex();
     }
   }

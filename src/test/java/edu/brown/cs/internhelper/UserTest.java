@@ -26,8 +26,8 @@ public class UserTest {
   @Test
   public void majorGPATest() {
     User newUser = new User();
-    newUser.setMajor_GPA("4.00");
-    assertEquals(newUser.getMajor_GPA(), "4.00");
+    newUser.setMajorGPA("4.00");
+    assertEquals(newUser.getMajorGPA(), "4.00");
   }
 
   @Test
@@ -40,8 +40,8 @@ public class UserTest {
   @Test
   public void cumulativeGPATest() {
     User newUser = new User();
-    newUser.setCumulative_GPA("3.50");
-    assertEquals(newUser.getCumulative_GPA(), "3.50");
+    newUser.setCumulativeGPA("3.50");
+    assertEquals(newUser.getCumulativeGPA(), "3.50");
   }
 
   @Test
@@ -61,8 +61,8 @@ public class UserTest {
   @Test
   public void lastNameTest() {
     User newUser = new User();
-    newUser.setLast_Name("Nelson");
-    assertEquals(newUser.getLast_Name(), "Nelson");
+    newUser.setLastName("Nelson");
+    assertEquals(newUser.getLastName(), "Nelson");
   }
 
   @Test
@@ -75,8 +75,8 @@ public class UserTest {
   @Test
   public void firstNameTest() {
     User newUser = new User();
-    newUser.setFirst_Name("Tim");
-    assertEquals(newUser.getFirst_Name(), "Tim");
+    newUser.setFirstName("Tim");
+    assertEquals(newUser.getFirstName(), "Tim");
   }
 
   @Test
@@ -89,8 +89,8 @@ public class UserTest {
   @Test
   public void initialProfileSetupCompleteTest() {
     User newUser = new User();
-    newUser.setInitial_Profile_Setup_Complete(false);
-    assertEquals(false, newUser.getInitial_Profile_Setup_Complete());
+    newUser.setInitialProfileSetupComplete(false);
+    assertEquals(false, newUser.getInitialProfileSetupComplete());
   }
 
   @Test

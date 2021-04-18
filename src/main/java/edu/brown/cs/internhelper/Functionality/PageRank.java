@@ -14,15 +14,15 @@ public class PageRank {
   private DirectedGraph<Job, JobEdge> graph;
   private List<Job> vertices;
   private Map<Job, Double> resultRanksMap;
-  private static final double dampingFactor = 0.85;
-  private static final double error = 0.01;
-  private static final int maxIterations = 100;
+  private static final double DAMPINGFACTOR = 0.85;
+  private static final double ERROR = 0.01;
+  private static final int MAXITERATIONS = 100;
   private List<Double> previousRanks;
   private List<Double> currentRanks;
   private List<Integer> outgoingEdges;
   private Set<Integer> sinks;
 
-  public PageRank (DirectedGraph<Job, JobEdge> g) {
+  public PageRank(DirectedGraph<Job, JobEdge> g) {
     this.graph = g;
     this.vertices = new ArrayList<Job>();
     this.outgoingEdges = new ArrayList<>();
@@ -40,7 +40,7 @@ public class PageRank {
     this.fillCurrentRanks();
     this.handleSinks();
 
-    double distributedDampFactor = (1 - dampingFactor) / vertices.size();
+    double distributedDampFactor = (1 - DAMPINGFACTOR) / vertices.size();
 
     do {
       previousRanks = List.copyOf(currentRanks);
@@ -65,14 +65,15 @@ public class PageRank {
 
         }
 
-        double currentRank = distributedDampFactor + (currentRanks.get(i) * dampingFactor);
+        double currentRank = distributedDampFactor + (currentRanks.get(i) * DAMPINGFACTOR);
 
         currentRanks.set(i, currentRank);
         resultRanksMap.put(vertices.get(i), currentRank);
       }
       iterationsCounter++;
     }
-    while (this.stopCalcPageRank(currentRanks, previousRanks) == false || iterationsCounter <= maxIterations);
+    while (!this.stopCalcPageRank(currentRanks, previousRanks)
+        || iterationsCounter <= MAXITERATIONS);
 
     return resultRanksMap;
   }
@@ -95,16 +96,12 @@ public class PageRank {
 
     for (int i = 0; i < currentIterationRanks.size(); i++) {
       double diff = currentIterationRanks.get(i) - previousIterationRanks.get(i);
-      if (diff <= error) {
+      if (diff <= ERROR) {
         belowError.add(diff);
       }
     }
 
-    if (belowError.size() == currentIterationRanks.size()) {
-      return true;
-    } else {
-      return false;
-    }
+    return (belowError.size() == currentIterationRanks.size());
   }
 
   public void fillVertices() {
