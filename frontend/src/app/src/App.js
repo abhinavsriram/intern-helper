@@ -13,6 +13,7 @@ import ForgotPasswordScreen from "../../screens/src/ForgotPasswordScreen";
 import InternshipsForMeScreen from "../../screens/src/InternshipsForMeScreen";
 import SearchForInternshipsScreen from "../../screens/src/SearchForInternshipsScreen";
 import InternshipResultsScreen from "../../screens/src/InternshipResultsScreen";
+import CatchAllScreen from "../../screens/src/CatchAllScreen";
 
 /**
  * The App class consists of a React Router that matches the appropriate screen
@@ -61,6 +62,11 @@ class App extends Component {
             <Route
               path="/internshipresults"
               component={() => <InternshipResultsScreen />}
+              exact
+            />
+            <Route
+              path="*"
+              component={() => <CatchAllScreen />}
               exact
             />
           </Switch>
