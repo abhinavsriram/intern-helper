@@ -50,7 +50,7 @@ public class SQLDatabase {
         tableNames.add(tableName);
       }
     } catch (Exception e) {
-      e.printStackTrace();
+      return tableNames;
     }
     return tableNames;
   }

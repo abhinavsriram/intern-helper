@@ -13,6 +13,7 @@ import edu.brown.cs.internhelper.Functionality.Job;
 import edu.brown.cs.internhelper.Functionality.JobGraphBuilder;
 import edu.brown.cs.internhelper.Functionality.TextSimilarity;
 import edu.brown.cs.internhelper.Functionality.User;
+import edu.brown.cs.internhelper.Graph.DirectedGraph;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
 import org.json.JSONException;
@@ -267,7 +268,10 @@ public final class Main {
       }
 
 
-      JobGraphBuilder graphBuilder = new JobGraphBuilder();
+      List<Job> jobs = new ArrayList<>();
+      DirectedGraph graph = new DirectedGraph();
+
+      JobGraphBuilder graphBuilder = new JobGraphBuilder(jobs, graph);
 
       Map<Job, Double> jobResults = graphBuilder.calculateUserResults(user, pageRanks);
 

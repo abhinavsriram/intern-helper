@@ -13,7 +13,7 @@ public class Job extends Vertex<Job, JobEdge> {
   private String location;
   private String requiredQualifications;
   private String link;
-  private List<Double> similarityScores = new ArrayList<>();
+  private List<Double> similarityScores;
   private double compositeSimilarityScore;
   private double resumeSimilarityScore;
   private double finalScore;
@@ -35,6 +35,7 @@ public class Job extends Vertex<Job, JobEdge> {
     this.skillsScore = 0.0;
     this.courseworkScore = 0.0;
     this.experienceScore = 0.0;
+    this.similarityScores = new ArrayList<>();
   }
 
   public void setId(int newId) {

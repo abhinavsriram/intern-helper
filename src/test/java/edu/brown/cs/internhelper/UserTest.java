@@ -90,7 +90,7 @@ public class UserTest {
   public void initialProfileSetupCompleteTest() {
     User newUser = new User();
     newUser.setInitial_Profile_Setup_Complete(false);
-    assertEquals(newUser.getInitial_Profile_Setup_Complete(), false);
+    assertEquals(false, newUser.getInitial_Profile_Setup_Complete());
   }
 
   @Test
@@ -98,7 +98,7 @@ public class UserTest {
     User newUser = new User();
     Resume newResume = new Resume();
     newUser.setResume(newResume);
-    assertEquals(newUser.getResume(), newResume);
+    assertEquals(newResume, newUser.getResume());
   }
 
 }

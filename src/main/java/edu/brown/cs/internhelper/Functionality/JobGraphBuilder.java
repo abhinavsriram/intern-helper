@@ -23,32 +23,15 @@ public class JobGraphBuilder {
   private List<Job> allJobs;
   private static DirectedGraph graph;
 
+  public JobGraphBuilder(List<Job> jobs, DirectedGraph directedGraph) {
+    allJobs = jobs;
+    graph = directedGraph;
+
+  }
+
 
   public void readData(SQLDatabase db, String tableName) {
-
-    /**
-    SQLDatabase db = new SQLDatabase();
-    db.connectDatabase("jdbc:sqlite:data/python_scripts/internships.sqlite3");
-
-
-    Connection conn = db.getConn();
-    DatabaseMetaData md = conn.getMetaData();
-    try {
-      ResultSet rs = md.getTables(null, null, "%", null);
-      while (rs.next()) {
-        System.out.print(rs.getString(1));
-      }
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-     **/
-
-
-
-//    SQLDatabase db = new SQLDatabase();
-//    db.connectDatabase("jdbc:sqlite:data/python_scripts/internships.sqlite3");
     ResultSet rs = db.runQuery("SELECT * FROM " + tableName + "LIMIT 250");
-    allJobs = new ArrayList<>();
     try {
       while (rs.next()) {
         Job job = new Job();
@@ -61,11 +44,7 @@ public class JobGraphBuilder {
         allJobs.add(job);
       }
     } catch (Exception e) {
-      e.printStackTrace();
     }
-
-    System.out.println(allJobs.size());
-
 
   }
 
@@ -79,7 +58,6 @@ public class JobGraphBuilder {
     }
 
 
-
     for (int i = 0; i < allJobs.size(); i++) {
       List scores = new ArrayList();
       double totalScore = 0.0;
@@ -90,15 +68,10 @@ public class JobGraphBuilder {
           String otherJob = allJobs.get(j).getRequiredQualifications();
 
 
-
-
-
-
-          if (currJob == null || otherJob == null ) {
+          if (currJob == "" || otherJob == "") {
             scores.add(0.0);
           }
           else {
-            //double dist = distance.similarity(currJob, otherJob);
 
             currJob = currJob.replace("\n", "").replace("\r", "");
             currJob = currJob.replaceAll("[-.^:,•]","");
@@ -113,42 +86,21 @@ public class JobGraphBuilder {
             double dist = (double) (commonWords.size()) / (currJobSet.size());
 
 
-
             scores.add(dist);
             totalScore+=dist;
-//            System.out.println("COMMON WORDS SIZE " + commonWords.size() + " JOB SET SIZE " +
-//                currJobSet.size() + " TOTAL DISTANCE " + dist);
           }
         }
-        // compare list.get(i) and list.get(j)
       }
 
-      //System.out.println(scores);
       allJobs.get(i).setJobSimilarityScores(scores);
       double compositeScore = (totalScore) / (scores.size());
       allJobs.get(i).setCompositeSimilarityScore(compositeScore);
-//      System.out.println("JOB TITLE " + allJobs.get(i).getTitle() + ", COMPOSITE SCORE" + compositeScore);
-//      System.out.println("=======================");
-
 
     }
   }
 
-  public void calculateJobCompositeScore() {
-    for (int i = 0; i < allJobs.size(); i++) {
-      List<Double> currScores = allJobs.get(i).getJobSimilarityScores();
-      double totalScore = 0.0;
-      for (int j = 0; j < currScores.size(); j++) {
-        totalScore += currScores.get(j);
-      }
-      double compositeScore = (totalScore) / (currScores.size());
-      allJobs.get(i).setCompositeSimilarityScore(compositeScore);
-    }
-
-  }
 
   public void buildJobGraph() {
-    graph = new DirectedGraph();
     for (int i = 0; i < allJobs.size(); i++) {
       graph.addVertex(allJobs.get(i));
     }
@@ -168,36 +120,6 @@ public class JobGraphBuilder {
 
   }
 
-//  /**
-//  public static void printMap() {
-//    Iterator it = graph.getVertexConnections().entrySet().iterator();
-//    while (it.hasNext()) {
-//      Map.Entry<Job, Set<JobEdge>> pair = (Map.Entry) it.next();
-//      System.out.println("JOB TITLE " + pair.getKey().getTitle() + " who has a score of " + pair.getKey().getCompositeSimilarityScore());
-//      System.out.println("THESE ARE THE OUTGOING EDGES: ");
-//      for (JobEdge edge : pair.getValue()) {
-//        System.out.println("EDGE IS CONNECTED TO : " + edge.getDestinationVertex().getTitle()
-//                + " who has a score of " + edge.getDestinationVertex().getCompositeSimilarityScore());
-//      }
-//      System.out.println("---------------------------------------------");
-//      it.remove(); // avoids a ConcurrentModificationException
-//    }
-//    System.out.println("===============================================");
-//    Iterator it2 = graph.getIncomingConnections().entrySet().iterator();
-//    while (it2.hasNext()) {
-//      Map.Entry<Job, Set<JobEdge>> pair = (Map.Entry) it2.next();
-//      System.out.println("JOB TITLE " + pair.getKey().getTitle() + " who has a score of " + pair.getKey().getCompositeSimilarityScore());
-//      System.out.println("THESE ARE THE INCOMING EDGES: ");
-//      for (JobEdge edge : pair.getValue()) {
-//        System.out.println("EDGE IS CONNECTED TO : " + edge.getSourceVertex().getTitle()
-//                + " who has a score of " + edge.getSourceVertex().getCompositeSimilarityScore());
-//      }
-//      System.out.println("---------------------------------------------");
-//      it2.remove(); // avoids a ConcurrentModificationException
-//    }
-//
-//  }
-//   **/
 
   public Map<Job, Double> runPageRank() {
     PageRank pageRank = new PageRank(graph);
@@ -307,7 +229,7 @@ public class JobGraphBuilder {
       //System.out.println("SKILLS: ");
 //      System.out.println(skillsCommonWords.size());
       double skillsSimilarity = (double) (skillsCommonWords.size()) / (skillsSet.size());
-      //System.out.println(skillsSimilarity);
+//      System.out.println(en.getKey().getTitle() + "," + en.getKey().getCompany() + "," + skillsSimilarity);
 //      System.out.println("JOB ROLE SIZE AFTER SKILLS " + jobRoleSet.size());
 
 
@@ -316,6 +238,8 @@ public class JobGraphBuilder {
       //System.out.println("Coursework: ");
 //      System.out.println(courseworkCommonWords.size());
       double courseworkSimilarity = (double) (courseworkCommonWords.size()) / (courseworkSet.size());
+//      System.out.println(en.getKey().getTitle() + "," + en.getKey().getCompany() + "," + courseworkSimilarity);
+
 //      System.out.println(courseworkSimilarity);
 //      System.out.println("JOB ROLE SIZE AFTER COURSE " + jobRoleSet.size());
 
@@ -334,13 +258,16 @@ public class JobGraphBuilder {
       double totalSimilarityScore = 0.4 * skillsSimilarity + 0.35 * courseworkSimilarity +
           0.25 * resumeDescriptionsSimilarity;
 
-//      System.out.println("SKILLS SIMILARITY: " + skillsSimilarity + "COURSE SIMILARITY: "
-//          + courseworkSimilarity + "RESUME SIMILARITY: " + resumeDescriptionsSimilarity);
-      //System.out.println("JOB TITLE " + en.getKey().getTitle() + "," + totalSimilarityScore);
+
       en.getKey().setSkillsScore(0.4 * skillsSimilarity);
       en.getKey().setCourseworkScore(0.35 * courseworkSimilarity);
       en.getKey().setExperienceScore(0.25 * resumeDescriptionsSimilarity);
       en.getKey().setResumeSimilarityScore(totalSimilarityScore);
+
+//      System.out.println(en.getKey().getTitle() + "," + en.getKey().getCompany() + "," + totalSimilarityScore);
+////
+//      System.out.println("===========================");
+
     }
 
     return jobRanksCopy;
@@ -372,51 +299,5 @@ public class JobGraphBuilder {
 
   }
 
-
-/**
-  public Map<Job, Double> userResults(Resume resume) {
-    Map<Job, Double> pageRankResults = this.runPageRank();
-    String userResumeDescriptions = "";
-    for (Experience experience : resume.getResumeExperiences()) {
-      userResumeDescriptions += experience.getDescription();
-    }
-    Map<Job, Double> resumeSimilarityResults = this.calculateJobResumeSimilarity(pageRankResults,
-            userResumeDescriptions);
-
-    System.out.println("THIS IS WHAT THE COMPARISON TO RESUME RESULTS WOULD BE");
-    System.out.println("============================================");
-    System.out.println("============================================");
-    for (Map.Entry<Job, Double> en : resumeSimilarityResults.entrySet()) {
-      System.out.println("JOB TITLE " + en.getKey().getTitle() + ",RESUME SIMILARITY " + en.getKey().getResumeSimilarityScore());
-
-    }
-
-
-    Map<Job, Double> userResults = new HashMap<>();
-
-    for (Map.Entry<Job, Double> entry : pageRankResults.entrySet()) {
-      Job key = entry.getKey();
-      Double pageRankVal = entry.getValue();
-      Double resumeSimilarityVal = key.getResumeSimilarityScore();
-      double combined = pageRankVal + resumeSimilarityVal;
-      userResults.put(key, combined);
-      // do whatever with value1 and value2
-    }
-
-    System.out.println("THIS IS WHAT THE OUTPUTTED RESULTS WOULD BE");
-    System.out.println("============================================");
-    System.out.println("============================================");
-
-    Map<Job, Double> sortedUserResults = sortByValue(userResults);
-    for (Map.Entry<Job, Double> en : sortedUserResults.entrySet()) {
-      System.out.println("Key = " + en.getKey().getTitle() + ","
-              + en.getKey().getCompositeSimilarityScore() + " Value = " + en.getValue());
-    }
-
-    return sortedUserResults;
-
-
-  }
- **/
 
 }

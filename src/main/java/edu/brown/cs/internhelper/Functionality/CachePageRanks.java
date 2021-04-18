@@ -2,10 +2,13 @@ package edu.brown.cs.internhelper.Functionality;
 
 import edu.brown.cs.internhelper.CSV.CSVWriter;
 import edu.brown.cs.internhelper.Database.SQLDatabase;
+import edu.brown.cs.internhelper.Graph.DirectedGraph;
 
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public class CachePageRanks {
@@ -13,7 +16,9 @@ public class CachePageRanks {
   private static JobGraphBuilder graphBuilder;
 
   public CachePageRanks() {
-    graphBuilder = new JobGraphBuilder();
+    List<Job> allJobs = new ArrayList<>();
+    DirectedGraph graph = new DirectedGraph();
+    graphBuilder = new JobGraphBuilder(allJobs, graph);
   }
 
   public void cacheResults() {

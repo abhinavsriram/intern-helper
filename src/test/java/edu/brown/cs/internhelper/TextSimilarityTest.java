@@ -19,14 +19,14 @@ public class TextSimilarityTest {
   public void loadStopWordsTest() throws IOException {
     TextSimilarity textSim = new TextSimilarity();
     textSim.loadStopWords("data/stopwords/stopwords.txt");
-    assertEquals(textSim.getStopWords().size(), 435);
+    assertEquals(435, textSim.getStopWords().size());
   }
 
   @Test
   public void removeStopWordsTest() throws IOException {
     TextSimilarity textSim = new TextSimilarity();
     textSim.loadStopWords("data/stopwords/stopwords.txt");
-    assertEquals(textSim.removeStopWords("Tim Nelson is the best").size(), 2);
+    assertEquals(2, textSim.removeStopWords("Tim Nelson is the best").size());
   }
 
   @Test
@@ -47,7 +47,7 @@ public class TextSimilarityTest {
     smallerSet.add("is");
     smallerSet.add("Tim");
     smallerSet.add("Nelson");
-    assertEquals(textSim.commonWords(largerSet, smallerSet).size(), 4);
+    assertEquals(4, textSim.commonWords(largerSet, smallerSet).size());
   }
 
 }
