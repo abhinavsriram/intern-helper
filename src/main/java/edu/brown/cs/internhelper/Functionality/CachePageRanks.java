@@ -11,10 +11,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * This class handles the cache of PageRank values for each Job in the
+ * JobGraphBuilder class.
+ */
 public class CachePageRanks {
 
   private static JobGraphBuilder graphBuilder;
 
+  /**
+   * This method stores data in a cache using SQL queries.
+   * If there are any issues, the method will catch the Exception
+   * and print the stack trace.
+   */
   public void cacheResults() {
     SQLDatabase db = new SQLDatabase();
     db.connectDatabase("jdbc:sqlite:data/python_scripts/internships.sqlite3");

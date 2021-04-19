@@ -2,6 +2,10 @@ package edu.brown.cs.internhelper.Functionality;
 
 import edu.brown.cs.internhelper.Graph.Edge;
 
+/**
+ * This class represents the Edge between Jobs in a directed graph. It is
+ * used in the JobGraphBuilder class.
+ */
 public class JobEdge extends Edge<Job, JobEdge> {
 
   /**

@@ -27,7 +27,11 @@ public class CSVWriter {
 
   }
 
-  public void mapToCsv() {
+  /**
+   * This method uses the Map of Jobs to Doubles and writes the data to a CSV file.
+   * @return true if no Exceptions thrown, else return false
+   */
+  public boolean mapToCsv() {
     try {
       File file = new File(csvName);
       boolean fileExists = isFileExists(file);
@@ -89,10 +93,12 @@ public class CSVWriter {
 
       writer.flush();
       writer.close();
+      return true;
 
 
     } catch (Exception e) {
       e.printStackTrace();
+      return false;
     }
   }
 

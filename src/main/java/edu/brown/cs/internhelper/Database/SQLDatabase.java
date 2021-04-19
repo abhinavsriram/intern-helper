@@ -78,7 +78,7 @@ public class SQLDatabase {
    * Returns nothing.
    * <p>
    * This method enables setting the connection to a database.
-   *
+   * @param conn is a Connection to a SQLDatabase
    */
   public static void setConn(Connection conn) {
     SQLDatabase.conn = conn;
