@@ -31,7 +31,6 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.sql.ResultSet;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -99,7 +98,7 @@ public final class Main {
     if (options.has("gui")) {
       runSparkServer((int) options.valueOf("port"));
     }
-    if (options.has("pagerank")) {
+    if (options.has("pagerank")) { //do this to run page rank on the roles within database
       CachePageRanks cachePageRanks = new CachePageRanks();
       cachePageRanks.cacheResults();
     }
@@ -126,8 +125,6 @@ public final class Main {
     Spark.exception(Exception.class, new ExceptionPrinter());
     Spark.get("/userJobResults", new UserJobResultsHandler());
     Spark.post("/userJobResults", new UserJobResultsHandler());
-    Spark.get("/searchResults", new SearchInternshipsHandler());
-    Spark.post("/searchResults", new SearchInternshipsHandler());
     Spark.get("/suggestedRoles", new DatabaseSuggestedRolesHandler());
     Spark.post("/suggestedRoles", new DatabaseSuggestedRolesHandler());
   }
@@ -135,43 +132,37 @@ public final class Main {
   static int getHerokuAssignedPort() {
     ProcessBuilder processBuilder = new ProcessBuilder();
     if (processBuilder.environment().get("PORT") != null) {
-      System.out.println("HEROKU ASSIGNED PORT FOR BACKEND IS: "
-          + Integer.parseInt(processBuilder.environment().get("PORT")));
       Map<String, Object> docData = new HashMap<>();
       docData.put("port",
           String.valueOf(Integer.parseInt(processBuilder.environment().get("PORT"))));
       Firestore db = FirestoreClient.getFirestore();
       ApiFuture<WriteResult> future
           = db.collection("port-data").document("port-number").set(docData);
-//      try {
-//        File portFile = new File("port.txt");
-//        FileWriter writer = new FileWriter("port.txt", false);
-//        writer.write(String.valueOf(Integer.parseInt(processBuilder.environment().get("PORT"))));
-//        writer.close();
-//      } catch (IOException e) {
-//        System.out.println("An error occurred when writing to port file!");
-//        e.printStackTrace();
-//      }
       return Integer.parseInt(processBuilder.environment().get("PORT"));
     }
     return DEFAULT_PORT; //return default port if heroku-port isn't set (i.e. on localhost)
   }
 
 
+  /**
+   * Takes in user resume prior experience titles and then looks into database of all types of
+   * internship positions and then outputs list of roles with highest similarity to user's
+   * prior experiences that indicate roles we think the user may be interested in applying for.
+   */
   private static class DatabaseSuggestedRolesHandler implements Route {
 
     @Override
     public String handle(Request req, Response res) throws JSONException,
             ExecutionException, InterruptedException {
-
       JSONObject data = new JSONObject(req.body());
       String id = data.getString("id");
       User user = FB.getFirebaseResumeData(id);
+
       List<String> databaseRoles = new ArrayList<>();
       try {
         SQLDatabase db = new SQLDatabase();
         db.connectDatabase("jdbc:sqlite:data/python_scripts/internships.sqlite3");
-        databaseRoles = db.getTableNames();
+        databaseRoles = db.getTableNames(); //contains list of all roles we have in database
         db.getConn().close();
       } catch (Exception e) {
         e.printStackTrace();
@@ -179,12 +170,16 @@ public final class Main {
 
       Set<String> suggestedRoles = new HashSet<>();
 
+      //iterating through all experiences to then find roles within our database that we can
+      //recommend to the user
       for (Experience experience : user.getResume().getResumeExperiences()) {
-//        System.out.println(experience.getTitle() + "," + experience.getCompany());
+        //removes intern from experience title so that doesn't contribute to similarity score
         String experienceTitle = experience.getTitle().replaceAll("Intern", "");
         experienceTitle = experienceTitle.replaceAll("intern", "");
-        //System.out.println(experienceTitle + "," + experience.getCompany());
+
         Map<String, Double> unSortedMap = new HashMap<>();
+
+        //iterates through all roles within our database
         for (String databaseRole : databaseRoles) {
           TextSimilarity similarityCalculator = new TextSimilarity();
           try {
@@ -192,15 +187,24 @@ public final class Main {
           } catch (Exception e) {
             e.printStackTrace();
           }
+          //removes intern from internship role title so that doesn't contribute to similarity score
           String modifiedDatabaseRoleTitle = databaseRole.replaceAll("Intern", "");
-          modifiedDatabaseRoleTitle = modifiedDatabaseRoleTitle.replaceAll("intern", "");
+          modifiedDatabaseRoleTitle = modifiedDatabaseRoleTitle.replaceAll("intern",
+              "");
+
+          //removes stop words from experience and internship role title
           Set<String> resumeSet = similarityCalculator.removeStopWords(experienceTitle);
           Set<String> databaseRoleSet
               = similarityCalculator.removeStopWords(modifiedDatabaseRoleTitle);
+          //creates set of common words between the resume experience and internship role
           Set<String> commonWords = similarityCalculator.commonWords(databaseRoleSet, resumeSet);
+          //calculates similarity score
           double similarity = (double) (commonWords.size()) / (resumeSet.size());
+          //stores database internship role title and similarity
           unSortedMap.put(databaseRole, similarity);
         }
+
+        //sort the map so that the role with the highest similarity is the first entry
         Map<String, Double> result = unSortedMap.entrySet()
                 .stream()
                 .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
@@ -209,9 +213,10 @@ public final class Main {
                     Map.Entry::getValue,
                     (oldValue, newValue) -> oldValue, LinkedHashMap::new));
 
-
+        //represents first entry in the map, which now that it is sorted is the highest similarity
         Map.Entry<String, Double> entWithMaxVal = result.entrySet().iterator().next();
-
+        //since there can be multiple roles with the highest similarity, we want to be able to
+        //display all of them so we add it to suggestedRoles list
         if (entWithMaxVal.getValue() != 0.0) {
           result.forEach((k, val) -> {
             if (val.equals(entWithMaxVal.getValue())) {
@@ -220,30 +225,32 @@ public final class Main {
           });
         }
       }
+
       Map<String, Object> variables = ImmutableMap.of("suggestedRoles", suggestedRoles);
       return GSON.toJson(variables);
     }
   }
 
-
+  /**
+   * Handles displaying list of job results that are most similar to the user's resume.
+   */
   private static class UserJobResultsHandler implements Route {
 
     @Override
     public String handle(Request req, Response res) throws JSONException, ExecutionException,
             InterruptedException {
 
-
       JSONObject data;
       data = new JSONObject(req.body());
       String role = data.getString("role");
       String id = data.getString("id");
-//      FB.setUp();
-
       User user = FB.getFirebaseResumeData(id);
 
-      String fileName = "data/page_rank_results/" + role + "pr.csv";
-      String line = null;
       Map<Job, Double> pageRanks = new HashMap<>();
+
+      String fileName = "data/page_rank_results/" + role + "pr.csv"; //accesses page rank results
+      //of particular role that the user has selected
+      String line = null;
       try {
         Path pathName = Path.of(fileName);
         String text = Files.readString(pathName);
@@ -256,37 +263,34 @@ public final class Main {
         line = reader.readLine();
         String[] splitLines = csvParser.parseCSV(line);
 
-        int numberJobEntries = splitLines.length / SEVEN;
-
-//        System.out.println("NUMBER OF JOB ENTRIES " + numberJobEntries);
+        int numberJobEntries = splitLines.length / SEVEN; //divide by 7 because there are 7 columns
+        //and so each job will be represented by the length of the split array divided by 7
 
         if (numberJobEntries > 1) {
           for (int i = SEVEN; i < splitLines.length; i = i + SEVEN) {
-            Job job = new Job();
+            Job job = new Job(); //creates a Java object of the job within the csv and sets
+            //attributes
             job.setId(Integer.parseInt(splitLines[i]));
             job.setTitle(splitLines[i + 1]);
             job.setCompany(splitLines[i + 2]);
-            //System.out.println(job.getCompany());
             job.setLocation(splitLines[i + 3]);
             job.setRequiredQualifications(splitLines[i + 4]);
             job.setLink(splitLines[i + 5]);
             double pageRank = Double.valueOf(splitLines[i + 6]);
-            pageRanks.put(job, pageRank);
+            pageRanks.put(job, pageRank); //puts page rank read from csv into map
           }
         }
-
       } catch (Exception e) {
         e.printStackTrace();
       }
 
       List<Job> jobs = new ArrayList<>();
       DirectedGraph graph = new DirectedGraph();
-
       JobGraphBuilder graphBuilder = new JobGraphBuilder(jobs, graph);
-
       Map<Job, Double> jobResults = graphBuilder.calculateUserResults(user, pageRanks);
-
-      Map<Double, Job> tempJobResults = new LinkedHashMap<>();
+      Map<Double, Job> tempJobResults = new LinkedHashMap<>(); //reverses the order of the map
+      //so that the job can be stored as the key and the value be Job so it is easier to access
+      //in the front-end
       for (Map.Entry<Job, Double> en : jobResults.entrySet()) {
         double oldSkillsScore = en.getKey().getSkillsScore();
         double oldCourseScore = en.getKey().getCourseworkScore();
@@ -295,15 +299,22 @@ public final class Main {
         double oldTotalSimilarityScore = en.getValue();
         double resumeTotalRatio = oldTotalResumeScore / oldTotalSimilarityScore;
 
-
         double newSkillsScore = 0;
         double newCourseScore = 0;
         double newExperienceScore = 0;
         double newTotalResumeScore = 0;
         double newTotalSimilarityScore = 0;
 
+        //scaling scores so that they can be interpreted by user
+        //if the similarity score is above 80 that likely means that internship match is a great
+        //match for you and the reason it is not higher is because there's junk text so artificially
+        //set it to 99%
+        //if the similarity score is 50-79% artificially scale it by 1.25
+        //if the similarity score is 25-50% artificially scale by 1.5
+        //if the similarity score is less than  25% artificially scale by 2
         if (oldTotalSimilarityScore >= POINTEIGHT) {
           newTotalSimilarityScore = POINTNINENINENINENINE;
+
         } else if (oldTotalSimilarityScore > HALF && oldTotalSimilarityScore <= POINTSEVENNINE) {
           newTotalSimilarityScore = oldTotalSimilarityScore * ONEANDQUARTER;
         } else if (oldTotalSimilarityScore > QUARTER && oldTotalSimilarityScore <= HALF) {
@@ -312,28 +323,31 @@ public final class Main {
           newTotalSimilarityScore = oldTotalSimilarityScore * 2;
         }
 
+        //once scale overall total similarity score, then need to scale the resume score and the
+        //individual component scores of the resume (skills, coursework, experiences scores)
         newTotalResumeScore = resumeTotalRatio * newTotalSimilarityScore;
         double scaleFactor;
-        if (oldTotalResumeScore != 0 && resumeTotalRatio <= POINTTHREE) {
+        if (oldTotalResumeScore != 0 && resumeTotalRatio <= POINTTHREE) { //do this so that
+          //scores in which the page rank is primarily contributing to the score it is not
+          //ranked higher
           scaleFactor = (newTotalResumeScore / oldTotalResumeScore) * 2;
           newTotalSimilarityScore = newTotalSimilarityScore * POINTSEVEN;
-
         } else if (oldTotalResumeScore != 0 && resumeTotalRatio > POINTTHREE
             && resumeTotalRatio <= POINTSEVEN) {
           scaleFactor = (newTotalResumeScore / oldTotalResumeScore) * ONEANDHALF;
           newTotalSimilarityScore = newTotalSimilarityScore * POINTEIGHT;
-
         } else if (oldTotalResumeScore != 0 && resumeTotalRatio > POINTSEVEN) {
           scaleFactor = (newTotalResumeScore / oldTotalResumeScore);
-
         } else {
           scaleFactor = 1;
         }
 
+        //scale all individual components of resume
         newSkillsScore = oldSkillsScore * scaleFactor;
         newCourseScore = oldCourseScore * scaleFactor;
         newExperienceScore = oldExperienceScore * scaleFactor;
 
+        //truncate decimal places
         DecimalFormat df = new DecimalFormat("#.####");
         newTotalSimilarityScore = Double.parseDouble(df.format(newTotalSimilarityScore));
         newTotalResumeScore = Double.parseDouble(df.format(newTotalResumeScore));
@@ -355,44 +369,6 @@ public final class Main {
       return GSON.toJson(variables);
     }
   }
-
-
-  private static class SearchInternshipsHandler implements Route {
-
-    @Override
-    public String handle(Request req, Response res)
-            throws JSONException, ExecutionException, InterruptedException {
-      JSONObject data = new JSONObject(req.body());
-      String tableName = data.getString("role");
-
-      SQLDatabase db = new SQLDatabase();
-      db.connectDatabase("jdbc:sqlite:data/python_scripts/internships.sqlite3");
-      ResultSet rs = db.runQuery("SELECT * FROM " + '"' + tableName + '"' + "LIMIT 10");
-      List<Job> internships = new ArrayList<>();
-      try {
-        while (rs.next()) {
-
-          Job internship = new Job();
-          internship.setId(rs.getInt(1));
-          internship.setTitle(rs.getString(2));
-          internship.setCompany(rs.getString(3));
-          internship.setLocation(rs.getString(4));
-          internship.setRequiredQualifications(rs.getString(5));
-          internship.setLink(rs.getString(6));
-
-          internships.add(internship);
-        }
-        rs.close();
-        db.getConn().close();
-      } catch (Exception e) {
-        e.printStackTrace();
-      }
-
-      Map<String, Object> variables = ImmutableMap.of("searchResults", internships);
-      return GSON.toJson(variables);
-    }
-  }
-
 
   /**
    * Displays an error page when an exception occurs in the server.

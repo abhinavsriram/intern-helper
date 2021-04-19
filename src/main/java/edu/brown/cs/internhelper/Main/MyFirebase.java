@@ -2,7 +2,6 @@ package edu.brown.cs.internhelper.Main;
 
 import java.io.FileInputStream;
 import java.util.List;
-
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.QueryDocumentSnapshot;
 import com.google.cloud.firestore.QuerySnapshot;
@@ -17,15 +16,23 @@ import edu.brown.cs.internhelper.Functionality.Experience;
 import edu.brown.cs.internhelper.Functionality.Resume;
 import edu.brown.cs.internhelper.Functionality.User;
 
+/**
+ * The MyFirebase class provides a way of setting up a connection to our Google Firestore which
+ * is storing all user data. It then also provides a way to take the data associated with a
+ * particular user in Firebase and then set its attributes so that it can be used throughout
+ * the other Java classes.
+ *
+ */
 public class MyFirebase {
 
+  /**
+   * Returns nothing.
+   * <p>
+   * This method initializes Firebase app credentials.
+   *
+   */
   public void setUp() {
     try {
-//      InputStream is = new FileInputStream("firebaseCredentials.json");
-//      FirebaseOptions fbOptions = FirebaseOptions.builder()
-//        .setCredentials(GoogleCredentials.fromStream(is))
-//        .build();
-      //FirebaseApp.initializeApp("./firebaseCredentials.json");
       FileInputStream serviceAccount =
           new FileInputStream("googleCredentials.json");
 
@@ -35,69 +42,57 @@ public class MyFirebase {
 
       FirebaseApp.initializeApp(firebaseOptions);
 
-//      FireStore db = firebase.firestore();
-//      CollectionReference cities = db.collection("user-data");
-//      System.out.println(cities);
-
-
     } catch (Exception e) {
       e.printStackTrace();
     }
-
   }
 
+  /**
+   * Returns an instance of User with all the attributes filled in based on the Firebase data
+   * associated with the userID passed in.
+   * <p>
+   * Accesses all resume data associated with user in Firebase and then iterates through document
+   * and collections to set the individual attributes of an instance of the User class based on the
+   * data. Need to do this so that can take Firebase data and make it accessible to Java classes
+   * rather than having to query Firebase constantly.
+   *
+   * @param userID unique string that Firebase associates with a user of the application
+   * @return an instance of User with all the attributes filled in based on Firebase data
+   */
   public User getFirebaseResumeData(String userID) {
-    Firestore db = FirestoreClient.getFirestore();
-    DocumentReference userDataRef = db.collection("user-data").document(userID);
-// asynchronously retrieve the document
+    Firestore db = FirestoreClient.getFirestore(); //access our FireStore database
+    DocumentReference userDataRef = db.collection("user-data").document(userID); //indexes into
+    //collection that contains all data attached to userID
     ApiFuture<DocumentSnapshot> userDataSnapshot = userDataRef.get();
+
     User user = new User();
     Resume resume = new Resume();
 
     try {
-      DocumentSnapshot userDataDoc = userDataSnapshot.get();
+      DocumentSnapshot userDataDoc = userDataSnapshot.get(); //indexes into document within
+      //collection that contains resume-related data on user except for prior experiences
       if (userDataDoc.exists()) {
-        user = userDataDoc.toObject(User.class);
+        user = userDataDoc.toObject(User.class); //rather than individually setting attributes
+        //of user, this will infer what attributes to set
         user.setId(userID);
-//        System.out.println("ID " + user.getId());
-//        System.out.println("SKILLS " + user.getSkills());
-//        System.out.println("MAJOR GPA " + user.getMajor_GPA());
-//        System.out.println("MAJOR " + user.getMajor());
-//        System.out.println("CUMULATIVE GPA " + user.getCumulative_GPA());
-//        System.out.println("UNIVERSITY " + user.getUniversity());
-//        System.out.println("DEGREE " + user.getDegree());
-//        System.out.println("LAST NAME " + user.getLast_Name());
-//        System.out.println("COURSEWORK " + user.getCoursework());
-//        System.out.println("FIRST NAME " + user.getFirst_Name());
-//        System.out.println("EMAIL " + user.getEmail());
-//        System.out.println("PROFILE COMPLETE " + user.getInitial_Profile_Setup_Complete());
-
-      } else {
-        System.out.println("No such document!");
       }
     } catch (Exception e) {
       e.printStackTrace();
     }
 
     ApiFuture<QuerySnapshot> experiencesDataSnapshot = db.collection("user-data").document(userID)
-        .collection("experiences").get();
+        .collection("experiences").get(); //indexes into sub-collection that
+    //contains all prior experiences data related to user
     try {
       List<QueryDocumentSnapshot> experienceDocs = experiencesDataSnapshot.get().getDocuments();
-//      System.out.println("==========================================");
-      for (QueryDocumentSnapshot experienceDoc : experienceDocs) {
+      //each experience is a new document
+      for (QueryDocumentSnapshot experienceDoc : experienceDocs) { //loops through list of
+        //experiences
         if (!(experienceDoc.getId().equals("Experiences List"))) {
-          Experience experience = experienceDoc.toObject(Experience.class);
+          Experience experience = experienceDoc.toObject(Experience.class); //rather than
+          //individually setting attributes of experience, this will infer what attributes to set
           experience.setId(experienceDoc.getId());
-//          System.out.println("ID " + experience.getId());
-//          System.out.println("END DATE " + experience.getEnd_Date());
-//          System.out.println("DESCRIPTION " + experience.getDescription());
-//          System.out.println("COMPANY " + experience.getCompany());
-//          System.out.println("TITLE " + experience.getTitle());
-//          System.out.println("START DATE " + experience.getStart_Date());
-//          System.out.println("==========================================");
-          //System.out.println(resume);
-          resume.addExperience(experience);
-
+          resume.addExperience(experience); //resume consists of list of experiences
         }
       }
     } catch (Exception e) {
@@ -106,11 +101,6 @@ public class MyFirebase {
 
     user.setResume(resume);
     return user;
-    //System.out.println(resume.numResumeExperiences());
-
   }
-
-
-
 
 }
