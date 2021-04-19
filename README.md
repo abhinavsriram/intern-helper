@@ -2,13 +2,13 @@
 
 ## Partner Division of Labor
 - Meera:
-- Abhinav: I worked primarily on building out the entire frontend (UI, functionality, integration with backend),
+- Abhinav: I worked primarily on building out the entire frontend (UI, functionality, and integration with backend),
 attempting to deploy the app on Heroku, automating the working of all aspects of the app using Python scripts, and lastly
 user authentication and information storage using Firebase.
 - Kunj:
 - Riya: One of the backend developers. Responsible for writing PageRank algorithm as well as developing
 naive method for calculating similarity between text. Also, helped with frontend-backend integration - wrote
-handlers in Main class in order to receive and send data from the front to the back and vice versa.
+handlers in Main class in order to receive and send data from the frontend to the backend and vice versa.
 
 ## Known Bugs
 While we did not identify any particular bugs with the application, we noticed that the recommendations
@@ -95,7 +95,7 @@ add the data from these 66 csv files into a single sqlite3 database with 66 tabl
 each named by the role they represent
 
 #### Frontend
-- approx. 4000 lines of code split across 24 files
+- built using React and contains approx. 4000 lines of code split across 24 files
 - in the components directory, all files are React functional components - these
 components are designed to be extensible and reusable
 - in the screens directory, all files are React class components - these are less
@@ -104,14 +104,19 @@ function structures
 - in App.js, React Router is used to map the different classes in /screens to their
 corresponding routes - this should give a good high level overview of the structure
 of the frontend
+- all the classes in /screens are named descriptively and represent what their name suggests
+they do
+- all styling has been done using just css, almost no use of packages to ensure the frontend will
+continue to work and look good for years - independent of potential lack of updates from npm packages
 - all files are commented extensively with function header comments and inline comments
 to improve readability
 
 ## Testing
 #### System Tests
-Since we did not have a REPL, we couldn't figure out an easy way in order to write out system tests, so
-we clicked around on the application as well as asked three additional people in our social networks to play with
-the application. We tested different types of resumes (tech-related, finance-related, humanities-related),
+Since we did not have a REPL, we couldn't figure out an easy way to write system tests, so
+we extensively hand tested the application by simply clicking around on the application as well as
+by asking three additional people in our social networks to play with the application.
+We tested different types of resumes (tech-related, finance-related, humanities-related),
 different types of scenarios such as the event that there no roles appear to be a good fit for the user or that
 the suggestions our application makes does not align with the user's interests, and we also ensured that we did not
 guide the user on how to use our application so that we could minimize bias and interference. We also hand simulated
@@ -119,20 +124,20 @@ results with our data/small_intern_data.sqlite3 database which is a curated samp
 
 #### JUnit Tests
 We wrote 10 JUnit Tests and achieved roughly 65% JaCoCo coverage:
-    -CSVTest makes sure that writing and reading from a CSV is being handled correctly.
-    -EdgeTest makes sure that different attributes of an edge can be set and then retrieved
-    -ExperienceTest makes sure that different attributes of an experience can be set and then retrieved
-    -GraphTest makes sure that adding of vertices and edges between vertices are being done correctly
-    -JobGraphBuilderTest tests the crux of most of the functionality within our project. It makes sure that
-     the correct data is being read, graph is being built correctly, page ranks ordering and resume similarity
-     scores makes sense, and the final output results align with what we think they should be.
-    -JobTest makes sure that different attributes of a job can be set and then retrieved
-    -ResumeTest makes sure that different attributes of a resume can be set and then retrieved
-    -SQLDatabaseTest makes sure that connection to SQLDatabase is established, deals with null input/non-existent
-     database, ability to query, etc.
-    -TextSimilarityTest takes small sets of phrases and then removes stop words and makes sure the common words are
-     actually being identified correctly
-    -UserTest makes sure that different attributes of a user can be set and then retrieved
+- CSVTest makes sure that writing and reading from a CSV is being handled correctly
+- EdgeTest makes sure that different attributes of an edge can be set and then retrieved
+- ExperienceTest makes sure that different attributes of an experience can be set and then retrieved
+- GraphTest makes sure that adding of vertices and edges between vertices are being done correctly
+- JobGraphBuilderTest tests the crux of most of the functionality within our project. It makes sure that
+ the correct data is being read, graph is being built correctly, page ranks ordering and resume similarity
+ scores makes sense, and the final output results align with what we think they should be
+- JobTest makes sure that different attributes of a job can be set and then retrieved
+- ResumeTest makes sure that different attributes of a resume can be set and then retrieved
+- SQLDatabaseTest makes sure that connection to SQLDatabase is established, deals with null input/non-existent
+ database, ability to query, etc.
+- TextSimilarityTest takes small sets of phrases and then removes stop words and makes sure the common words are
+ actually being identified correctly
+- UserTest makes sure that different attributes of a user can be set and then retrieved
 
 ## Building and Running Program
 #### Building
@@ -142,10 +147,10 @@ npm install in /frontend
 
 #### Running: 2 Terminals
 ##### Terminal 1
-In the instance that you want to run the page rank calculations yourself, then you can do ./run -pagerank. That
+In the instance that you want to run the page rank calculations yourself, then you can do ./run --pagerank. That
 will store all the PageRank results in the data directory and then you would  ./run --gui after.
 
-In the instance that you just want to ue the existing page rank calculations, then you can just directly do
+In the instance that you just want to use the existing page rank calculations, then you can just directly do
 ./run --gui
 
 ##### Terminal 2
@@ -155,9 +160,9 @@ npm start in /frontend
 Chrome
 
 ## Checkstyle Errors
-We do have some Checkstyle Errors for naming conventions. The reasoning for those errors is because Firebase has
+We do have some Checkstyle Errors for naming conventions. The reason for those errors is because Firebase has
 this cool feature where if we follow the nomenclature of different fields as specified in Firestore then when we
 read data from it rather than creating an instance of a java class and then using setters to set the values of that
-instance  based on the data from firestore, we can just call on instance.toObject(instance.class) and it will
+instance based on the data from firestore, we can just call on instance.toObject(instance.class) and it will
 automatically fill in all the relevant information. Thus we thought that is better coding style as it avoids
-redudancy and is more efficient so we did it that way.
+redundancy and is more efficient so we did it that way.
