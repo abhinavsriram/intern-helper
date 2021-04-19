@@ -1,6 +1,8 @@
 package edu.brown.cs.internhelper.Functionality;
 
 import edu.brown.cs.internhelper.Graph.DirectedGraph;
+import edu.brown.cs.internhelper.Graph.Edge;
+import edu.brown.cs.internhelper.Graph.Vertex;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -10,15 +12,18 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * The PageRank class provides a way of running PageRank algorithm on a directed graph in which
- * the vertices represent jobs.
+ * The PageRank class provides a way of running PageRank algorithm on a directed graph.
  *
+ * @param <V> extends the Vertex class, representing the vertices of the
+ *            Directed Graph.
+ * @param <E> extends the Edge class, representing the edges of the Directed
+ *            Graph.
  */
-public class PageRank {
+public class PageRank<V extends Vertex<V, E>, E extends Edge<V, E>> {
 
-  private DirectedGraph<Job, JobEdge> graph;
-  private List<Job> vertices;
-  private Map<Job, Double> resultRanksMap;
+  private DirectedGraph<V, E> graph;
+  private List<V> vertices;
+  private Map<V, Double> resultRanksMap;
   private static final double DAMPINGFACTOR = 0.85;
   private static final double ERROR = 0.01;
   private static final int MAXITERATIONS = 100;
@@ -31,27 +36,27 @@ public class PageRank {
    * Constructor takes in a directed graph makes it accessible to the rest of the class
    * by setting it to the corresponding class variable.
    * <p>
-   * @param g a directed graph in which the vertices are jobs
+   * @param g a directed graph
    */
-  public PageRank(DirectedGraph<Job, JobEdge> g) {
+  public PageRank(DirectedGraph<V, E> g) {
     this.graph = g;
-    this.vertices = new ArrayList<Job>();
+    this.vertices = new ArrayList<V>();
     this.outgoingEdges = new ArrayList<>();
     this.previousRanks = new ArrayList<>();
     this.currentRanks = new ArrayList<>();
     this.sinks = new HashSet<>();
-    this.resultRanksMap = new HashMap<Job, Double>();
+    this.resultRanksMap = new HashMap<V, Double>();
   }
 
   /**
-   * Returns a map in which key represents job and value represents page rank.
+   * Returns a map in which key represents vertex and value represents page rank.
    * <p>
    * Runs page rank algorithm on graph by looking at number of incoming and outgoing edges
    * for each of the vertices on the graph and modifying rank based on that.
    *
-   * @return     map in which key represents job and value represents page rank
+   * @return     map in which key represents vertex and value represents page rank
    */
-  public Map<Job, Double> calcPageRank() {
+  public Map<V, Double> calcPageRank() {
     int iterationsCounter = 0;
     this.fillVertices(); //initializes vertices list
     this.fillOutgoingEdges(); //initializes outgoing edges list
@@ -71,10 +76,10 @@ public class PageRank {
 
       for (int i = 0; i < vertices.size(); i++) {
         //gets set of incoming edges
-        Set<JobEdge> incomingEdges = graph.getIncomingConnections().get(vertices.get(i));
+        Set<E> incomingEdges = graph.getIncomingConnections().get(vertices.get(i));
         //iterates through all incoming edges for a particular vertex
-        for (JobEdge incomingEdge : incomingEdges) {
-          Job adjacent = graph.adjacent(vertices.get(i), incomingEdge);
+        for (E incomingEdge : incomingEdges) {
+          V adjacent = graph.adjacent(vertices.get(i), incomingEdge);
           int adjacentIndex = vertices.indexOf(adjacent);
           double prevPageRankAdjacent = previousRanks.get(adjacentIndex); //gets previous rank of
           //vertex on opposite side of edge
@@ -113,7 +118,7 @@ public class PageRank {
   private void handleSinks() {
     for (int sink : sinks) {
       for (int i = 0; i < vertices.size(); i++) {
-        JobEdge e = new JobEdge(vertices.get(sink), vertices.get(i), 0);
+        E e = (E) new Edge(vertices.get(sink), vertices.get(i), 0);
         graph.addEdge(e);
       }
       int numVertices = graph.numOutgoingConnections();
@@ -146,12 +151,12 @@ public class PageRank {
   /**
    * Returns nothing.
    * <p>
-   * Fills initial vertices list with all the jobs.
+   * Fills initial vertices list with all the vertices.
    *
    */
   public void fillVertices() {
-    for (Job job : graph.getOutgoingConnections().keySet()) {
-      vertices.add(job);
+    for (V vertex : graph.getOutgoingConnections().keySet()) {
+      vertices.add(vertex);
     }
   }
 
