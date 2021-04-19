@@ -20,7 +20,7 @@ public class CSVTest {
     Job jobTwo = new Job();
     newMap.put(jobOne, 0.75);
     newMap.put(jobTwo, 0.88);
-    CSVWriter newCSV = new CSVWriter(newMap, "testCSVFile");
+    CSVWriter newCSV = new CSVWriter(newMap, "testCSVFile.csv");
     assertEquals(true, newCSV.mapToCsv());
   }
 
