@@ -146,3 +146,11 @@ npm start in /frontend
 
 ## Browser Used For Testing
 Chrome
+
+## Checkstyle Errors
+We do have some Checkstyle Errors for naming conventions. The reasoning for those errors is because Firebase has
+this cool feature where if we follow the nomenclature of different fields as specified in Firestore then when we
+read data from it rather than creating an instance of a java class and then using setters to set the values of that 
+instance  based on the data from firestore, we can just call on instance.toObject(instance.class) and it will
+automatically fill in all the relevant information. Thus we thought that is better coding style as it avoids
+redudancy and is more efficient so we did it that way.
