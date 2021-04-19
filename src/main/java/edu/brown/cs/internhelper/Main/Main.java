@@ -6,13 +6,14 @@ import com.google.cloud.firestore.WriteResult;
 import com.google.common.collect.ImmutableMap;
 import com.google.firebase.cloud.FirestoreClient;
 import edu.brown.cs.internhelper.CSV.CSVParser;
+import edu.brown.cs.internhelper.Database.MyFirebase;
 import edu.brown.cs.internhelper.Database.SQLDatabase;
-import edu.brown.cs.internhelper.Functionality.CachePageRanks;
-import edu.brown.cs.internhelper.Functionality.Experience;
-import edu.brown.cs.internhelper.Functionality.Job;
-import edu.brown.cs.internhelper.Functionality.JobGraphBuilder;
-import edu.brown.cs.internhelper.Functionality.TextSimilarity;
-import edu.brown.cs.internhelper.Functionality.User;
+import edu.brown.cs.internhelper.Algorithm.StorePageRanks;
+import edu.brown.cs.internhelper.Objects.Experience;
+import edu.brown.cs.internhelper.Objects.Job;
+import edu.brown.cs.internhelper.Algorithm.JobGraphBuilder;
+import edu.brown.cs.internhelper.Algorithm.TextSimilarity;
+import edu.brown.cs.internhelper.Objects.User;
 import edu.brown.cs.internhelper.Graph.DirectedGraph;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
@@ -99,8 +100,8 @@ public final class Main {
       runSparkServer((int) options.valueOf("port"));
     }
     if (options.has("pagerank")) { //do this to run page rank on the roles within database
-      CachePageRanks cachePageRanks = new CachePageRanks();
-      cachePageRanks.cacheResults();
+      StorePageRanks storePageRanks = new StorePageRanks();
+      storePageRanks.storeResults();
     }
   }
 

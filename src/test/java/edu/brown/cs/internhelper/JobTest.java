@@ -1,6 +1,6 @@
 package edu.brown.cs.internhelper;
 
-import edu.brown.cs.internhelper.Functionality.Job;
+import edu.brown.cs.internhelper.Objects.Job;
 import org.junit.Test;
 
 import java.util.ArrayList;

@@ -1,10 +1,6 @@
 package edu.brown.cs.internhelper;
 
-import edu.brown.cs.internhelper.Functionality.Job;
-import edu.brown.cs.internhelper.Functionality.JobEdge;
-import edu.brown.cs.internhelper.Functionality.TextSimilarity;
-import edu.brown.cs.internhelper.Graph.Edge;
-import edu.brown.cs.internhelper.Graph.Vertex;
+import edu.brown.cs.internhelper.Algorithm.TextSimilarity;
 import org.junit.Test;
 
 import java.io.IOException;

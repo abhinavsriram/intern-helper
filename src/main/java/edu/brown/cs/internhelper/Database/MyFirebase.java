@@ -1,4 +1,4 @@
-package edu.brown.cs.internhelper.Main;
+package edu.brown.cs.internhelper.Database;
 
 import java.io.FileInputStream;
 import java.util.List;
@@ -12,9 +12,9 @@ import com.google.cloud.firestore.DocumentReference;
 import com.google.cloud.firestore.DocumentSnapshot;
 import com.google.cloud.firestore.Firestore;
 import com.google.firebase.cloud.FirestoreClient;
-import edu.brown.cs.internhelper.Functionality.Experience;
-import edu.brown.cs.internhelper.Functionality.Resume;
-import edu.brown.cs.internhelper.Functionality.User;
+import edu.brown.cs.internhelper.Objects.Experience;
+import edu.brown.cs.internhelper.Objects.Resume;
+import edu.brown.cs.internhelper.Objects.User;
 
 /**
  * The MyFirebase class provides a way of setting up a connection to our Google Firestore which

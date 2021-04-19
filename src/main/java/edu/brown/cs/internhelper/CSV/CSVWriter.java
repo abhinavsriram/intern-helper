@@ -1,6 +1,6 @@
 package edu.brown.cs.internhelper.CSV;
 
-import edu.brown.cs.internhelper.Functionality.Job;
+import edu.brown.cs.internhelper.Objects.Job;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -35,11 +35,7 @@ public class CSVWriter {
     try {
       File file = new File(csvName);
       boolean fileExists = isFileExists(file);
-
-
-      //FileWriter writer = new FileWriter(csvName, true);
       FileWriter writer;
-
       if (fileExists) {
         file.delete();
         writer = new FileWriter(csvName, true);
@@ -90,14 +86,10 @@ public class CSVWriter {
         writer.append(rowStr);
       }
 
-
       writer.flush();
       writer.close();
       return true;
-
-
     } catch (Exception e) {
-      e.printStackTrace();
       return false;
     }
   }

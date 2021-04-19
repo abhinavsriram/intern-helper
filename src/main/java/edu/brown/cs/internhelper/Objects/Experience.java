@@ -1,4 +1,4 @@
-package edu.brown.cs.internhelper.Functionality;
+package edu.brown.cs.internhelper.Objects;
 
 /**
  * This class represents an Experience that appears on a Resume. It contains

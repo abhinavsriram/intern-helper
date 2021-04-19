@@ -1,4 +1,4 @@
-package edu.brown.cs.internhelper.Functionality;
+package edu.brown.cs.internhelper.Objects;
 
 import edu.brown.cs.internhelper.Graph.Vertex;
 

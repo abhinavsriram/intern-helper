@@ -1,21 +1,16 @@
 package edu.brown.cs.internhelper;
 
 import edu.brown.cs.internhelper.Database.SQLDatabase;
-import edu.brown.cs.internhelper.Functionality.Experience;
-import edu.brown.cs.internhelper.Functionality.Job;
-import edu.brown.cs.internhelper.Functionality.JobEdge;
-import edu.brown.cs.internhelper.Functionality.JobGraphBuilder;
-import edu.brown.cs.internhelper.Functionality.Resume;
-import edu.brown.cs.internhelper.Functionality.TextSimilarity;
-import edu.brown.cs.internhelper.Functionality.User;
+import edu.brown.cs.internhelper.Objects.Experience;
+import edu.brown.cs.internhelper.Objects.Job;
+import edu.brown.cs.internhelper.Objects.JobEdge;
+import edu.brown.cs.internhelper.Algorithm.JobGraphBuilder;
+import edu.brown.cs.internhelper.Objects.Resume;
+import edu.brown.cs.internhelper.Objects.User;
 import edu.brown.cs.internhelper.Graph.DirectedGraph;
 import org.junit.Test;
 
-import java.io.IOException;
-import java.sql.ResultSet;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;

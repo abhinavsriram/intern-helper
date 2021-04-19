@@ -1,7 +1,7 @@
 package edu.brown.cs.internhelper;
 
-import edu.brown.cs.internhelper.Functionality.Resume;
-import edu.brown.cs.internhelper.Functionality.User;
+import edu.brown.cs.internhelper.Objects.Resume;
+import edu.brown.cs.internhelper.Objects.User;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;

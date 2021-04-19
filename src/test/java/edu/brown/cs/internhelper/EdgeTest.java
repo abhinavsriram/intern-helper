@@ -1,7 +1,7 @@
 package edu.brown.cs.internhelper;
 
-import edu.brown.cs.internhelper.Functionality.Job;
-import edu.brown.cs.internhelper.Functionality.JobEdge;
+import edu.brown.cs.internhelper.Objects.Job;
+import edu.brown.cs.internhelper.Objects.JobEdge;
 import edu.brown.cs.internhelper.Graph.Edge;
 import edu.brown.cs.internhelper.Graph.Vertex;
 import org.junit.Test;

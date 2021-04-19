@@ -1,8 +1,9 @@
-package edu.brown.cs.internhelper.Functionality;
+package edu.brown.cs.internhelper.Algorithm;
 
 import edu.brown.cs.internhelper.CSV.CSVWriter;
 import edu.brown.cs.internhelper.Database.SQLDatabase;
 import edu.brown.cs.internhelper.Graph.DirectedGraph;
+import edu.brown.cs.internhelper.Objects.Job;
 
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
@@ -15,16 +16,16 @@ import java.util.Map;
  * This class handles the cache of PageRank values for each Job in the
  * JobGraphBuilder class.
  */
-public class CachePageRanks {
+public class StorePageRanks {
 
   private static JobGraphBuilder graphBuilder;
 
   /**
-   * This method stores data in a cache using SQL queries.
+   * This method stores the page rank data in individual CSV Files.
    * If there are any issues, the method will catch the Exception
    * and print the stack trace.
    */
-  public void cacheResults() {
+  public void storeResults() {
     SQLDatabase db = new SQLDatabase();
     db.connectDatabase("jdbc:sqlite:data/python_scripts/internships.sqlite3");
     Connection conn = db.getConn();
@@ -43,8 +44,6 @@ public class CachePageRanks {
         String csvName = "data/page_rank_results/" + rs.getString(3) + "pr.csv";
         CSVWriter csvWriter = new CSVWriter(pageRanks, csvName);
         csvWriter.mapToCsv();
-        System.out.println("DONE WITH " + rs.getString(3));
-        System.out.println("=========================================");
       }
     } catch (Exception e) {
       e.printStackTrace();

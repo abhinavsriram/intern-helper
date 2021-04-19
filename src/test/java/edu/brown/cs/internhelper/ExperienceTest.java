@@ -1,7 +1,6 @@
 package edu.brown.cs.internhelper;
 
-import edu.brown.cs.internhelper.Functionality.Experience;
-import edu.brown.cs.internhelper.Functionality.Resume;
+import edu.brown.cs.internhelper.Objects.Experience;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;

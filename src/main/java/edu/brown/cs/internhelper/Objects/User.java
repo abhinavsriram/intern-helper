@@ -1,5 +1,5 @@
 
-package edu.brown.cs.internhelper.Functionality;
+package edu.brown.cs.internhelper.Objects;
 
 /**
  * This class represents a User who is using InternHelper. It contains

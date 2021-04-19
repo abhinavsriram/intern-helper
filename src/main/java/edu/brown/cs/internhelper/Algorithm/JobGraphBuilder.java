@@ -1,7 +1,13 @@
-package edu.brown.cs.internhelper.Functionality;
+package edu.brown.cs.internhelper.Algorithm;
 
 import edu.brown.cs.internhelper.Database.SQLDatabase;
 import edu.brown.cs.internhelper.Graph.DirectedGraph;
+import edu.brown.cs.internhelper.Objects.Experience;
+import edu.brown.cs.internhelper.Objects.Job;
+import edu.brown.cs.internhelper.Objects.JobEdge;
+import edu.brown.cs.internhelper.Objects.Resume;
+import edu.brown.cs.internhelper.Objects.User;
+
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -71,7 +77,6 @@ public class JobGraphBuilder {
         allJobs.add(job);
       }
     } catch (Exception e) {
-      e.printStackTrace();
     }
   }
 

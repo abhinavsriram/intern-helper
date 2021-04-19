@@ -1,11 +1,9 @@
 package edu.brown.cs.internhelper;
 
 import edu.brown.cs.internhelper.CSV.CSVWriter;
-import edu.brown.cs.internhelper.Database.SQLDatabase;
-import edu.brown.cs.internhelper.Functionality.Job;
+import edu.brown.cs.internhelper.Objects.Job;
 import org.junit.Test;
 
-import java.sql.ResultSet;
 import java.util.HashMap;
 import java.util.Map;
 

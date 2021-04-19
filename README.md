@@ -2,7 +2,7 @@
 
 ## Partner Division of Labor
 - Meera:
-- Abhinav: I worked primarily on building out the entire frontend (UI, functionality, and integration with backend),
+- Abhinav: Wroked. primarily on building out the entire frontend (UI, functionality, and integration with backend),
 attempting to deploy the app on Heroku, automating the working of all aspects of the app using Python scripts, and lastly
 user authentication and information storage using Firebase.
 - Kunj:
@@ -82,7 +82,8 @@ which is weighted at 0.35 and prior experiences at 0.25.
 ##### run
 standard python script/unix executable provided by cs32 which now accepts an
 additional argument --pagerank to run a Java script that computes the PageRank
-for every job and stores the values in csv files
+for every job and stores the values in csv files. This will take roughly around 5-10 minutes
+to run for all the roles.
 
 ##### deployment
 unix executable (coded in python) which when run will create a production build of the
@@ -147,8 +148,9 @@ npm install in /frontend
 
 #### Running: 2 Terminals
 ##### Terminal 1
-In the instance that you want to run the page rank calculations yourself, then you can do ./run --pagerank. That
-will store all the PageRank results in the data directory and then you would  ./run --gui after.
+In the instance that you want to run the page rank calculations yourself, then you can do ./run --pagerank.
+This process will take approximately 5-10 minutes. That will store all the PageRank results in the data directory
+and then you would  ./run --gui after.
 
 In the instance that you just want to use the existing page rank calculations, then you can just directly do
 ./run --gui

@@ -1,4 +1,4 @@
-package edu.brown.cs.internhelper.Functionality;
+package edu.brown.cs.internhelper.Algorithm;
 
 import edu.brown.cs.internhelper.Graph.DirectedGraph;
 import edu.brown.cs.internhelper.Graph.Edge;
