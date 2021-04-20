@@ -1,11 +1,13 @@
-# README: Maps
+# README: InternHelper
 
 ## Partner Division of Labor
 - Meera: Main Data Engineer. Worked on builiding the backend database. Wrote python scripts for web scraping. Utilized Selenium for web scraping. Combined python scripts into one master script for web scraping. Supported Abhinav with additional front end features like error messages and check box for read and confirmed Terms and Use/Privacy Note. Answered GDPR questions and worked on Terms and Use/Privacy Note. 
 - Abhinav: Worked primarily on building out the entire frontend (UI, functionality, and integration with backend),
 attempting to deploy the app on Heroku, automating the working of all aspects of the app using Python scripts, and lastly
 user authentication and information storage using Firebase.
-- Kunj:
+- Kunj: One of the backend developers. Worked on designing & building a graph of all internship opportunities, 
+  including how to construct edges between the vertices. Assisted Riya with developing a methodology to calculate the 
+  overall similarity scores between a resume and each job. Also responsible for JUnit testing for the backend code. 
 - Riya: One of the backend developers. Responsible for writing PageRank algorithm as well as developing
 naive method for calculating similarity between text. Also, helped with frontend-backend integration - wrote
 handlers in Main class in order to receive and send data from the frontend to the backend and vice versa.
