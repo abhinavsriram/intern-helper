@@ -1,1 +1,11 @@
 # Data Files For Term Project
+
+For the data behind Intern Helper, we have utilized different technologies to provide users with the best internship results.
+
+Currently, we webscrape from two major platforms: LinkedIn Jobs and Google Jobs. Both of these platforms provide massive amounts of data on internship roles that are available. Because there are many internship roles, there are individual python files that scrape for the data on both platform. These files can be found in the python_scripts folder. As the code across these pages are almost identical, I will comment on two files for each of the platforms linkedin_a.py and google_a.py. In these scripts, the data is scraped off of the platforms and all the data is converted into a csv file. This is used in the later scripts. The suffix for each role is explained in the internships.md file in python_scripts. Each suffix represents a different internship position. 
+
+Outside of the individual scripts we have two other scripts: combine_all_csv and csv_to_sqlite. The first file combines all the individual csv files for the roles into one combined file. For example, Accounting internships are held in two files: linkedin_a.csv and google_a.csv. Therefore to combine them into one csv file to then maybe a table in the database, we have this script that will combine them into one csv titled combined_a.csv. The second file converts all the combined csv files into one table in the sqlite database. The database itself is titled internships.sqlite3. This is the database the back end uses to pull data. 
+
+Finally, the last script is the master script that will run all of this code automatically. Ideally, we would want this master script to run every 12 hours on the cloud when we deploy the project, but this is an issue we hope to resolve in the next steps of the project.
+
+The other two directories in data are for page-rank result CSV files and the stop words used when giving similiarites scores. We also included our sample intern database used for intial testing of our PageRank algorithm. 

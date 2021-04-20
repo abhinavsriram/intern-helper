@@ -1,8 +1,8 @@
 # README: Maps
 
 ## Partner Division of Labor
-- Meera:
-- Abhinav: Wroked. primarily on building out the entire frontend (UI, functionality, and integration with backend),
+- Meera: Main Data Engineer. Worked on builiding the backend database. Wrote python scripts for web scraping. Utilized Selenium for web scraping. Combined python scripts into one master script for web scraping. Supported Abhinav with additional front end features like error messages and check box for read and confirmed Terms and Use/Privacy Note. Answered GDPR questions and worked on Terms and Use/Privacy Note. 
+- Abhinav: Worked primarily on building out the entire frontend (UI, functionality, and integration with backend),
 attempting to deploy the app on Heroku, automating the working of all aspects of the app using Python scripts, and lastly
 user authentication and information storage using Firebase.
 - Kunj:
