@@ -1,5 +1,5 @@
 # README
-Intern Helper is a React based web app that allows users to submit their resume, find job descriptions that best match their resume and to tailor their resume for a specific job.
+Intern Helper is a React based web app that allows users to submit their resume, find job descriptions that best match their resume and to tailor their resume to a specific job application.
 
 #### Automated Scripts
 ##### run
