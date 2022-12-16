@@ -3,13 +3,13 @@ Intern Helper is a web app that allows users to submit their resume, find job de
 
 ## Automated Scripts
 ### `run`
-python script/unix executable which will run the backend of the project and it accepts an additional argument --pagerank to run a Java script that computes the PageRank for every job in the database and stores the values in csv files. This will take roughly around 5-10 minutes to run for all the roles.
+unix executable which will run the backend of the project and it accepts an additional argument --pagerank to run a Java script that computes the PageRank for every job in the database and stores the values in csv files. This will take roughly around 5-10 minutes to run for all the roles.
 
 ### `deployment`
-unix executable (coded in python) which when run will create a production build of the react app, push to github, then push to heroku for deployment.
+unix executable which when run will create a production build of the react app, push to github, then push to heroku for deployment.
 
 ### `scrape_data`
-unix executable (coded in python) which when run, will run 132 python web scraper files, combine the 132 produced csv files paired by job title to create 66 csv files, and then add the data from these 66 csv files into a single sqlite3 database with 66 tables each, named by the role they represent.
+unix executable which when run, will run 132 python web scraper files, combine the 132 produced csv files paired by job title to create 66 csv files, and then add the data from these 66 csv files into a single sqlite3 database with 66 tables each, named by the role they represent.
 
 ## Building and Running Program
 ### Building
