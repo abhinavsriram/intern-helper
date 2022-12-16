@@ -18,10 +18,10 @@ unix executable (coded in python) which when run, will run 132 python web scrape
 `npm install` in [/frontend](/frontend)
 
 ### Running
-##### Terminal 1
+##### Backend
 In the instance that you want to run the page rank calculations yourself, then you can do `./run --pagerank`. This process will take approximately 5-10 minutes. That will store all the PageRank results in the data directory and then you would `./run --gui` after.
 
 In the instance that you just want to use the existing page rank calculations, then you can just directly do `./run --gui`.
 
-##### Terminal 2
+##### Frontend
 `npm start` in [/frontend](/frontend)
