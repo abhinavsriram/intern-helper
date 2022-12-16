@@ -1,15 +1,15 @@
 # README
-Intern Helper is a web app that allows users to submit their resume, find job descriptions that best match their resume and to tailor their resume to a specific job application.
+Intern Helper is a web app that allows users to submit their resume, find job descriptions that best match their resume, and to tailor their resume to a specific job application.
 
 ## Automated Scripts
 ### `run`
-unix executable which will run the backend of the project and it accepts an additional argument --pagerank to run a Java script that computes the PageRank for every job in the database and stores the values in csv files. This will take roughly around 5-10 minutes to run for all the roles.
+unix executable which will run the backend of the project and it accepts an additional argument `--pagerank` to run a Java script that computes the PageRank for every job in the database and stores the values in csv files. This will take roughly around 5-10 minutes to run for all roles in the database.
 
 ### `deployment`
-unix executable which when run will create a production build of the react app, push to github, then push to heroku for deployment.
+unix executable which when run, will create a production build of the react app, push to github, then push to heroku for deployment.
 
 ### `scrape_data`
-unix executable which when run, will run 132 python web scraper files, combine the 132 produced csv files paired by job title to create 66 csv files, and then add the data from these 66 csv files into a single sqlite3 database with 66 tables each, named by the role they represent.
+unix executable which when run, will run 132 python web scraper files, combine the 132 produced csv files paired by job title to create 66 csv files, and then add the data from these 66 csv files into a single sqlite3 database, with 66 tables each, named by the role they represent.
 
 ## Building and Running Program
 ### Building
@@ -19,9 +19,9 @@ unix executable which when run, will run 132 python web scraper files, combine t
 
 ### Running
 ##### Backend
-In the instance that you want to run the page rank calculations yourself, then you can do `./run --pagerank`. This process will take approximately 5-10 minutes. That will store all the PageRank results in the data directory and then you would `./run --gui` after.
+If you want to run the page rank calculations yourself, then you can `./run --pagerank`. This process will take approximately 5-10 minutes. It will store all the PageRank results in the data directory and then you would `./run --gui` after.
 
-In the instance that you just want to use the existing page rank calculations, then you can just directly do `./run --gui`.
+In the instance that you just want to use the existing page rank calculations, then you can just directly `./run --gui`.
 
 ##### Frontend
 `npm start` in [/frontend](/frontend)
